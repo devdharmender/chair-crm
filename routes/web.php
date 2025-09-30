@@ -17,6 +17,7 @@ Route::middleware(['sessionProtection'])->group(function(){
 
     // pages
     Route::get('category-addition',[AddCategory::class , 'addCatg'])->name('category');
+    Route::post('store-catg',[AddCategory::class,'storeCatg'])->name('storecategory');
 
     // Logout 
     Route::get('logout',[Login::class, 'logout'])->name('logout');

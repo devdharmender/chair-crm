@@ -10,4 +10,7 @@ class AddCategory extends Controller
     public function addCatg(){
         return view('admin.pages.addCategory');
     }
+    public function storeCatg(Request $request){
+        return "this is store category";
+    }
 }
