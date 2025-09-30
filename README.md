@@ -1,61 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🪑 Chair-Factory CRM
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Office Chair Repair CRM Blueprint
 
-## About Laravel
+**Chair-Factory** is a specialized Customer Relationship Management (CRM) system built for managing office chair repairs, customer queries, warranty tracking, and automated marketing. This blueprint outlines the system’s architecture, core modules, data structure, user interfaces, and communication engine.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📦 Core Modules Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Module                | Purpose                                                                 | Key Users           |
+|-----------------------|-------------------------------------------------------------------------|---------------------|
+| **A. Customer Portal** | Submit queries, check status, register complaints                       | Customers           |
+| **B. Admin Dashboard** | Manage queries, update status, create marketing content, view reports   | Internal Staff/Admin|
+| **C. Communication Engine** | Send automated status updates, offers, and coupons via email        | System (Automated)  |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🗃️ Data Structure
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Collection         | Key Fields                                                                 | Purpose                                      |
+|--------------------|------------------------------------------------------------------------------|----------------------------------------------|
+| **Customers**       | Name, Email, Phone, Address, Customer ID                                     | User tracking & marketing segmentation       |
+| **Repair Queries**  | Query ID, Customer ID, Description, Status, Resolution Notes, Date Submitted| Main service tracking                        |
+| **Repairs/Warranty**| Repair ID, Query ID, Chair Details, Warranty End Date, Technician Name      | Validate warranty claims                     |
+| **Marketing Offers**| Offer ID, Discount Code, Description, Start/End Dates, Target Segment       | Email campaigns & web banners                |
+| **Web Content**     | Key, Value                                                                  | Dynamic website content updates              |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🌐 Customer Portal Pages
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. **New Query Submission**
+- Fields: Name, Email, Phone, Chair Type, Issue Description, Preferred Date/Time
+- Action: Creates new query with status `New`, emails Query ID to customer
 
-### Premium Partners
+### 2. **Query Status Check**
+- Input: Query ID
+- Output: Current status, resolution notes, repair date
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. **Complaint / Warranty Claim**
+- Input: Repair ID, Problem Description
+- Validation: Checks warranty validity
+- If valid: New query with status `Warranty Claim` is created
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🔧 Admin Dashboard Pages
 
-## Code of Conduct
+### Dashboard 1: **Query Management**
+- Table view with filters by status, date, technician
+- Links to detail view
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Dashboard 2: **Query Detail View**
+- Fields: Status, Technician Assignment, Resolution Notes
+- Conditional: If status = Solved → Create Warranty record (auto add +90 days)
+- Triggers customer email updates
 
-## Security Vulnerabilities
+### Dashboard 3: **Marketing & Content Management**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### A. Dynamic Web Content
+- Editable fields (e.g., Homepage Banner)
+- Instant update to website on save
 
-## License
+#### B. Offers & Coupons
+- Fields: Code, Description, Dates, Email Template
+- Used by Communication Engine
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Dashboard 4: **Reporting**
+- Query Volume by Month
+- Resolution Rate
+- Most Common Chair Issues
+- Warranty Claim Rate
+
+---
+
+## 📬 Communication Engine
+
+| Email Type           | Trigger                                | Data Used                              |
+|----------------------|----------------------------------------|----------------------------------------|
+| **Query Confirmation**| Customer submits new query             | Query ID, Customer Name                |
+| **Status Update**     | Admin updates status                   | Query ID, New Status, Resolution Notes |
+| **General Offers**    | Manual trigger from Dashboard 3B       | Customers + Offer Details              |
+| **Festival Coupons**  | Scheduled (e.g., Diwali, Christmas)    | Customers + Offer Details              |
+
+---
+
+## 📈 How to Use for Marketing
+
+1. **Create Offer**:  
+   Go to *Dashboard 3B* → Create new offer (`FESTIVAL20`, 20% off)
+
+2. **Update Website**:  
+   Go to *Dashboard 3A* → Change `HomepageBannerText` to  
+   `"Use code FESTIVAL20 for 20% off all repairs!"`
+
+3. **Send Campaign**:  
+   Use *Communication Engine* → Select `FESTIVAL20` → Send to all customers
+
+💡 By centralizing content in the **Marketing Offers** collection, you maintain consistency across email, banners, and campaigns.
+
+---
+
+## 🚀 Next Steps
+
+Would you like to:
+- Start planning the **wireframes for Customer Portal** pages?
+- Or detail the **fields required for the Warranty Claim** page?
+
+---
+
+## 📄 License
+
+This project blueprint is open for development and customization based on business needs.
+
