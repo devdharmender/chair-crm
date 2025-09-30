@@ -4,13 +4,59 @@ namespace App\Http\Controllers\pages;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\pages\Category;
 
 class AddCategory extends Controller
 {
     public function addCatg(){
-        return view('admin.pages.addCategory');
+        $catgdata = Category::all();
+        return view('admin.pages.addCategory',compact('catgdata'));
     }
     public function storeCatg(Request $request){
-        return "this is store category";
+        // return $catg =  $request->input('catgName');
+        $data = $request->validate([
+            'catgName' => 'required|string|unique:category,category_name',
+        ],[
+            'required' => "This feild can't be empty",
+            'unique' =>"This name is already taken!",
+        ]);
+        try {
+            if($data){
+                $catgdata = new Category();
+                $catgdata->category_name = $request->input('catgName');
+                $catgdata->category_status = 1;
+                if($catgdata->save()){
+                    return redirect()->route('category')->with('success','Category added successfully!!');
+                }else{
+                    return redirect()->route('category')->with('error','Something went wrong!!');
+                }
+            }else{
+                return redirect()->route('category')->with('error','Something went wrong with validations!!');
+
+            }
+        }
+        catch (\Exception $e) {
+                \Log::error('Error retrieving input: ' . $e->getMessage());
+
+                return response()->json([
+                    'message' => 'An error occurred while processing the request.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+    }
+    public function statusupdate(Request $request){
+        $id = $request->input('id');
+        $data = Category::find($id);
+        if(!$data){
+        return response()->json(['success' => false,'message' => 'Category not found'], 404);
+        }
+        $data->category_status = $data->category_status === 1 ? 0:1;
+        if($data->save()){
+            return response()->json([
+                'success' => true,
+                'new_status' => 'status changed'
+            ]);
+        }
+
     }
 }

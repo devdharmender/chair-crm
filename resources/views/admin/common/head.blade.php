@@ -6,10 +6,10 @@
     <title>
         @yield('title')
     </title>
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="{{asset('assets/admin/image/icon.png')}}">
     <link href="{{asset('assets/admin/css/style.css')}}" rel="stylesheet">
     
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script data-cfasync="false" nonce="b581d894-e350-4db6-9efd-132e6c8784f8">
         try {
             (function(w, d) {

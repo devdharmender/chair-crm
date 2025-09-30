@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('category',function(Blueprint $table){
-            $table->string('id')->primary();
+            $table->id();
             $table->string('category_name');
-            $table->string('category_status');
+            $table->integer('category_status');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
 
         });
         Schema::create('banners',function(Blueprint $table){
-            $table->string('id')->primary();
+            $table->id();
             $table->string('banner_name');
-            $table->string('banner_status');
+            $table->integer('banner_status');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
