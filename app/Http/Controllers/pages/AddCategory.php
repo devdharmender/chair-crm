@@ -8,10 +8,12 @@ use App\Models\pages\Category;
 
 class AddCategory extends Controller
 {
+    // LOAD CATEGORY PAGE
     public function addCatg(){
-        $catgdata = Category::all();
+        $catgdata = Category::orderBy('id', 'desc')->paginate(10);
         return view('admin.pages.addCategory',compact('catgdata'));
     }
+    // INSERT CATEGORY TO DB
     public function storeCatg(Request $request){
         // return $catg =  $request->input('catgName');
         $data = $request->validate([
@@ -44,6 +46,7 @@ class AddCategory extends Controller
                 ], 500);
             }
     }
+    // CHANGE STATUS OF CATEGORY
     public function statusupdate(Request $request){
         $id = $request->input('id');
         $data = Category::find($id);
@@ -51,6 +54,7 @@ class AddCategory extends Controller
         return response()->json(['success' => false,'message' => 'Category not found'], 404);
         }
         $data->category_status = $data->category_status === 1 ? 0:1;
+        $data->	updated_at = now()->format('Y-m-d H:i:s');
         if($data->save()){
             return response()->json([
                 'success' => true,
@@ -58,5 +62,17 @@ class AddCategory extends Controller
             ]);
         }
 
+    }
+    // DELETE CATEGORY FROM DATABASE
+    public function deletecatg(Request $request){
+        $id = $request->input('id');
+        if(Category::destroy($id)){
+            return response()->json([
+                'success' => true,
+                'new_status' => 'status changed'
+            ]);
+        }else{
+        return response()->json(['success' => false,'message' => 'Category not found'], 404);
+        }
     }
 }

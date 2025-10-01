@@ -19,6 +19,7 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::get('category-addition',[AddCategory::class , 'addCatg'])->name('category');
     Route::post('store-catg',[AddCategory::class,'storeCatg'])->name('storecategory');
     Route::post('status-update',[AddCategory::class,'statusupdate'])->name('statusupdate');
+    Route::post('delete-category',[AddCategory::class,'deletecatg'])->name('dlt-ctg');
 
     // Logout 
     Route::get('logout',[Login::class, 'logout'])->name('logout');
