@@ -46,6 +46,39 @@ class AddCategory extends Controller
                 ], 500);
             }
     }
+    // LOAD EDIT PAGE
+    public function loadeditpage($id){
+        $editdata = Category::find($id);
+        if($editdata){
+            return view('admin.pages.editCatg',compact('editdata'));
+        }else{
+            return redirect()->route('category')->with('error','We are really sorry!!. No records found this time');
+        }
+    }
+    // UPDATE CATEGORY HERE
+    public function updateCatg(Request $request){
+        $catgname = $request->input('editcatg');
+        $id = $request->input('catgid');
+        $validation = $request->validate([
+            'editcatg' => 'required|string|unique:category,category_name',
+        ],[
+            'required' => "This feild can't be empty.",
+            'unique' =>"This name is already taken.",
+        ]);
+        if($validation){
+            $catdata = Category::find($id);
+            $catdata->category_name = $catgname;
+            if($catdata->save()){
+                return redirect()->route('category')->with('success','Category Updated successfully!!');
+
+            }else{
+                return redirect()->route('category')->with('error','Something went wrong!!');
+            }
+        }else{
+            return redirect()->route('category')->with('error','Something went wrong with validations!!');
+        }
+
+    }
     // CHANGE STATUS OF CATEGORY
     public function statusupdate(Request $request){
         $id = $request->input('id');
