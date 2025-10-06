@@ -89,14 +89,12 @@
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
                                     <a href="{{route('category')}}" class="menu-dropdown-item group menu-dropdown-item-inactive">
-                                        category
+                                        Category
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="pricing-tables.html" class="menu-dropdown-item group"
-                                        :class="page === 'pricingTables' ? 'menu-dropdown-item-active' :
-                                            'menu-dropdown-item-inactive'">
-                                        Pricing Tables
+                                    <a href="{{route('chair-ui')}}" class="menu-dropdown-item group menu-dropdown-item-inactive">
+                                        Chair Parts
                                     </a>
                                 </li>
                                 <li>
