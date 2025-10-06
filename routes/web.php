@@ -25,6 +25,7 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::post('category-update',[AddCategory::class,'updateCatg'])->name('update-catg');
 
     Route::get('chair-parts',[ChairParts::class,'chair_part'])->name('chair-ui');
+    Route::post('addchairparts',[ChairParts::class,'addchairparts'])->name('addchair');
 
     // LOGOUT ROUTE 
     Route::get('logout',[Login::class, 'logout'])->name('logout');
