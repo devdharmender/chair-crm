@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('brand');
             $table->string('product_image');
             $table->text('descrition');
+            $table->integer('chair_parts_status')->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });

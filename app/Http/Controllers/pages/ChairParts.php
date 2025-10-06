@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class ChairParts extends Controller
 {
     public function chair_part(){
-        return view('admin.pages.addChairParts');
+        $data = ChairPartsModel::orderBy('id','desc')->get();
+        return view('admin.pages.addChairParts',compact('data'));
     }
     public function addchairparts(Request $request){
         $file = $request->file('productimg');
