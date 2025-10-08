@@ -118,8 +118,12 @@
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                         @php
                             $sno = 1;
+                            use Illuminate\Support\Str;
                         @endphp
                         @foreach ($data as $product)
+                            @php
+                                $para = Str::limit($product->descrition, 10, '....');
+                            @endphp
                             <tr>
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
@@ -138,7 +142,7 @@
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="h-12 w-12">
                                         <img :src="{{ asset('storage/' . $product->product_image) }}"
-                                            class="h-12 w-12 rounded-md" alt="{{$product->title}}"
+                                            class="h-12 w-12 rounded-md" alt="{{ $product->title }}"
                                             src="{{ asset('storage/' . $product->product_image) }}">
                                     </div>
                                 </td>
@@ -173,15 +177,16 @@
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <p class="text-gray-700 text-theme-sm dark:text-gray-400">
-                                            {{ $product->descrition }}
+
+                                            {{ $para }}
                                         </p>
                                     </div>
                                 </td>
                                 <td class="px-5 py-3 whitespace-nowrap">
-                                    <div x-data="{ switcherToggle: {{$product->chair_parts_status == 1 ? 'true' : 'false'}} }">
-                                        <label for="toggle" class="cursor-pointer">
-                                            <div class="relative"><input type="checkbox" id="toggle" class="sr-only"
-                                                    @change="switcherToggle = !switcherToggle">
+                                    <div x-data="{ switcherToggle: {{ $product->chair_parts_status == 1 ? 'true' : 'false' }} }">
+                                        <label for="{{ $product->id }}" class="cursor-pointer">
+                                            <div class="relative"><input type="checkbox" id="{{ $product->id }}"
+                                                    class="sr-only" @change="switcherToggle = !switcherToggle">
                                                 <div class="block h-6 w-11 rounded-full transition-colors duration-200"
                                                     :class="switcherToggle ? 'bg-success-500' : 'bg-red-500'"></div>
                                                 <div :class="switcherToggle ? 'translate-x-full' : 'translate-x-0'"
@@ -193,8 +198,8 @@
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center justify-center">
-                                        <svg @click="isModalOpena = !isModalOpena"
-                                            class="cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400"
+                                        <svg @click="isModalOpena = !isModalOpena" id="{{ $product->id }}"
+                                            class="dltbtn cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400"
                                             width="20" height="20" viewBox="0 0 20 20" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -213,10 +218,91 @@
                                     </div>
                                 </td>
                             </tr>
+                            @php
+                                $sno++;
+                            @endphp
                         @endforeach
                     </tbody>
                     <!-- table body end -->
                 </table>
+            </div>
+            <div
+                class="flex flex-col items-center justify-between border-t border-gray-200 px-5 py-4 sm:flex-row dark:border-gray-800">
+
+                <div class="pb-3 sm:pb-0">
+                    <span class="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Showing
+                        <span class="text-gray-800 dark:text-white/90">
+                            {{ ($data->currentPage() - 1) * $data->perPage() + 1 }}
+                        </span>
+                        to
+                        <span class="text-gray-800 dark:text-white/90">
+                            {{ ($data->currentPage() - 1) * $data->perPage() + $data->count() }}
+                        </span>
+                        of
+                        <span class="text-gray-800 dark:text-white/90">
+                            {{ $data->total() }}
+                        </span>
+                    </span>
+                </div>
+
+                <div
+                    class="flex w-full items-center justify-between gap-2 rounded-lg bg-gray-50 p-4 sm:w-auto sm:justify-normal sm:rounded-none sm:bg-transparent sm:p-0 dark:bg-gray-900 dark:sm:bg-transparent">
+                    {{-- Previous Page --}}
+                    @if ($data->onFirstPage())
+                        <span
+                            class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-2 text-gray-400 cursor-not-allowed opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-500">
+                            <svg class="fill-current" width="20" height="20">
+                                <path
+                                    d="M2.58 10a.75.75 0 0 0 .22.53l5 5a.75.75 0 1 0 1.06-1.06L4.81 10l4.06-4.47a.75.75 0 0 0-1.06-1.06l-5 5A.75.75 0 0 0 2.58 10Z" />
+                            </svg>
+                        </span>
+                    @else
+                        <a href="{{ $data->previousPageUrl() }}"
+                            class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-50 hover:text-gray-800 sm:p-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+                            <svg class="fill-current" width="20" height="20">
+                                <path
+                                    d="M2.58 10a.75.75 0 0 0 .22.53l5 5a.75.75 0 1 0 1.06-1.06L4.81 10l4.06-4.47a.75.75 0 0 0-1.06-1.06l-5 5A.75.75 0 0 0 2.58 10Z" />
+                            </svg>
+                        </a>
+                    @endif
+
+                    {{-- Page Numbers --}}
+                    <ul class="hidden items-center gap-0.5 sm:flex">
+                        @foreach ($data->getUrlRange(1, $data->lastPage()) as $page => $url)
+                            <li>
+                                <a href="{{ $url }}"
+                                    class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium {{ $data->currentPage() == $page ? 'bg-brand-500 text-white' : 'hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white' }}">
+                                    {{ $page }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    {{-- Mobile Page Info --}}
+                    <span class="block text-sm font-medium text-gray-700 sm:hidden dark:text-gray-400">
+                        Page {{ $data->currentPage() }} of {{ $data->lastPage() }}
+                    </span>
+
+                    {{-- Next Page --}}
+                    @if ($data->hasMorePages())
+                        <a href="{{ $data->nextPageUrl() }}"
+                            class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-50 hover:text-gray-800 sm:p-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+                            <svg class="fill-current" width="20" height="20">
+                                <path
+                                    d="M17.42 10a.75.75 0 0 1-.22.53l-5 5a.75.75 0 0 1-1.06-1.06l4.06-4.47-4.06-4.47a.75.75 0 0 1 1.06-1.06l5 5A.75.75 0 0 1 17.42 10Z" />
+                            </svg>
+                        </a>
+                    @else
+                        <span
+                            class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-2 text-gray-400 cursor-not-allowed opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-500">
+                            <svg class="fill-current" width="20" height="20">
+                                <path
+                                    d="M17.42 10a.75.75 0 0 1-.22.53l-5 5a.75.75 0 0 1-1.06-1.06l4.06-4.47-4.06-4.47a.75.75 0 0 1 1.06-1.06l5 5A.75.75 0 0 1 17.42 10Z" />
+                            </svg>
+                        </span>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -247,6 +333,7 @@
                                 <div class="w-full px-2.5 xl:w-1/2">
                                     <input type="text" placeholder="Product title" name="title"
                                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                    <span class="titleerr text-error-500"></span>
                                 </div>
                                 <div class="w-full px-2.5 xl:w-1/2">
                                     <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent">
@@ -259,10 +346,12 @@
                                                 class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
                                                 --Select Country--
                                             </option>
-                                            <option value="chair"
-                                                class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
-                                                USA
-                                            </option>
+                                            @foreach ($catgdata as $item)
+                                                <option value="{{ $item->category_name }}"
+                                                    class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
+                                                    {{ $item->category_name }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                         <span
                                             class="absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400">
@@ -274,15 +363,18 @@
                                             </svg>
                                         </span>
                                     </div>
+                                    <span class="catg text-error-500"></span>
                                 </div>
 
                                 <div class="w-full px-2.5 xl:w-1/2">
                                     <input type="text" placeholder="Product Brand" name="brand"
                                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                    <span class="brand text-error-500"></span>
                                 </div>
                                 <div class="w-full px-2.5 xl:w-1/2">
                                     <input type="number" placeholder="Product Price" name="price"
                                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                    <span class="price text-error-500"></span>
                                 </div>
                                 <div class="w-full px-2.5">
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -290,11 +382,13 @@
                                     </label>
                                     <textarea name="descrition" placeholder="Enter product description" rows="3"
                                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"></textarea>
+                                    <span class="descritionerr text-error-500"></span>
                                 </div>
 
                                 <div class="w-full px-2.5">
                                     <input type="file" name="productimg"
                                         class="focus:border-ring-brand-300 shadow-theme-xs focus:file:ring-brand-300 h-11 w-full overflow-hidden rounded-lg border border-gray-300 bg-transparent text-sm text-gray-500 transition-colors file:mr-5 file:border-collapse file:cursor-pointer file:rounded-l-lg file:border-0 file:border-r file:border-solid file:border-gray-200 file:bg-gray-50 file:py-3 file:pr-3 file:pl-3.5 file:text-sm file:text-gray-700 placeholder:text-gray-400 hover:file:bg-gray-100 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:text-white/90 dark:file:border-gray-800 dark:file:bg-white/[0.03] dark:file:text-gray-400 dark:placeholder:text-gray-400">
+                                    <span class="productimgerr text-error-500"></span>
                                 </div>
 
                                 <div class="w-full px-2.5">
@@ -375,15 +469,30 @@
                     success: function(data) {
                         if (data.status === 'success') {
                             $('#formstatus').html(data.message)
+                        } else if (data.status === 'validationer') {
+                            $('#formstatus').html(data.message)
                         } else {
                             $('#formstatus').html(data.message)
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error("Request failed: " + status + ", " + error);
-                        alert('An error occurred. Please try again.');
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = xhr.responseJSON.errors;
+
+                            $('.titleerr').html(errors.title ? errors.title[0] : '');
+                            $('.catg').html(errors.title ? errors.catg[0] : '');
+                            $('.brand').html(errors.brand ? errors.brand[0] : '');
+                            $('.price').html(errors.price ? errors.price[0] : '');
+                            $('.descritionerr').html(errors.descrition ? errors.descrition[0] :
+                                '');
+                            $('.productimgerr').html(errors.productimg ? errors.productimg[0] :
+                                '');
+                        }
                     }
                 });
+            });
+            $('.dltbtn').on('click', function() {
+                alert($(this).attr('id'))
             });
         });
     </script>
