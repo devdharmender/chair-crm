@@ -26,6 +26,10 @@ Route::middleware(['sessionProtection'])->group(function(){
 
     Route::get('chair-parts',[ChairParts::class,'chair_part'])->name('chair-ui');
     Route::post('addchairparts',[ChairParts::class,'addchairparts'])->name('addchair');
+    Route::get('edit-chair-parts/{num}',[ChairParts::class , 'editChairParts'])->name('edit-chair');
+    Route::post('update-chair-parts',[ChairParts::class , 'updateData'])->name('update-parts');
+    Route::post('status-change',[ChairParts::class , 'statusChange'])->name('change-parts-status');
+    Route::post('delete-chair-data',[ChairParts::class , 'deleteChairParts'])->name('delete-parts');
 
     // LOGOUT ROUTE 
     Route::get('logout',[Login::class, 'logout'])->name('logout');

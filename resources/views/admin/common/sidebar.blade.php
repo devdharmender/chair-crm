@@ -96,7 +96,7 @@
                                     <a href="{{route('chair-ui')}}" class="menu-dropdown-item group menu-dropdown-item-inactive">
                                         Chair Parts
                                     </a>
-                                </li>
+                                {{-- </li>
                                 <li>
                                     <a href="faq.html" class="menu-dropdown-item group"
                                         :class="page === 'faq' ? 'menu-dropdown-item-active' :
@@ -181,7 +181,7 @@
                                             'menu-dropdown-item-inactive'">
                                         Success
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                         <!-- Dropdown Menu End -->
@@ -1118,22 +1118,6 @@
             </div>
         </nav>
         <!-- Sidebar Menu -->
-
-        <!-- Promo Box -->
-        <div :class="sidebarToggle ? 'xl:hidden' : ''"
-            class="mx-auto mb-10 w-full max-w-60 rounded-2xl bg-gray-50 px-4 py-5 text-center dark:bg-white/[0.03]">
-            <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">
-                #1 Tailwind CSS Dashboard
-            </h3>
-            <p class="text-theme-sm mb-4 text-gray-500 dark:text-gray-400">
-                Leading Tailwind CSS Admin Template with 400+ UI Component and Pages.
-            </p>
-            <a href="https://tailadmin.com/pricing" target="_blank" rel="nofollow"
-                class="bg-brand-500 text-theme-sm hover:bg-brand-600 flex items-center justify-center rounded-lg p-3 font-medium text-white">
-                Purchase Plan
-            </a>
-        </div>
-        <!-- Promo Box -->
     </div>
 </aside>
 

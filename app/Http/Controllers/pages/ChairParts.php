@@ -5,6 +5,7 @@ namespace App\Http\Controllers\pages;
 use App\Http\Controllers\Controller;
 use App\Models\pages\ChairPartsModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\pages\Category;
 
 class ChairParts extends Controller
@@ -131,5 +132,85 @@ class ChairParts extends Controller
         }
         
 
+    }
+    public function editChairParts($id){
+        $data = ChairPartsModel::find($id);
+        $catgdata = Category::orderBy('id','desc')->get();
+        return view('admin.pages.editChairParts',compact('data','catgdata'));
+    }
+    public function updateData(Request $request){
+        // return $request->input();
+        $partsdata = ChairPartsModel::find($request->input('partsid'));
+        $oldimage = $partsdata->product_image;
+            if($partsdata){
+                $validation = $request->validate([
+                'title'=>'required|string|max:255',
+                'catg'=>'required|string|max:255',
+                'brand'=>'required|string|max:255',
+                'price'=>'required|integer',
+                'descrition'=>'required|min:160|max:255',
+                'productimg' => 'nullable|mimes:jpg,jpeg,png,svg|max:300',
+            ],[
+                'required' => 'Please fill this feild.',
+                'price.integer' => 'Price must be a valid number.',
+                'descrition.min' => 'Description must be at least 160 characters long.',
+                'productimg.max' => 'Image size must not exceed 300 KB.',
+            ]);
+            if($validation){
+                if($request->hasFile('productimg')){
+                    $file = $request->file('productimg');
+                    $dateTime = date('d_m_Y_H_i_s');
+                    $title = $request->input('title');
+                    $extension = $file->getClientOriginalExtension();
+                    $cusnamespaceremove = str_replace(' ','_',$title);
+                    $customeName = $cusnamespaceremove.'_'.$dateTime.'.'.$extension;
+                    // THIS IS ACCUTUAL PATH WHERE TO STORE THIS ON CRM
+                    $path = $file->storeAs('chairparts',$customeName,'public');
+                }else{
+                    $path = $partsdata->product_image;
+                }
+                $partsdata->title = $request->input('title') ?? $partsdata->title;
+                $partsdata->catg = $request->input('catg') ?? $partsdata->catg;
+                $partsdata->price = $request->input('price') ?? $partsdata->price;
+                $partsdata->brand = $request->input('brand') ?? $partsdata->brand;
+                $partsdata->descrition = $request->input('descrition') ?? $partsdata->descrition;
+                $partsdata->product_image = $path ?? $partsdata->product_image;
+
+                if($partsdata->save()){
+                    if(Storage::disk('public')->exists($oldimage)){
+                        Storage::disk('public')->delete($oldimage);
+                    }
+                    return redirect()->route('chair-ui')->with('success','Your data updated successfully');
+                }else{
+                    return redirect()->route('chair-ui')->with('error','Data not updated yet!! Try again...');
+                }
+                
+            }
+        }else{
+            return 'no data found';
+        }
+
+    }
+    public function statusChange(Request $request){
+        $id = $request->input('id');
+        $data = ChairPartsModel::find($id);
+        ($data->chair_parts_status === 1) ? $status = 0 :$status = 1;
+        $data->chair_parts_status = $status;
+        if($data->save()){
+            return response()->json([
+                'success' => true,
+                'new_status' => 'You change the status for '.$data->title,
+            ]);
+        }
+    }
+    public function deleteChairParts(Request $request){
+        $id = $request->input('id');
+        $data = ChairPartsModel::find($id);
+        if($data->delete()){
+            return response()->json([
+                'success' => true,
+                'message' => 'Delete successfully! you deleted '.$data->title . '.',
+            ]);
+        }
     }
 }

@@ -12,10 +12,59 @@
 
             {{-- MODIFIED SECTION START --}}
             <div class="border-t border-gray-100 p-6 dark:border-gray-800 ">
+                @session('success')
+                    <div class="rounded-xl border border-success-500 bg-success-50 p-4 dark:border-success-500/30 dark:bg-success-500/15">
+                        <div class="flex items-start gap-3">
+                            <div class="-mt-0.5 text-success-500">
+                                <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M3.70186 12.0001C3.70186 7.41711 7.41711 3.70186 12.0001 3.70186C16.5831 3.70186 20.2984 7.41711 20.2984 12.0001C20.2984 16.5831 16.5831 20.2984 12.0001 20.2984C7.41711 20.2984 3.70186 16.5831 3.70186 12.0001ZM12.0001 1.90186C6.423 1.90186 1.90186 6.423 1.90186 12.0001C1.90186 17.5772 6.423 22.0984 12.0001 22.0984C17.5772 22.0984 22.0984 17.5772 22.0984 12.0001C22.0984 6.423 17.5772 1.90186 12.0001 1.90186ZM15.6197 10.7395C15.9712 10.388 15.9712 9.81819 15.6197 9.46672C15.2683 9.11525 14.6984 9.11525 14.347 9.46672L11.1894 12.6243L9.6533 11.0883C9.30183 10.7368 8.73198 10.7368 8.38051 11.0883C8.02904 11.4397 8.02904 12.0096 8.38051 12.3611L10.553 14.5335C10.7217 14.7023 10.9507 14.7971 11.1894 14.7971C11.428 14.7971 11.657 14.7023 11.8257 14.5335L15.6197 10.7395Z"
+                                        fill="" />
+                                </svg>
+                            </div>
+
+                            <div>
+                                <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+                                    Success Message
+                                </h4>
+
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{session('success')}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endsession
+                @session('error')
+                    <div
+                            class="rounded-xl border border-error-500 bg-error-50 p-4 dark:border-error-500/30 dark:bg-error-500/15">
+                            <div class="flex items-start gap-3">
+                                <div class="-mt-0.5 text-error-500">
+                                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M20.3499 12.0004C20.3499 16.612 16.6115 20.3504 11.9999 20.3504C7.38832 20.3504 3.6499 16.612 3.6499 12.0004C3.6499 7.38881 7.38833 3.65039 11.9999 3.65039C16.6115 3.65039 20.3499 7.38881 20.3499 12.0004ZM11.9999 22.1504C17.6056 22.1504 22.1499 17.6061 22.1499 12.0004C22.1499 6.3947 17.6056 1.85039 11.9999 1.85039C6.39421 1.85039 1.8499 6.3947 1.8499 12.0004C1.8499 17.6061 6.39421 22.1504 11.9999 22.1504ZM13.0008 16.4753C13.0008 15.923 12.5531 15.4753 12.0008 15.4753L11.9998 15.4753C11.4475 15.4753 10.9998 15.923 10.9998 16.4753C10.9998 17.0276 11.4475 17.4753 11.9998 17.4753L12.0008 17.4753C12.5531 17.4753 13.0008 17.0276 13.0008 16.4753ZM11.9998 6.62898C12.414 6.62898 12.7498 6.96476 12.7498 7.37898L12.7498 13.0555C12.7498 13.4697 12.414 13.8055 11.9998 13.8055C11.5856 13.8055 11.2498 13.4697 11.2498 13.0555L11.2498 7.37898C11.2498 6.96476 11.5856 6.62898 11.9998 6.62898Z"
+                                            fill="#F04438"></path>
+                                    </svg>
+                                </div>
+
+                                <div>
+                                    <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+                                        Error Message
+                                    </h4>
+
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        {{session('error')}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                @endsession
                 {{-- Added flex container for alignment --}}
                 <div class="flex items-center justify-between">
                     <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
-                        Table text
+                        Table Data
                     </h3>
 
                     <div>
@@ -177,16 +226,15 @@
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <p class="text-gray-700 text-theme-sm dark:text-gray-400">
-
                                             {{ $para }}
                                         </p>
                                     </div>
                                 </td>
                                 <td class="px-5 py-3 whitespace-nowrap">
                                     <div x-data="{ switcherToggle: {{ $product->chair_parts_status == 1 ? 'true' : 'false' }} }">
-                                        <label for="{{ $product->id }}" class="cursor-pointer">
+                                        <label for="{{ $product->id }}" class=" cursor-pointer">
                                             <div class="relative"><input type="checkbox" id="{{ $product->id }}"
-                                                    class="sr-only" @change="switcherToggle = !switcherToggle">
+                                                    class="sr-only changeStatus" @change="switcherToggle = !switcherToggle">
                                                 <div class="block h-6 w-11 rounded-full transition-colors duration-200"
                                                     :class="switcherToggle ? 'bg-success-500' : 'bg-red-500'"></div>
                                                 <div :class="switcherToggle ? 'translate-x-full' : 'translate-x-0'"
@@ -207,14 +255,15 @@
                                                 fill="" />
                                         </svg>
 
-
-                                        <svg class="fill-current text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90"width="21"
-                                            height="21" viewBox="0 0 21 21" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M17.0911 3.53206C16.2124 2.65338 14.7878 2.65338 13.9091 3.53206L5.6074 11.8337C5.29899 12.1421 5.08687 12.5335 4.99684 12.9603L4.26177 16.445C4.20943 16.6931 4.286 16.9508 4.46529 17.1301C4.64458 17.3094 4.90232 17.3859 5.15042 17.3336L8.63507 16.5985C9.06184 16.5085 9.45324 16.2964 9.76165 15.988L18.0633 7.68631C18.942 6.80763 18.942 5.38301 18.0633 4.50433L17.0911 3.53206ZM14.9697 4.59272C15.2626 4.29982 15.7375 4.29982 16.0304 4.59272L17.0027 5.56499C17.2956 5.85788 17.2956 6.33276 17.0027 6.62565L16.1043 7.52402L14.0714 5.49109L14.9697 4.59272ZM13.0107 6.55175L6.66806 12.8944C6.56526 12.9972 6.49455 13.1277 6.46454 13.2699L5.96704 15.6283L8.32547 15.1308C8.46772 15.1008 8.59819 15.0301 8.70099 14.9273L15.0436 8.58468L13.0107 6.55175Z"
-                                                fill="" />
-                                        </svg>
+                                        <a href="{{ route('edit-chair', $product->id) }}">
+                                            <svg class="fill-current text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90"width="21"
+                                                height="21" viewBox="0 0 21 21" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M17.0911 3.53206C16.2124 2.65338 14.7878 2.65338 13.9091 3.53206L5.6074 11.8337C5.29899 12.1421 5.08687 12.5335 4.99684 12.9603L4.26177 16.445C4.20943 16.6931 4.286 16.9508 4.46529 17.1301C4.64458 17.3094 4.90232 17.3859 5.15042 17.3336L8.63507 16.5985C9.06184 16.5085 9.45324 16.2964 9.76165 15.988L18.0633 7.68631C18.942 6.80763 18.942 5.38301 18.0633 4.50433L17.0911 3.53206ZM14.9697 4.59272C15.2626 4.29982 15.7375 4.29982 16.0304 4.59272L17.0027 5.56499C17.2956 5.85788 17.2956 6.33276 17.0027 6.62565L16.1043 7.52402L14.0714 5.49109L14.9697 4.59272ZM13.0107 6.55175L6.66806 12.8944C6.56526 12.9972 6.49455 13.1277 6.46454 13.2699L5.96704 15.6283L8.32547 15.1308C8.46772 15.1008 8.59819 15.0301 8.70099 14.9273L15.0436 8.58468L13.0107 6.55175Z"
+                                                    fill="" />
+                                            </svg>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -404,7 +453,7 @@
             </div>
         </div>
         {{-- END MODAL CODE --}}
-
+        {{-- DELETE MODAL CODE --}}
         <div x-show="isModalOpena"
             class="fixed inset-0 flex items-center justify-center p-5 overflow-y-auto modal z-99999"
             style="display: none;">
@@ -451,6 +500,7 @@
                 </div>
             </div>
         </div>
+        {{-- END MODAL CODE --}}
     </div>
     <script>
         $(document).ready(function() {
@@ -492,7 +542,41 @@
                 });
             });
             $('.dltbtn').on('click', function() {
-                alert($(this).attr('id'))
+                let id = $(this).attr('id');
+                $('.dlt-confirm-btn').attr('id',id);
+            });
+            $('.dlt-confirm-btn').on('click',function(){
+                let id = $(this).attr('id');
+                $.ajax({
+                    url : "{{route('delete-parts')}}",
+                    type : "post",
+                    data : {"_token" : "{{csrf_token()}}","id":id},
+                    success : function(data){
+                        if(data.success === true){
+                            alert(data.message);
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1000);
+                        }
+                    }
+                })
+            });
+            $('.changeStatus').on('change', function() {
+                let id = $(this).attr('id');
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('change-parts-status') }}",
+                    dataType: 'json',
+                    data: {
+                        "_token": '{{ csrf_token() }}',
+                        "id": id
+                    },
+                    success: function(data) {
+                        if (data.success === true) {
+                            alert(data.new_status);
+                        }
+                    }
+                })
             });
         });
     </script>
