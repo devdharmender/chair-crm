@@ -96,15 +96,15 @@
                                     <a href="{{route('chair-ui')}}" class="menu-dropdown-item group menu-dropdown-item-inactive">
                                         Chair Parts
                                     </a>
-                                {{-- </li>
-                                <li>
-                                    <a href="faq.html" class="menu-dropdown-item group"
-                                        :class="page === 'faq' ? 'menu-dropdown-item-active' :
-                                            'menu-dropdown-item-inactive'">
-                                        FAQ
-                                    </a>
                                 </li>
                                 <li>
+                                    <a href="{{route('blog')}}" class="menu-dropdown-item group menu-dropdown-item-inactive"
+                                        {{-- :class="page === 'faq' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'" --}}
+                                            >
+                                        Blogs
+                                    </a>
+                                </li>
+                                {{-- <li>
                                     <a href="api-keys.html" class="menu-dropdown-item group"
                                         :class="page === 'api' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">

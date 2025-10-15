@@ -57,4 +57,8 @@ class Login extends Controller
         Session::flush();
         return redirect()->route('dashboard-log');
     }
+    public function logout1(){
+        Session::flush();
+        return redirect()->route('dashboard-log');
+    }
 }
