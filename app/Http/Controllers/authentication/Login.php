@@ -13,7 +13,13 @@ use Illuminate\Support\Facades\Session;
 class Login extends Controller
 {
     public function login(){
-        return view('admin.auth.login');
+        if(session()->has('token')){
+            return view('admin.dashboard');
+        }else{
+            return view('admin.auth.login');
+        }
+        die;
+        
     }
     public function authCheck(Request $request){
         $auth = $request->validate([
