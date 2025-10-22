@@ -36,7 +36,9 @@ Route::middleware(['sessionProtection'])->group(function(){
     // BLOGS ROUTE
     Route::get('blog',[BlogController::class , 'load_vlog'])->name('blog');
     Route::get('addblog',[BlogController::class , 'addBlog'])->name('addblog');
+    Route::get('edit-blog-page/{num}',[BlogController::class, 'edit_blog'])->name('edit-blog-page');
     Route::post('add-blog',[BlogController::class,'add_blog'])->name('add_vlog');
+    Route::post('update_blog',[BlogController::class,'update_blog'])->name('update_blog');
 
     // LOGOUT ROUTE 
     Route::get('logout',[Login::class, 'logout'])->name('logout');

@@ -169,6 +169,7 @@ class ChairParts extends Controller
                 }else{
                     $path = $partsdata->product_image;
                 }
+                
                 $partsdata->title = $request->input('title') ?? $partsdata->title;
                 $partsdata->catg = $request->input('catg') ?? $partsdata->catg;
                 $partsdata->price = $request->input('price') ?? $partsdata->price;
@@ -177,8 +178,10 @@ class ChairParts extends Controller
                 $partsdata->product_image = $path ?? $partsdata->product_image;
 
                 if($partsdata->save()){
-                    if(Storage::disk('public')->exists($oldimage)){
-                        Storage::disk('public')->delete($oldimage);
+                    if($request->hasFile('productimg')){
+                        if(Storage::disk('public')->exists($oldimage)){
+                            Storage::disk('public')->delete($oldimage);
+                        }
                     }
                     return redirect()->route('chair-ui')->with('success','Your data updated successfully');
                 }else{
