@@ -40,7 +40,7 @@ class Login extends Controller
                     if($users){
                         if(Hash::Check($password,$users->password)){
                             
-                            session(['token' => $users->remember_token,'id' => $users->id,'type' => $users->type]);
+                            session(['token' => $users->remember_token,'id' => $users->id,'type' => $users->type, 'name' => $users->name]);
                             return redirect()->route('system-dashboard');
                         }else{
                             return redirect()->route('dashboard-log')->with('message', 'Please Check Your Password');

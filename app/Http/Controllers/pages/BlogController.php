@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\pages\Category;
 use App\Models\pages\BlogModel;
 use Illuminate\Support\Facades\Storage;
+use session;
 
+// require_once app_path('Helper/firseHelper.php');
 class BlogController extends Controller
 {
     public function load_vlog(){
@@ -157,5 +159,81 @@ class BlogController extends Controller
         }
         
 
+    }
+    public function deleteBlog(Request $request){
+        $id = $request->input('id');
+        $data = BlogModel::find($id);
+        $image = $data->blog_img;
+
+        if($data->delete()){
+            if($image){
+                if(Storage::disk('public')->exists($image)){
+                    Storage::disk('public')->delete($image);
+                }
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Delete successfully! you deleted '.$data->title . '.',
+            ]);
+        }
+    }
+    public function status_chnage(Request $request){
+        $sta = '';
+        $id = $request->input('id');
+        $data = BlogModel::find($id);
+
+        $sta = ($data->blogstatus === 0) ? 1 : 0;
+        $data->blogstatus = $sta;
+        $data->save();
+        
+    }
+
+    // for rksk  only 
+    public function dummy(){
+        return view('dummy');
+    }
+    public function dummypg(Request $request){
+        $user_id = session('id') ?? '';
+        $user_name = session('name') ?? '';
+        $ip = $_SERVER['REMOTE_ADDR'?? ''];
+        $search_string = $request->input('searchString') ?? '';
+        $download_type = $request->input('pathAfter') ?? '';
+        $start_time = $start_time ?? '';
+        $start_time = $start_time ?? '';
+
+	
+// user_id===
+// name====
+// search_string ====
+// user_ip====
+// download_type ====
+// start_time
+// end_time
+// diffrence_in_ms
+// pdf_url
+// excel_url
+// date
+
+
+    }
+    // end rksk here
+
+
+    public function helper_data(){
+        $title = "this data send by helper for testing";
+        $blog_img = "this data send by helper for testing";
+        $metatitle = "this data send by helper for testing";
+        $metakeyword = "this data send by helper for testing";
+        $canonical = "this data send by helper for testing";
+        $metadesc = "this data send by helper for testing";
+        $topic = "this data send by helper for testing";
+        $description = "this data send by helper for testing";
+
+        $insvar = inserBlogji($title,$blog_img,$metatitle,$metakeyword,$canonical,$metadesc,$topic,$description);
+        if($insvar){
+            return "added data";
+        }else{
+            return "something went wrong";
+        }
     }
 }

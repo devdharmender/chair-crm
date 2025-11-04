@@ -209,17 +209,17 @@
                             </svg>
 
                             <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''">
-                                AI Assistant
+                                Customer Dashboard
                             </span>
 
-                            <span :class="sidebarToggle ? 'xl:hidden' : ''"
+                            {{-- <span :class="sidebarToggle ? 'xl:hidden' : ''"
                                 class="absolute right-10 flex items-center gap-1">
                                 <span class="menu-dropdown-badge"
                                     :class="page === 'textGenerator' ? 'menu-dropdown-badge-active' :
                                         'menu-dropdown-badge-inactive'">
                                     New
                                 </span>
-                            </span>
+                            </span> --}}
 
                             <svg class="menu-item-arrow"
                                 :class="[(selected === 'AI') ? 'menu-item-arrow-active' :
@@ -232,7 +232,7 @@
                             </svg>
                         </a>
 
-                        <!-- Dropdown Menu Start -->
+                        <!-- Dropdown Menu Start only for customer -->
                         <div class="translate transform overflow-hidden"
                             :class="(selected === 'AI') ? 'block' : 'hidden'">
                             <ul :class="sidebarToggle ? 'xl:hidden' : 'flex'"
@@ -241,21 +241,21 @@
                                     <a href="text-generator.html" class="menu-dropdown-item group"
                                         :class="page === 'textGenerator' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">
-                                        Text Generator
+                                        Services History
                                     </a>
                                 </li>
                                 <li>
                                     <a href="image-generator.html" class="menu-dropdown-item group"
                                         :class="page === 'imageGenerator' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">
-                                        Image Generator
+                                        Blog
                                     </a>
                                 </li>
                                 <li>
                                     <a href="code-generator.html" class="menu-dropdown-item group"
                                         :class="page === 'codeGenerator' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">
-                                        Code Generator
+                                        Profile
                                     </a>
                                 </li>
                                 <li>

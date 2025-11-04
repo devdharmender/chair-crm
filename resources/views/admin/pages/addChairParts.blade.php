@@ -189,10 +189,15 @@
                                 </td>
 
                                 <td class="px-6 py-3 whitespace-nowrap">
-                                    <div class="h-12 w-12">
+                                    {{-- <div class="h-12 w-12">
                                         <img :src="{{ asset('storage/' . $product->product_image) }}"
                                             class="h-12 w-12 rounded-md" alt="{{ $product->title }}"
                                             src="{{ asset('storage/' . $product->product_image) }}">
+                                    </div> --}}
+                                    <div class="flex items-center">
+                                        <a href="{{ asset('storage/' . $product->product_image) }}" target="_blank"><p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                                            View Image
+                                        </p></a>
                                     </div>
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap">
@@ -354,9 +359,6 @@
                 </div>
             </div>
         </div>
-
-
-
         {{-- MODAL CODE REMAINS THE SAME --}}
         <div x-show="isModalOpen" class="fixed inset-0 flex items-center justify-center p-5 overflow-y-auto modal z-99999"
             style="display: none;">

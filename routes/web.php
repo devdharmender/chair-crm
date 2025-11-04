@@ -39,8 +39,19 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::get('edit-blog-page/{num}',[BlogController::class, 'edit_blog'])->name('edit-blog-page');
     Route::post('add-blog',[BlogController::class,'add_blog'])->name('add_vlog');
     Route::post('update_blog',[BlogController::class,'update_blog'])->name('update_blog');
+    Route::post('delete_blog',[BlogController::class,'deleteBlog'])->name('delete_blog');
+    Route::post('blog_status-change',[BlogController::class,'status_chnage'])->name('statuschange');
 
-    // LOGOUT ROUTE 
+
+
+    Route::get('dummy',[BlogController::class,'dummy'])->name('dmg');
+    Route::post('dummypage',[BlogController::class,'dummypg'])->name('dmpg');
+
+
+    // helper testing ==========
+    Route::get('helper_data',[BlogController::class,'helper_data'])->name('helper_data');
+
+    // LOGOUT ROUTE ========
     Route::get('logout',[Login::class, 'logout'])->name('logout');
 
 });
