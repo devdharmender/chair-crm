@@ -1,6 +1,19 @@
 @extends('admin.common.layout')
 @section('title', 'Dharmender-CRM : Dashboard')
 @section('main')
+    <style>
+        /* Make all Highcharts text inherit Tailwind color + size */
+        .highcharts-title,
+        .highcharts-axis-title,
+        .highcharts-axis-labels text,
+        .highcharts-legend-item text,
+        .highcharts-tooltip text {
+            fill: currentColor !important;
+            /* Inherit color from Tailwind class */
+            font-size: inherit !important;
+            /* Inherit Tailwind text size */
+        }
+    </style>
     <div class="col-span-12">
         <!-- Metric Group Two -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-4">
@@ -110,648 +123,1062 @@
     </div>
     {{-- datatable --}}
     <div class="col-span-12">
-        <div>
-            <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
-                x-data="productTable()">
-                <div
-                    class="flex flex-col justify-between gap-5 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center dark:border-gray-800">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                            Products List
-                        </h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Track your store's progress to boost your sales.
-                        </p>
-                    </div>
-                    <div class="flex gap-3">
-                        <button
-                            class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">
-                            Export
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
-                                fill="none">
-                                <path
-                                    d="M16.667 13.3333V15.4166C16.667 16.1069 16.1074 16.6666 15.417 16.6666H4.58295C3.89259 16.6666 3.33295 16.1069 3.33295 15.4166V13.3333M10.0013 13.3333L10.0013 3.33325M6.14547 9.47942L9.99951 13.331L13.8538 9.47942"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                </path>
-                            </svg>
-                        </button>
-                        <a href="add-product.html"
-                            class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
-                                fill="none">
-                                <path d="M5 10.0002H15.0006M10.0002 5V15.0006" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            Add Product
-                        </a>
-                    </div>
+        <div class="mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6 grid grid-cols-12 gap-4 md:gap-6">
+            <div class="col-span-12 xl:col-span-12">
+                <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:p-3">
+                    <div id="firstchart" class="text-theme-sm text-gray-500 dark:text-gray-400"></div>
                 </div>
-                <div class="border-b border-gray-200 px-5 py-4 dark:border-gray-800">
-                    <div class="flex gap-3 sm:justify-between">
-                        <div class="relative flex-1 sm:flex-auto">
-                            <span class="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-                                <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
+            </div>
+
+            <div class="col-span-12 xl:col-span-7">
+                <div
+                    class="overflow-hidden rounded-2xl border border-gray-200 p-1 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:p-3">
+                    <div id="secoundchart" class="text-theme-sm text-gray-500 dark:text-gray-400"></div>
+                </div>
+            </div>
+
+            <div class="col-span-12 xl:col-span-5">
+                <div
+                    class="overflow-hidden rounded-2xl border border-gray-200 p-1 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:p-3">
+                    <div id="thirdchart" class="text-theme-sm text-gray-500 dark:text-gray-400"></div>
+                </div>
+            </div>
+
+            <div class="col-span-12 xl:col-span-5">
+                <div
+                    class="overflow-hidden rounded-2xl border border-gray-200 p-1 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:p-3">
+                    <div id="forthchart" class="text-theme-sm text-gray-500 dark:text-gray-400"></div>
+                </div>
+            </div>
+
+            <div class="col-span-12 xl:col-span-7">
+                <div
+                    class="overflow-hidden rounded-2xl border border-gray-200 p-1 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:p-3">
+                    <div id="fifthchart" class="text-theme-sm text-gray-500 dark:text-gray-400"></div>
+                </div>
+            </div>
+
+            <div class="col-span-12 xl:col-span-6">
+                <!-- ====== Upcoming Schedule Start -->
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] sm:p-6">
+                    <div class="mb-6 flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+                            Upcoming Schedule
+                        </h3>
+
+                        <div x-data="{ openDropDown: false }" class="relative">
+                            <button @click="openDropDown = !openDropDown"
+                                :class="openDropDown ? 'text-gray-700 dark:text-white' :
+                                    'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
+                                class="text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M3.04199 9.37363C3.04199 5.87693 5.87735 3.04199 9.37533 3.04199C12.8733 3.04199 15.7087 5.87693 15.7087 9.37363C15.7087 12.8703 12.8733 15.7053 9.37533 15.7053C5.87735 15.7053 3.04199 12.8703 3.04199 9.37363ZM9.37533 1.54199C5.04926 1.54199 1.54199 5.04817 1.54199 9.37363C1.54199 13.6991 5.04926 17.2053 9.37533 17.2053C11.2676 17.2053 13.0032 16.5344 14.3572 15.4176L17.1773 18.238C17.4702 18.5309 17.945 18.5309 18.2379 18.238C18.5308 17.9451 18.5309 17.4703 18.238 17.1773L15.4182 14.3573C16.5367 13.0033 17.2087 11.2669 17.2087 9.37363C17.2087 5.04817 13.7014 1.54199 9.37533 1.54199Z"
+                                        d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
                                         fill=""></path>
                                 </svg>
-                            </span>
-                            <input type="text" placeholder="Search..."
-                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pr-4 pl-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden sm:w-[300px] sm:min-w-[300px] dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
-                        </div>
-                        <div class="relative" x-data="{ showFilter: false }">
-                            <button
-                                class="shadow-theme-xs flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 sm:w-auto sm:min-w-[100px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                                @click="showFilter = !showFilter" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
-                                    fill="none">
-                                    <path
-                                        d="M14.6537 5.90414C14.6537 4.48433 13.5027 3.33331 12.0829 3.33331C10.6631 3.33331 9.51206 4.48433 9.51204 5.90415M14.6537 5.90414C14.6537 7.32398 13.5027 8.47498 12.0829 8.47498C10.663 8.47498 9.51204 7.32398 9.51204 5.90415M14.6537 5.90414L17.7087 5.90411M9.51204 5.90415L2.29199 5.90411M5.34694 14.0958C5.34694 12.676 6.49794 11.525 7.91777 11.525C9.33761 11.525 10.4886 12.676 10.4886 14.0958M5.34694 14.0958C5.34694 15.5156 6.49794 16.6666 7.91778 16.6666C9.33761 16.6666 10.4886 15.5156 10.4886 14.0958M5.34694 14.0958L2.29199 14.0958M10.4886 14.0958L17.7087 14.0958"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round"></path>
-                                </svg>
-                                Filter
                             </button>
-                            <div x-show="showFilter" @click.away="showFilter = false"
-                                class="absolute right-0 z-10 mt-2 w-56 rounded-lg border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                            <div x-show="openDropDown" @click.outside="openDropDown = false"
+                                class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
                                 style="display: none;">
-                                <div class="mb-5">
-                                    <label class="mb-2 block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                        Category
-                                    </label>
-                                    <input type="text"
-                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                        placeholder="Search category...">
-                                </div>
-                                <div class="mb-5">
-                                    <label class="mb-2 block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                        Company
-                                    </label>
-                                    <input type="text"
-                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                        placeholder="Search company...">
-                                </div>
                                 <button
-                                    class="bg-brand-500 hover:bg-brand-600 h-10 w-full rounded-lg px-3 py-2 text-sm font-medium text-white">
-                                    Apply
+                                    class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                    View More
+                                </button>
+                                <button
+                                    class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                    Delete
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Table -->
-                <div class="custom-scrollbar overflow-x-auto">
-                    <table class="w-full table-auto">
-                        <thead>
-                            <tr class="border-b border-gray-200 dark:divide-gray-800 dark:border-gray-800">
-                                <th class="w-14 px-5 py-4 text-left">
-                                    <label
-                                        class="cursor-pointer text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                                        <input type="checkbox" class="sr-only" @change="toggleAll()"
-                                            :checked="isAllSelected()">
-                                        <span
-                                            :class="isAllSelected() ? 'border-brand-500 bg-brand-500' :
-                                                'bg-transparent border-gray-300 dark:border-gray-700'"
-                                            class="flex h-4 w-4 items-center justify-center rounded-sm border-[1.25px] bg-transparent border-gray-300 dark:border-gray-700">
-                                            <span :class="isAllSelected() ? '' : 'opacity-0'" class="opacity-0">
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="1.6666"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
+
+                    <div class="custom-scrollbar max-w-full overflow-x-auto">
+                        <div class="min-w-[500px]">
+                            <div class="flex flex-col gap-2">
+                                <div x-data="{ checked: false }" @click="checked = !checked"
+                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
+                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
+                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
+                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
+                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                class="hidden">
+                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
+                                                    stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+                                                Wed, 11 jan
                                             </span>
-                                        </span>
-                                    </label>
-                                </th>
-                                <th class="cursor-pointer px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400"
-                                    @click="sortBy('name')">
-                                    <div class="flex items-center gap-3">
-                                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                                            Products
-                                        </p>
-                                        <span class="flex flex-col gap-0.5">
-                                            <svg :class="sort.key === 'name' & amp; & amp;
-                                            sort.asc ? 'text-gray-500 dark:text-gray-400' :
-                                                'text-gray-300 dark:text-gray-400/50'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="text-gray-500 dark:text-gray-400">
-                                                <path
-                                                    d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-
-                                            <svg :class="sort.key === 'name' & amp; & amp;
-                                            !sort.asc ? 'text-gray-500 dark:text-gray-400' :
-                                                'text-gray-300 dark:text-gray-400/50'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="text-gray-300 dark:text-gray-400/50">
-                                                <path
-                                                    d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </th>
-                                <th class="cursor-pointer px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400"
-                                    @click="sortBy('category')">
-                                    <div class="flex items-center gap-3">
-                                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                                            Category
-                                        </p>
-                                        <span class="flex flex-col gap-0.5">
-                                            <svg :class="sort.key === 'category' & amp; & amp;
-                                            sort.asc ? 'text-gray-500 dark:text-gray-400' :
-                                                'text-gray-300 dark:text-gray-400/50'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="text-gray-300 dark:text-gray-400/50">
-                                                <path
-                                                    d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-
-                                            <svg :class="sort.key === 'category' & amp; & amp;
-                                            !sort.asc ? 'text-gray-500 dark:text-gray-400' :
-                                                'text-gray-300 dark:text-gray-400/50'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="text-gray-300 dark:text-gray-400/50">
-                                                <path
-                                                    d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </th>
-                                <th class="cursor-pointer px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400"
-                                    @click="sortBy('brand')">
-                                    <div class="flex items-center gap-3">
-                                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                                            Brand
-                                        </p>
-                                        <span class="flex flex-col gap-0.5">
-                                            <svg :class="sort.key === 'brand' & amp; & amp;
-                                            sort.asc ? 'text-gray-500 dark:text-gray-400' :
-                                                'text-gray-300 dark:text-gray-400/50'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="text-gray-300 dark:text-gray-400/50">
-                                                <path
-                                                    d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-
-                                            <svg :class="sort.key === 'brand' & amp; & amp;
-                                            !sort.asc ? 'text-gray-500 dark:text-gray-400' :
-                                                'text-gray-300 dark:text-gray-400/50'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="text-gray-300 dark:text-gray-400/50">
-                                                <path
-                                                    d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </th>
-                                <th class="cursor-pointer px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400"
-                                    @click="sortBy('price')">
-                                    <div class="flex items-center gap-3">
-                                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                                            Price
-                                        </p>
-                                        <span class="flex flex-col gap-0.5">
-                                            <svg :class="sort.key === 'price' & amp; & amp;
-                                            sort.asc ? 'text-gray-500 dark:text-gray-400' : 'text-gray-300'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg" class="text-gray-300">
-                                                <path
-                                                    d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-
-                                            <svg :class="sort.key === 'price' & amp; & amp;
-                                            !sort.asc ? 'text-gray-500 dark:text-gray-400' : 'text-gray-300'"
-                                                width="8" height="5" viewBox="0 0 8 5" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg" class="text-gray-300">
-                                                <path
-                                                    d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </th>
-                                <th class="px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    Stock
-                                </th>
-                                <th class="px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    Created At
-                                </th>
-                                <th class="px-5 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    <div class="relative">
-                                        <span class="sr-only">Action</span>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-x divide-y divide-gray-200 dark:divide-gray-800">
-                            <tr class="transition hover:bg-gray-50 dark:hover:bg-gray-900">
-                                <td class="w-14 px-5 py-4 whitespace-nowrap">
-                                    <label
-                                        class="cursor-pointer text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                                        <input type="checkbox" class="sr-only" checked>
-                                        <span
-                                            class="flex h-4 w-4 items-center justify-center rounded-sm border-[1.25px] bg-brand-500 border-brand-500">
-                                            <span>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="1.6666"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
+                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                                09:20 AM
                                             </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                            Business Analytics Press
                                         </span>
-                                    </label>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-12 w-12">
-                                            <img src="https://via.placeholder.com/48" class="h-12 w-12 rounded-md"
-                                                alt="Product">
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Dummy Gaming
-                                            Laptop</span>
+                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
+                                            Exploring the Future of Data-Driven +6 more
+                                        </span>
                                     </div>
-                                </td>
+                                </div>
 
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Laptop</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">DummyBrand</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">$1,499</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <span
-                                        class="bg-success-50 dark:bg-success-500/15 text-success-700 dark:text-success-500 text-theme-xs rounded-full px-2 py-0.5 font-medium">
-                                        In Stock
-                                    </span>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">28 Sep, 2025</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="relative flex justify-center">
-                                        <button class="text-gray-500 dark:text-gray-400">
-                                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                                                    fill=""></path>
+                                <div x-data="{ checked: false }" @click="checked = !checked"
+                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
+                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
+                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
+                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
+                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                class="hidden">
+                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
+                                                    stroke-width="1.94437" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
                                             </svg>
-                                        </button>
-                                        <div
-                                            class="shadow-theme-lg dark:bg-gray-dark fixed w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800 hidden">
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                View More
-                                            </button>
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                Delete
-                                            </button>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="transition hover:bg-gray-50 dark:hover:bg-gray-900">
-                                <td class="w-14 px-5 py-4 whitespace-nowrap">
-                                    <label
-                                        class="cursor-pointer text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                                        <input type="checkbox" class="sr-only" checked>
-                                        <span
-                                            class="flex h-4 w-4 items-center justify-center rounded-sm border-[1.25px] bg-brand-500 border-brand-500">
-                                            <span>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="1.6666"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
+                                        <div>
+                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+                                                Fri, 15 feb
                                             </span>
-                                        </span>
-                                    </label>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-12 w-12">
-                                            <img src="https://via.placeholder.com/48" class="h-12 w-12 rounded-md"
-                                                alt="Product">
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Dummy Gaming
-                                            Laptop</span>
-                                    </div>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Laptop</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">DummyBrand</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">$1,499</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <span
-                                        class="bg-success-50 dark:bg-success-500/15 text-success-700 dark:text-success-500 text-theme-xs rounded-full px-2 py-0.5 font-medium">
-                                        In Stock
-                                    </span>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">28 Sep, 2025</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="relative flex justify-center">
-                                        <button class="text-gray-500 dark:text-gray-400">
-                                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                                                    fill=""></path>
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="shadow-theme-lg dark:bg-gray-dark fixed w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800 hidden">
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                View More
-                                            </button>
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="transition hover:bg-gray-50 dark:hover:bg-gray-900">
-                                <td class="w-14 px-5 py-4 whitespace-nowrap">
-                                    <label
-                                        class="cursor-pointer text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                                        <input type="checkbox" class="sr-only" checked>
-                                        <span
-                                            class="flex h-4 w-4 items-center justify-center rounded-sm border-[1.25px] bg-brand-500 border-brand-500">
-                                            <span>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="1.6666"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
+                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                                10:35 AM
                                             </span>
-                                        </span>
-                                    </label>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-12 w-12">
-                                            <img src="https://via.placeholder.com/48" class="h-12 w-12 rounded-md"
-                                                alt="Product">
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Dummy Gaming
-                                            Laptop</span>
-                                    </div>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Laptop</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">DummyBrand</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">$1,499</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <span
-                                        class="bg-success-50 dark:bg-success-500/15 text-success-700 dark:text-success-500 text-theme-xs rounded-full px-2 py-0.5 font-medium">
-                                        In Stock
-                                    </span>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">28 Sep, 2025</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="relative flex justify-center">
-                                        <button class="text-gray-500 dark:text-gray-400">
-                                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                                                    fill=""></path>
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="shadow-theme-lg dark:bg-gray-dark fixed w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800 hidden">
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                View More
-                                            </button>
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                Delete
-                                            </button>
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr class="transition hover:bg-gray-50 dark:hover:bg-gray-900">
-                                <td class="w-14 px-5 py-4 whitespace-nowrap">
-                                    <label
-                                        class="cursor-pointer text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                                        <input type="checkbox" class="sr-only" checked>
+                                    <div>
                                         <span
-                                            class="flex h-4 w-4 items-center justify-center rounded-sm border-[1.25px] bg-brand-500 border-brand-500">
-                                            <span>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="1.6666"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                            </span>
+                                            class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                            Business Sprint
                                         </span>
-                                    </label>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-12 w-12">
-                                            <img src="https://via.placeholder.com/48" class="h-12 w-12 rounded-md"
-                                                alt="Product">
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Dummy Gaming
-                                            Laptop</span>
+                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
+                                            Techniques from Business Sprint +2 more
+                                        </span>
                                     </div>
-                                </td>
+                                </div>
 
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Laptop</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">DummyBrand</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">$1,499</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <span
-                                        class="bg-success-50 dark:bg-success-500/15 text-success-700 dark:text-success-500 text-theme-xs rounded-full px-2 py-0.5 font-medium">
-                                        In Stock
-                                    </span>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <p class="text-sm text-gray-700 dark:text-gray-400">28 Sep, 2025</p>
-                                </td>
-
-                                <td class="px-5 py-4 whitespace-nowrap">
-                                    <div class="relative flex justify-center">
-                                        <button class="text-gray-500 dark:text-gray-400">
-                                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                                                    fill=""></path>
+                                <div x-data="{ checked: false }" @click="checked = !checked"
+                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
+                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
+                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
+                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
+                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                class="hidden">
+                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
+                                                    stroke-width="1.94437" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
                                             </svg>
-                                        </button>
-                                        <div
-                                            class="shadow-theme-lg dark:bg-gray-dark fixed w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800 hidden">
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                View More
-                                            </button>
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                Delete
-                                            </button>
+                                        </div>
+                                        <div>
+                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+                                                Thu, 18 mar
+                                            </span>
+                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                                1:15 AM
+                                            </span>
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div
-                    class="flex flex-col items-center justify-between border-t border-gray-200 px-5 py-4 sm:flex-row dark:border-gray-800">
-                    <div class="pb-3 sm:pb-0">
-                        <span class="block text-sm font-medium text-gray-500 dark:text-gray-400">
-                            Showing
-                            <span class="text-gray-800 dark:text-white/90" x-text="startItem()">1</span>
-                            to
-                            <span class="text-gray-800 dark:text-white/90" x-text="endItem()">7</span>
-                            of
-                            <span class="text-gray-800 dark:text-white/90" x-text="products.length">20</span>
-                        </span>
+                                    <div>
+                                        <span
+                                            class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                            Customer Review Meeting
+                                        </span>
+                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
+                                            Insights from the Customer Review Meeting +8 more
+                                        </span>
+                                    </div>
+                                </div>
+                                <div x-data="{ checked: false }" @click="checked = !checked"
+                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
+                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
+                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
+                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
+                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                class="hidden">
+                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
+                                                    stroke-width="1.94437" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+                                                Thu, 18 mar
+                                            </span>
+                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                                1:15 AM
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span
+                                            class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                                            Customer Review Meeting
+                                        </span>
+                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
+                                            Insights from the Customer Review Meeting +8 more
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div
-                        class="flex w-full items-center justify-between gap-2 rounded-lg bg-gray-50 p-4 sm:w-auto sm:justify-normal sm:rounded-none sm:bg-transparent sm:p-0 dark:bg-gray-900 dark:sm:bg-transparent">
-                        <button @click="prevPage" :disabled="page === 1"
-                            class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-50 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 sm:p-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                            disabled="disabled">
-                            <span>
-                                <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M2.58203 9.99868C2.58174 10.1909 2.6549 10.3833 2.80152 10.53L7.79818 15.5301C8.09097 15.8231 8.56584 15.8233 8.85883 15.5305C9.15183 15.2377 9.152 14.7629 8.85921 14.4699L5.13911 10.7472L16.6665 10.7472C17.0807 10.7472 17.4165 10.4114 17.4165 9.99715C17.4165 9.58294 17.0807 9.24715 16.6665 9.24715L5.14456 9.24715L8.85919 5.53016C9.15199 5.23717 9.15184 4.7623 8.85885 4.4695C8.56587 4.1767 8.09099 4.17685 7.79819 4.46984L2.84069 9.43049C2.68224 9.568 2.58203 9.77087 2.58203 9.99715C2.58203 9.99766 2.58203 9.99817 2.58203 9.99868Z">
-                                    </path>
-                                </svg>
-                            </span>
+                </div>
+                <!-- ====== Upcoming Schedule End -->
+            </div>
+            <div class="col-span-12 xl:col-span-6 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                <div class="mb-6 flex justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+                            Activities
+                        </h3>
+                    </div>
+                    <div x-data="{ openDropDown: false }" class="relative h-fit">
+                        <button @click="openDropDown = !openDropDown"
+                            :class="openDropDown ? 'text-gray-700 dark:text-white' :
+                                'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
+                            class="text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+                                    fill=""></path>
+                            </svg>
                         </button>
+                        <div x-show="openDropDown" @click.outside="openDropDown = false"
+                            class="shadow-theme-lg dark:bg-gray-dark absolute top-full right-0 z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800"
+                            style="display: none;">
+                            <button
+                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                View More
+                            </button>
+                            <button
+                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <!-- Timeline line -->
+                    <div class="absolute top-6 bottom-10 left-5 w-px bg-gray-200 dark:bg-gray-800"></div>
 
-                        <span class="block text-sm font-medium text-gray-700 sm:hidden dark:text-gray-400">
-                            Page <span x-text="page">1</span> of
-                            <span x-text="totalPages()">3</span>
-                        </span>
-
-                        <ul class="hidden items-center gap-0.5 sm:flex">
-                            <template x-for="n in totalPages()" :key="n">
-                                <li>
-                                    <a href="#" @click.prevent="goToPage(n)"
-                                        :class="page === n ? 'bg-brand-500 text-white' :
-                                            'hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white'"
-                                        class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium">
-                                        <span x-text="n"></span>
-                                    </a>
-                                </li>
-                            </template>
-                            <li>
-                                <a href="#" @click.prevent="goToPage(n)"
-                                    :class="page === n ? 'bg-brand-500 text-white' :
-                                        'hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white'"
-                                    class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium bg-brand-500 text-white">
-                                    <span x-text="n">1</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" @click.prevent="goToPage(n)"
-                                    :class="page === n ? 'bg-brand-500 text-white' :
-                                        'hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white'"
-                                    class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white">
-                                    <span x-text="n">2</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" @click.prevent="goToPage(n)"
-                                    :class="page === n ? 'bg-brand-500 text-white' :
-                                        'hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white'"
-                                    class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium hover:bg-brand-500 text-gray-700 dark:text-gray-400 hover:text-white dark:hover:text-white">
-                                    <span x-text="n">3</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <button @click="nextPage" :disabled="page === totalPages()"
-                            class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-50 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 sm:p-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                            <span>
-                                <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M17.4165 9.9986C17.4168 10.1909 17.3437 10.3832 17.197 10.53L12.2004 15.5301C11.9076 15.8231 11.4327 15.8233 11.1397 15.5305C10.8467 15.2377 10.8465 14.7629 11.1393 14.4699L14.8594 10.7472L3.33203 10.7472C2.91782 10.7472 2.58203 10.4114 2.58203 9.99715C2.58203 9.58294 2.91782 9.24715 3.33203 9.24715L14.854 9.24715L11.1393 5.53016C10.8465 5.23717 10.8467 4.7623 11.1397 4.4695C11.4327 4.1767 11.9075 4.17685 12.2003 4.46984L17.1578 9.43049C17.3163 9.568 17.4165 9.77087 17.4165 9.99715C17.4165 9.99763 17.4165 9.99812 17.4165 9.9986Z">
-                                    </path>
+                    <!-- Francisco Grbbs -->
+                    <div class="relative mb-6 flex">
+                        <div class="z-10 flex-shrink-0">
+                            <img src="src/images/user/user-01.jpg" alt="Francisco Grbbs"
+                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
+                        </div>
+                        <div class="ml-4">
+                            <div class="mb-1 flex items-center gap-1">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 5.0625H14.0625L12.5827 8.35084C12.4506 8.64443 12.4506 8.98057 12.5827 9.27416L14.0625 12.5625H10.125C9.50368 12.5625 9 12.0588 9 11.4375V10.875M3.9375 10.875H9M3.9375 3.375H7.875C8.49632 3.375 9 3.87868 9 4.5V10.875M3.9375 15.9375V2.0625"
+                                        stroke="#12B76A" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
                                 </svg>
-                            </span>
-                        </button>
+                                <p class="text-theme-xs text-success-500 font-medium">New invoice</p>
+                            </div>
+                            <div class="flex items-baseline">
+                                <h3 class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
+                                    Francisco Grbbs
+                                </h3>
+                                <span class="text-theme-sm ml-2 font-normal text-gray-500 dark:text-gray-400">created
+                                    invoice</span>
+                            </div>
+                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
+                                PQ-4491C
+                            </p>
+                            <p class="text-theme-xs mt-1 text-gray-400">Just Now</p>
+                        </div>
+                    </div>
+
+                    <!-- Courtney Henry -->
+                    <div class="relative mb-6 flex">
+                        <div class="z-10 flex-shrink-0">
+                            <img src="src/images/user/user-03.jpg" alt="Courtney Henry"
+                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-baseline">
+                                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">
+                                    Courtney Henry
+                                </h3>
+                                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">created invoice</span>
+                            </div>
+                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
+                                HK-234G
+                            </p>
+                            <p class="text-theme-xs mt-1 text-gray-400">15 minutes ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Bessie Cooper -->
+                    <div class="relative mb-6 flex">
+                        <div class="z-10 flex-shrink-0">
+                            <img src="src/images/user/user-04.jpg" alt="Bessie Cooper"
+                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-baseline">
+                                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">
+                                    Bessie Cooper
+                                </h3>
+                                <span class="text-theme-sm ml-2 text-gray-500 dark:text-gray-400">created invoice</span>
+                            </div>
+                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
+                                LH-2891C
+                            </p>
+                            <p class="text-theme-xs mt-1 text-gray-400">5 months ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Theresa Web -->
+                    <div class="relative flex">
+                        <div class="z-10 flex-shrink-0">
+                            <img src="src/images/user/user-05.jpg" alt="Theresa Web"
+                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-baseline">
+                                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">
+                                    Theresa Web
+                                </h3>
+                                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">created invoice</span>
+                            </div>
+                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
+                                CK-125NH
+                            </p>
+                            <p class="text-theme-xs mt-1 text-gray-400">2 weeks ago</p>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-span-12">
+                <!-- Table Four -->
+                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]">
+  <div class="flex flex-col gap-5 px-6 mb-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+        Recent Orders
+      </h3>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <form>
+        <div class="relative">
+          <span class="absolute -translate-y-1/2 pointer-events-none top-1/2 left-4">
+            <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.04199 9.37381C3.04199 5.87712 5.87735 3.04218 9.37533 3.04218C12.8733 3.04218 15.7087 5.87712 15.7087 9.37381C15.7087 12.8705 12.8733 15.7055 9.37533 15.7055C5.87735 15.7055 3.04199 12.8705 3.04199 9.37381ZM9.37533 1.54218C5.04926 1.54218 1.54199 5.04835 1.54199 9.37381C1.54199 13.6993 5.04926 17.2055 9.37533 17.2055C11.2676 17.2055 13.0032 16.5346 14.3572 15.4178L17.1773 18.2381C17.4702 18.531 17.945 18.5311 18.2379 18.2382C18.5308 17.9453 18.5309 17.4704 18.238 17.1775L15.4182 14.3575C16.5367 13.0035 17.2087 11.2671 17.2087 9.37381C17.2087 5.04835 13.7014 1.54218 9.37533 1.54218Z" fill=""></path>
+            </svg>
+          </span>
+          <input type="text" placeholder="Search..." class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pr-4 pl-[42px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[300px] dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+        </div>
+      </form>
+      <div>
+        <button class="text-theme-sm shadow-theme-xs inline-flex h-10 items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+          <svg class="stroke-current fill-white dark:fill-gray-800" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.29004 5.90393H17.7067" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M17.7075 14.0961H2.29085" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12.0826 3.33331C13.5024 3.33331 14.6534 4.48431 14.6534 5.90414C14.6534 7.32398 13.5024 8.47498 12.0826 8.47498C10.6627 8.47498 9.51172 7.32398 9.51172 5.90415C9.51172 4.48432 10.6627 3.33331 12.0826 3.33331Z" fill="" stroke="" stroke-width="1.5"></path>
+            <path d="M7.91745 11.525C6.49762 11.525 5.34662 12.676 5.34662 14.0959C5.34661 15.5157 6.49762 16.6667 7.91745 16.6667C9.33728 16.6667 10.4883 15.5157 10.4883 14.0959C10.4883 12.676 9.33728 11.525 7.91745 11.525Z" fill="" stroke="" stroke-width="1.5"></path>
+          </svg>
+
+          Filter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-full overflow-x-auto custom-scrollbar">
+    <table class="min-w-full">
+      <!-- table header start -->
+      <thead class="border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+        <tr>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div x-data="{checked: false}" class="flex items-center gap-3">
+                <div @click="checked = !checked" class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700" :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' : 'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700' ">
+                  <svg :class="checked ? 'block' : 'hidden'" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden">
+                    <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white" stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                    Deal ID
+                  </span>
+                </div>
+              </div>
+            </div>
+          </th>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                Customer
+              </p>
+            </div>
+          </th>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                Product/Service
+              </p>
+            </div>
+          </th>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                Deal Value
+              </p>
+            </div>
+          </th>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                Close Date
+              </p>
+            </div>
+          </th>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                Status
+              </p>
+            </div>
+          </th>
+          <th class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center justify-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                Action
+              </p>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <!-- table header end -->
+
+      <!-- table body start -->
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div x-data="{checked: false}" class="flex items-center gap-3">
+                <div @click="checked = !checked" class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700" :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' : 'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700' ">
+                  <svg :class="checked ? 'block' : 'hidden'" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden">
+                    <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white" stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
+                    DE124321
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-100">
+                  <span class="text-xs font-semibold text-brand-500"> JD </span>
+                </div>
+                <div>
+                  <span class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
+                    John Doe
+                  </span>
+                  <span class="text-gray-500 text-theme-sm dark:text-gray-400">
+                    johndeo@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                Software License
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                $18,50.34
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                2024-06-15
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
+                Complete
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center justify-center">
+              <svg class="cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.54142 3.7915C6.54142 2.54886 7.54878 1.5415 8.79142 1.5415H11.2081C12.4507 1.5415 13.4581 2.54886 13.4581 3.7915V4.0415H15.6252H16.666C17.0802 4.0415 17.416 4.37729 17.416 4.7915C17.416 5.20572 17.0802 5.5415 16.666 5.5415H16.3752V8.24638V13.2464V16.2082C16.3752 17.4508 15.3678 18.4582 14.1252 18.4582H5.87516C4.63252 18.4582 3.62516 17.4508 3.62516 16.2082V13.2464V8.24638V5.5415H3.3335C2.91928 5.5415 2.5835 5.20572 2.5835 4.7915C2.5835 4.37729 2.91928 4.0415 3.3335 4.0415H4.37516H6.54142V3.7915ZM14.8752 13.2464V8.24638V5.5415H13.4581H12.7081H7.29142H6.54142H5.12516V8.24638V13.2464V16.2082C5.12516 16.6224 5.46095 16.9582 5.87516 16.9582H14.1252C14.5394 16.9582 14.8752 16.6224 14.8752 16.2082V13.2464ZM8.04142 4.0415H11.9581V3.7915C11.9581 3.37729 11.6223 3.0415 11.2081 3.0415H8.79142C8.37721 3.0415 8.04142 3.37729 8.04142 3.7915V4.0415ZM8.3335 7.99984C8.74771 7.99984 9.0835 8.33562 9.0835 8.74984V13.7498C9.0835 14.1641 8.74771 14.4998 8.3335 14.4998C7.91928 14.4998 7.5835 14.1641 7.5835 13.7498V8.74984C7.5835 8.33562 7.91928 7.99984 8.3335 7.99984ZM12.4168 8.74984C12.4168 8.33562 12.081 7.99984 11.6668 7.99984C11.2526 7.99984 10.9168 8.33562 10.9168 8.74984V13.7498C10.9168 14.1641 11.2526 14.4998 11.6668 14.4998C12.081 14.4998 12.4168 14.1641 12.4168 13.7498V8.74984Z" fill=""></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div x-data="{checked: false}" class="flex items-center gap-3">
+                <div @click="checked = !checked" class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700" :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' : 'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700' ">
+                  <svg :class="checked ? 'block' : 'hidden'" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden">
+                    <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white" stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
+                    DE124321
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fdf2fa]">
+                  <span class="text-xs font-semibold text-[#dd2590]"> KF </span>
+                </div>
+
+                <div>
+                  <span class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
+                    Kierra Franci
+                  </span>
+                  <span class="text-gray-500 text-theme-sm dark:text-gray-400">
+                    kierra@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                Software License
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                $18,50.34
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                2024-06-15
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
+                Complete
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center justify-center">
+              <svg class="cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.54142 3.7915C6.54142 2.54886 7.54878 1.5415 8.79142 1.5415H11.2081C12.4507 1.5415 13.4581 2.54886 13.4581 3.7915V4.0415H15.6252H16.666C17.0802 4.0415 17.416 4.37729 17.416 4.7915C17.416 5.20572 17.0802 5.5415 16.666 5.5415H16.3752V8.24638V13.2464V16.2082C16.3752 17.4508 15.3678 18.4582 14.1252 18.4582H5.87516C4.63252 18.4582 3.62516 17.4508 3.62516 16.2082V13.2464V8.24638V5.5415H3.3335C2.91928 5.5415 2.5835 5.20572 2.5835 4.7915C2.5835 4.37729 2.91928 4.0415 3.3335 4.0415H4.37516H6.54142V3.7915ZM14.8752 13.2464V8.24638V5.5415H13.4581H12.7081H7.29142H6.54142H5.12516V8.24638V13.2464V16.2082C5.12516 16.6224 5.46095 16.9582 5.87516 16.9582H14.1252C14.5394 16.9582 14.8752 16.6224 14.8752 16.2082V13.2464ZM8.04142 4.0415H11.9581V3.7915C11.9581 3.37729 11.6223 3.0415 11.2081 3.0415H8.79142C8.37721 3.0415 8.04142 3.37729 8.04142 3.7915V4.0415ZM8.3335 7.99984C8.74771 7.99984 9.0835 8.33562 9.0835 8.74984V13.7498C9.0835 14.1641 8.74771 14.4998 8.3335 14.4998C7.91928 14.4998 7.5835 14.1641 7.5835 13.7498V8.74984C7.5835 8.33562 7.91928 7.99984 8.3335 7.99984ZM12.4168 8.74984C12.4168 8.33562 12.081 7.99984 11.6668 7.99984C11.2526 7.99984 10.9168 8.33562 10.9168 8.74984V13.7498C10.9168 14.1641 11.2526 14.4998 11.6668 14.4998C12.081 14.4998 12.4168 14.1641 12.4168 13.7498V8.74984Z" fill=""></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div x-data="{checked: false}" class="flex items-center gap-3">
+                <div @click="checked = !checked" class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700" :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' : 'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700' ">
+                  <svg :class="checked ? 'block' : 'hidden'" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden">
+                    <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white" stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
+                    DE124321
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0f9ff]">
+                  <span class="text-xs font-semibold text-[#0086c9]"> EW </span>
+                </div>
+
+                <div>
+                  <span class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
+                    Emerson Workman
+                  </span>
+                  <span class="text-gray-500 text-theme-sm dark:text-gray-400">
+                    emerson@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                Software License
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                $18,50.34
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                2024-06-15
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="bg-warning-50 text-theme-xs text-warning-600 dark:bg-warning-500/15 dark:text-warning-400 rounded-full px-2 py-0.5 font-medium">
+                Pending
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center justify-center">
+              <svg class="cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.54142 3.7915C6.54142 2.54886 7.54878 1.5415 8.79142 1.5415H11.2081C12.4507 1.5415 13.4581 2.54886 13.4581 3.7915V4.0415H15.6252H16.666C17.0802 4.0415 17.416 4.37729 17.416 4.7915C17.416 5.20572 17.0802 5.5415 16.666 5.5415H16.3752V8.24638V13.2464V16.2082C16.3752 17.4508 15.3678 18.4582 14.1252 18.4582H5.87516C4.63252 18.4582 3.62516 17.4508 3.62516 16.2082V13.2464V8.24638V5.5415H3.3335C2.91928 5.5415 2.5835 5.20572 2.5835 4.7915C2.5835 4.37729 2.91928 4.0415 3.3335 4.0415H4.37516H6.54142V3.7915ZM14.8752 13.2464V8.24638V5.5415H13.4581H12.7081H7.29142H6.54142H5.12516V8.24638V13.2464V16.2082C5.12516 16.6224 5.46095 16.9582 5.87516 16.9582H14.1252C14.5394 16.9582 14.8752 16.6224 14.8752 16.2082V13.2464ZM8.04142 4.0415H11.9581V3.7915C11.9581 3.37729 11.6223 3.0415 11.2081 3.0415H8.79142C8.37721 3.0415 8.04142 3.37729 8.04142 3.7915V4.0415ZM8.3335 7.99984C8.74771 7.99984 9.0835 8.33562 9.0835 8.74984V13.7498C9.0835 14.1641 8.74771 14.4998 8.3335 14.4998C7.91928 14.4998 7.5835 14.1641 7.5835 13.7498V8.74984C7.5835 8.33562 7.91928 7.99984 8.3335 7.99984ZM12.4168 8.74984C12.4168 8.33562 12.081 7.99984 11.6668 7.99984C11.2526 7.99984 10.9168 8.33562 10.9168 8.74984V13.7498C10.9168 14.1641 11.2526 14.4998 11.6668 14.4998C12.081 14.4998 12.4168 14.1641 12.4168 13.7498V8.74984Z" fill=""></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div x-data="{checked: false}" class="flex items-center gap-3">
+                <div @click="checked = !checked" class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700" :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' : 'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700' ">
+                  <svg :class="checked ? 'block' : 'hidden'" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden">
+                    <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white" stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
+                    DE124321
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff6ed]">
+                  <span class="text-xs font-semibold text-[#ec4a0a]"> CP </span>
+                </div>
+
+                <div>
+                  <span class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
+                    Chance Philips
+                  </span>
+                  <span class="text-gray-500 text-theme-sm dark:text-gray-400">
+                    chance@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                Software License
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                $18,50.34
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                2024-06-15
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
+                Complete
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center justify-center">
+              <svg class="cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.54142 3.7915C6.54142 2.54886 7.54878 1.5415 8.79142 1.5415H11.2081C12.4507 1.5415 13.4581 2.54886 13.4581 3.7915V4.0415H15.6252H16.666C17.0802 4.0415 17.416 4.37729 17.416 4.7915C17.416 5.20572 17.0802 5.5415 16.666 5.5415H16.3752V8.24638V13.2464V16.2082C16.3752 17.4508 15.3678 18.4582 14.1252 18.4582H5.87516C4.63252 18.4582 3.62516 17.4508 3.62516 16.2082V13.2464V8.24638V5.5415H3.3335C2.91928 5.5415 2.5835 5.20572 2.5835 4.7915C2.5835 4.37729 2.91928 4.0415 3.3335 4.0415H4.37516H6.54142V3.7915ZM14.8752 13.2464V8.24638V5.5415H13.4581H12.7081H7.29142H6.54142H5.12516V8.24638V13.2464V16.2082C5.12516 16.6224 5.46095 16.9582 5.87516 16.9582H14.1252C14.5394 16.9582 14.8752 16.6224 14.8752 16.2082V13.2464ZM8.04142 4.0415H11.9581V3.7915C11.9581 3.37729 11.6223 3.0415 11.2081 3.0415H8.79142C8.37721 3.0415 8.04142 3.37729 8.04142 3.7915V4.0415ZM8.3335 7.99984C8.74771 7.99984 9.0835 8.33562 9.0835 8.74984V13.7498C9.0835 14.1641 8.74771 14.4998 8.3335 14.4998C7.91928 14.4998 7.5835 14.1641 7.5835 13.7498V8.74984C7.5835 8.33562 7.91928 7.99984 8.3335 7.99984ZM12.4168 8.74984C12.4168 8.33562 12.081 7.99984 11.6668 7.99984C11.2526 7.99984 10.9168 8.33562 10.9168 8.74984V13.7498C10.9168 14.1641 11.2526 14.4998 11.6668 14.4998C12.081 14.4998 12.4168 14.1641 12.4168 13.7498V8.74984Z" fill=""></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div x-data="{checked: false}" class="flex items-center gap-3">
+                <div @click="checked = !checked" class="flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700" :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' : 'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700' ">
+                  <svg :class="checked ? 'block' : 'hidden'" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden">
+                    <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white" stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
+                    DE124321
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-success-50">
+                  <span class="text-xs font-semibold text-success-600">
+                    TG
+                  </span>
+                </div>
+
+                <div>
+                  <span class="text-theme-sm mb-0.5 block font-medium text-gray-700 dark:text-gray-400">
+                    Terry Geidt
+                  </span>
+                  <span class="text-gray-500 text-theme-sm dark:text-gray-400">
+                    terry@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                Software License
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                $18,50.34
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                2024-06-15
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
+                Complete
+              </p>
+            </div>
+          </td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <div class="flex items-center justify-center">
+              <svg class="cursor-pointer hover:fill-error-500 dark:hover:fill-error-500 fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.54142 3.7915C6.54142 2.54886 7.54878 1.5415 8.79142 1.5415H11.2081C12.4507 1.5415 13.4581 2.54886 13.4581 3.7915V4.0415H15.6252H16.666C17.0802 4.0415 17.416 4.37729 17.416 4.7915C17.416 5.20572 17.0802 5.5415 16.666 5.5415H16.3752V8.24638V13.2464V16.2082C16.3752 17.4508 15.3678 18.4582 14.1252 18.4582H5.87516C4.63252 18.4582 3.62516 17.4508 3.62516 16.2082V13.2464V8.24638V5.5415H3.3335C2.91928 5.5415 2.5835 5.20572 2.5835 4.7915C2.5835 4.37729 2.91928 4.0415 3.3335 4.0415H4.37516H6.54142V3.7915ZM14.8752 13.2464V8.24638V5.5415H13.4581H12.7081H7.29142H6.54142H5.12516V8.24638V13.2464V16.2082C5.12516 16.6224 5.46095 16.9582 5.87516 16.9582H14.1252C14.5394 16.9582 14.8752 16.6224 14.8752 16.2082V13.2464ZM8.04142 4.0415H11.9581V3.7915C11.9581 3.37729 11.6223 3.0415 11.2081 3.0415H8.79142C8.37721 3.0415 8.04142 3.37729 8.04142 3.7915V4.0415ZM8.3335 7.99984C8.74771 7.99984 9.0835 8.33562 9.0835 8.74984V13.7498C9.0835 14.1641 8.74771 14.4998 8.3335 14.4998C7.91928 14.4998 7.5835 14.1641 7.5835 13.7498V8.74984C7.5835 8.33562 7.91928 7.99984 8.3335 7.99984ZM12.4168 8.74984C12.4168 8.33562 12.081 7.99984 11.6668 7.99984C11.2526 7.99984 10.9168 8.33562 10.9168 8.74984V13.7498C10.9168 14.1641 11.2526 14.4998 11.6668 14.4998C12.081 14.4998 12.4168 14.1641 12.4168 13.7498V8.74984Z" fill=""></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <!-- table body end -->
+    </table>
+  </div>
+</div>
+<!-- Table Four -->
+              </div>
         </div>
     </div>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
     <script>
-        function productTable(){}
+        Highcharts.chart('firstchart', {
+            chart: {
+                type: 'column',
+                backgroundColor: 'transparent'
+            },
+            title: {
+                text: 'Total visiter'
+            },
+            xAxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Arp', 'May', 'Jun'],
+                crosshair: true,
+                accessibility: {
+                    description: 'Countries'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'this is yaxis title'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' (1000 MT)'
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                    name: 'Corn',
+                    data: [387749, 280000, 129000, 64300, 54000, 34300]
+                },
+                {
+                    name: 'Wheat',
+                    data: [45321, 140000, 10000, 140500, 19500, 113500]
+                }
+            ],
+            credits: {
+                enabled: false
+            }
+        });
+        // secound chart
+        Highcharts.chart('secoundchart', {
+            chart: {
+                type: 'pie',
+                backgroundColor: 'transparent',
+                options3d: {
+                    enabled: true,
+                    alpha: 45
+                }
+            },
+            title: {
+                text: 'Secound Chart'
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: 100,
+                    depth: 45
+                }
+            },
+            series: [{
+                name: 'Medals',
+                data: [
+                    ['Norway', 16],
+                    ['Germany', 12],
+                    ['USA', 8],
+                    ['Sweden', 8],
+                    ['Netherlands', 8],
+                    ['ROC', 6],
+                    ['Austria', 7],
+                    ['Canada', 4],
+                    ['Japan', 3]
+
+                ]
+            }],
+            credits: {
+                enabled: false
+            }
+        });
+        // third chart
+        Highcharts.chart('thirdchart', {
+            chart: {
+                type: 'spline',
+                backgroundColor: 'transparent',
+
+                inverted: true
+            },
+            title: {
+                text: 'Atmosphere Temperature by Altitude'
+            },
+            xAxis: {
+                reversed: false,
+
+                labels: {
+                    format: '{value} km'
+                },
+                accessibility: {
+                    rangeDescription: 'Range: 0 to 80 km.'
+                },
+                maxPadding: 0.05,
+                showLastLabel: true
+            },
+            yAxis: {
+                title: {
+                    text: 'Temperature'
+                },
+                labels: {
+                    format: '{value}°'
+                },
+                accessibility: {
+                    rangeDescription: 'Range: -90°C to 20°C.'
+                },
+                lineWidth: 2
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b><br/>',
+                pointFormat: '{point.x} km: {point.y}°C'
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enable: false
+                    }
+                }
+            },
+            series: [{
+                name: 'Temperature',
+                data: [
+                    [0, 15],
+                    [10, -50],
+                    [20, -56.5],
+                    [30, -46.5],
+                    [40, -22.1],
+                    [50, -2.5],
+                    [60, -27.7],
+                    [70, -55.7],
+                    [80, -76.5]
+                ]
+
+            }],
+            credits: {
+                enabled: false
+            }
+        });
+        // forth chart
+        Highcharts.chart('forthchart', {
+            chart: {
+                type: 'pie',
+                backgroundColor: 'transparent'
+            },
+            title: {
+                text: 'Departmental Strength of a Company'
+
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    borderWidth: 2,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br>{point.percentage}%',
+                        distance: 20
+                    }
+                }
+            },
+            series: [{
+                enableMouseTracking: false,
+                animation: {
+                    duration: 2000
+                },
+                colorByPoint: true,
+                data: [{
+                    name: 'Customer Support',
+                    y: 21.3
+                }, {
+                    name: 'Development',
+                    y: 18.7
+                }, {
+                    name: 'Sales',
+                    y: 20.2
+                }, {
+                    name: 'Marketing',
+                    y: 14.2
+                }, {
+                    name: 'Other',
+                    y: 25.6
+                }]
+            }],
+            credits: {
+                enabled: false
+            }
+        });
+        // fifth chart
+        const chart = Highcharts.chart('fifthchart', {
+            chart: {
+                backgroundColor: 'transparent'
+            },
+            title: {
+                text: 'Unemployment',
+            },
+            colors: [
+                '#4caefe',
+                '#3fbdf3',
+                '#35c3e8',
+                '#2bc9dc',
+                '#20cfe1',
+                '#16d4e6',
+                '#0dd9db',
+                '#03dfd0',
+                '#00e4c5',
+                '#00e9ba',
+                '#00eeaf',
+                '#23e274'
+            ],
+            xAxis: {
+                categories: [
+                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+                    'Oct', 'Nov', 'Dec'
+                ]
+            },
+            series: [{
+                type: 'column',
+                name: 'Unemployed',
+                borderRadius: 5,
+                colorByPoint: true,
+                data: [
+                    2396, 2434, 2491, 2602, 2536, 2618, 2928, 2899,
+                    2780, 2853, 2923, 2999
+                ],
+                showInLegend: false
+            }],
+            credits: {
+                enabled: false
+            }
+        });
     </script>
 @endsection
