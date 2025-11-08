@@ -395,7 +395,7 @@
                                             @change="isOptionSelected = true">
                                             <option value=""
                                                 class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
-                                                --Select Country--
+                                                --Select Category--
                                             </option>
                                             @foreach ($catgdata as $item)
                                                 <option value="{{ $item->category_name }}"
@@ -504,7 +504,10 @@
         </div>
         {{-- END MODAL CODE --}}
     </div>
-    <script>
+    
+@endsection
+@section('script')
+<script>
         $(document).ready(function() {
             $("#productForm").on('submit', function(e) {
                 e.preventDefault();
@@ -555,10 +558,14 @@
                     data : {"_token" : "{{csrf_token()}}","id":id},
                     success : function(data){
                         if(data.success === true){
-                            alert(data.message);
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1000);
+                            Swal.fire({
+                                title: "Good job!",
+                                text: data.message,
+                                icon: "success"
+                            });
+                            // setTimeout(() => {
+                            //     location.reload();
+                            // }, 1000);
                         }
                     }
                 })
@@ -575,7 +582,11 @@
                     },
                     success: function(data) {
                         if (data.success === true) {
-                            alert(data.new_status);
+                            Swal.fire({
+                                title: "Good job!",
+                                text: data.new_status,
+                                icon: "success"
+                            });
                         }
                     }
                 })

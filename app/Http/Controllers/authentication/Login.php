@@ -27,37 +27,56 @@ class Login extends Controller
             'password' => 'required'
         ],[
             'required'=>'This feild is required',
-            'email'=>'Invalid email, please fill correct email',
+            'email'=>'Invalid email, please fill valid email',
         ]);
 
             try {
-                if ($auth) {
-                    $emailid = $request->input('email');
-                    $password = $request->input('password');
+        $emailid = $request->input('email');
+        $password = $request->input('password');
+        $user = UserCheck::where('email', $emailid)->first();
 
-                    $users = UserCheck::where('email',$emailid)->first();
-                    
-                    if($users){
-                        if(Hash::Check($password,$users->password)){
-                            
-                            session(['token' => $users->remember_token,'id' => $users->id,'type' => $users->type, 'name' => $users->name]);
-                            return redirect()->route('system-dashboard');
-                        }else{
-                            return redirect()->route('dashboard-log')->with('message', 'Please Check Your Password');
-                        }
-                    }else{
-                            return redirect()->route('dashboard-log')->with('message', 'Email is not correct');
-                    }
+        if ($user) {
+            if (Hash::check($password, $user->password)) {
+                if ($user->status === 'active' && $user->user_status == 1) {
+                    session([
+                        'status' => $user->status,
+                        'id' => $user->id,
+                        'role_id' => $user->role_id,
+                        'username' => $user->username,
+                    ]);
+
+                    return redirect()->route('system-dashboard');
+
+                } elseif ($user->user_status == 0) {
+                    return redirect()->route('dashboard-log')
+                        ->with('message', 'Your account is pending approval.');
+                } elseif ($user->user_status == 3) {
+                    return redirect()->route('dashboard-log')
+                        ->with('message', 'Your account has been rejected. Contact admin.');
+                } else {
+                    return redirect()->route('dashboard-log')
+                        ->with('message', 'Your account is inactive. Please contact admin.');
                 }
-            }
-            catch (\Exception $e) {
-                \Log::error('Error retrieving input: ' . $e->getMessage());
 
-                return response()->json([
-                    'message' => 'An error occurred while processing the request.',
-                    'error' => $e->getMessage()
-                ], 500);
+            } else {
+                return redirect()->route('dashboard-log')
+                    ->with('message', 'Incorrect password. Please try again.');
             }
+
+        } else {
+            return redirect()->route('dashboard-log')
+                ->with('message', 'Email not found.');
+        }
+
+    } catch (\Exception $e) {
+        \Log::error('Error during login: ' . $e->getMessage());
+
+        return response()->json([
+            'message' => 'An error occurred while processing your request.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+
     }
     public function logout(){
         Session::flush();

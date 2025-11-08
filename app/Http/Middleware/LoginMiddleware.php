@@ -15,10 +15,10 @@ class LoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(session()->has('token') && session()->has('type')){
+        if (session()->has('id') && session()->has('role_id')) {
             return $next($request);
-        }else{
-            return redirect()->route('dashboard-log');
+        } else {
+            return redirect()->route('dashboard-log')->with('message', 'You must be logged in to access this page.');
         }
     }
 }

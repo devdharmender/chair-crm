@@ -26,7 +26,7 @@
                                     'text-gray-500 dark:text-gray-400'"
                                     @change="isOptionSelected = true">
                                     <option value="" class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
-                                        --Select Country--
+                                        --Select Category--
                                     </option>
                                     @foreach ($catgdata as $item)
                                         <option value="{{ $item->category_name }}"
