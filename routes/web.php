@@ -6,6 +6,7 @@ use App\Http\Controllers\authentication\Login;
 use App\Http\Controllers\pages\AddCategory;
 use App\Http\Controllers\pages\ChairParts;
 use App\Http\Controllers\pages\BlogController;
+use App\Http\Controllers\services\ServicesController;
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -41,6 +42,10 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::post('update_blog',[BlogController::class,'update_blog'])->name('update_blog');
     Route::post('delete_blog',[BlogController::class,'deleteBlog'])->name('delete_blog');
     Route::post('blog_status-change',[BlogController::class,'status_chnage'])->name('statuschange');
+
+    // SERVICES ROUTE
+    Route::get('service',[ServicesController::class, 'loadservices'])->name('loadservice');
+    Route::get('add-service',[ServicesController::class, 'loadaddservice'])->name('addservice');
 
 
 

@@ -55,6 +55,7 @@ class BlogController extends Controller
 
                 $data = new BlogModel;
                 $data->title = $title;
+                $data->user_id = session('id');
                 $data->metatitle = $request->input('metatitle');
                 $data->blog_img = $path;
                 $data->metakeyword = $request->input('metakeyword');

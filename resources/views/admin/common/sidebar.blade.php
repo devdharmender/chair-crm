@@ -209,7 +209,7 @@
                             </svg>
 
                             <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''">
-                                Customer Dashboard
+                                Services
                             </span>
 
                             {{-- <span :class="sidebarToggle ? 'xl:hidden' : ''"
@@ -238,10 +238,10 @@
                             <ul :class="sidebarToggle ? 'xl:hidden' : 'flex'"
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
-                                    <a href="text-generator.html" class="menu-dropdown-item group"
+                                    <a href="{{route('loadservice')}}" class="menu-dropdown-item group"
                                         :class="page === 'textGenerator' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">
-                                        Services History
+                                        Services
                                     </a>
                                 </li>
                                 <li>
