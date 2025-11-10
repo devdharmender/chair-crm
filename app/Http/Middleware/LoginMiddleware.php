@@ -15,10 +15,25 @@ class LoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // if (session()->has('id') && session()->has('role_id')) {
+        //     return $next($request);
+        // } else {
+        //     return redirect()->route('dashboard-log')->with('message', 'You must be logged in to access this page.');
+        // }
+
         if (session()->has('id') && session()->has('role_id')) {
+
+        $user = \App\Models\User::find(session('id'));
+
+        if ($user && $user->status === 'active' && $user->user_status == 1) {
             return $next($request);
-        } else {
-            return redirect()->route('dashboard-log')->with('message', 'You must be logged in to access this page.');
         }
+
+        session()->flush();
+        return redirect()->route('dashboard-log')
+            ->with('message', 'Your account is not active. Please contact admin.');
+    }
+    return redirect()->route('dashboard-log')
+        ->with('message', 'You must be logged in to access this page.');
     }
 }

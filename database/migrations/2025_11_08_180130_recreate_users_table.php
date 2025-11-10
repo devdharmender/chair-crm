@@ -21,11 +21,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('mobile_number')->nullable();
-            $table->string('mobile_code')->nullable();
             $table->string('profile_image')->nullable();
             $table->foreignId('role_id')->constrained('rolemaster')->onDelete('cascade');
             $table->tinyInteger('user_status')->default(0)->comment('0 => pending, 1 => approved, 3 => rejected');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->boolean('email_notifications')->default(true);
             $table->boolean('dashboard_alerts')->default(true);
             $table->softDeletes();

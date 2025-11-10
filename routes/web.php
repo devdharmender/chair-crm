@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\authentication\Login;
+use App\Http\Controllers\authentication\UserController;
 use App\Http\Controllers\pages\AddCategory;
 use App\Http\Controllers\pages\ChairParts;
 use App\Http\Controllers\pages\BlogController;
 use App\Http\Controllers\services\ServicesController;
+use Illuminate\Support\Facades\Mail;
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -47,12 +49,18 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::get('service',[ServicesController::class, 'loadservices'])->name('loadservice');
     Route::get('add-service',[ServicesController::class, 'loadaddservice'])->name('addservice');
 
-
+    // USER ROUTE
+    Route::controller(UserController::class)->group(function(){
+        Route::get('activeuser','activeusers')->name('active-users');
+        Route::get('inactiveuser','inactiveusers')->name('in-active-users');
+        Route::get('add-users','loadaddusers')->name('addusers');
+        Route::post('add-users','addusers')->name('adduser');
+        Route::post('changeusertype','updateusertype')->name('changeuser');
+        Route::post('updatestatus','statusupdate')->name('update-status');
+    });
 
     Route::get('dummy',[BlogController::class,'dummy'])->name('dmg');
     Route::post('dummypage',[BlogController::class,'dummypg'])->name('dmpg');
-
-
     // helper testing ==========
     Route::get('helper_data',[BlogController::class,'helper_data'])->name('helper_data');
 

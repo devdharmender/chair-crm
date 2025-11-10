@@ -166,7 +166,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         $('#summernote').summernote({
             tabsize: 2,
             height: 300,
@@ -197,7 +197,22 @@
                 }
             }
         });
-    </script>
+    </script> --}}
+<!-- Place the first <script> tag in your HTML's <head> -->
+<script src="https://cdn.tiny.cloud/1/2zo19kfcjwbktqla81x3l9yio4qa8j7oktcimlz3b5ckw9sc/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+
+<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+<script>
+  tinymce.init({
+    selector: 'textarea#summernote',
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+  });
+</script>
+
+
+
+
     <script>
         function slugify(text) {
             return text.toString().toLowerCase().trim().replace(/[\s\W-]+/g, '-').replace(/^-+|-+$/g, '');

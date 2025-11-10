@@ -165,7 +165,8 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section('script')
     <script>
         $('#summernote').summernote({
             tabsize: 2,

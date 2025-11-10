@@ -37,6 +37,10 @@ class Login extends Controller
 
         if ($user) {
             if (Hash::check($password, $user->password)) {
+                 if ($user->email_verification != 'verified') {
+                    return redirect()->route('dashboard-log')
+                        ->with('message', 'You have not verified your email. Please verify your email before logging in.');
+                }
                 if ($user->status === 'active' && $user->user_status == 1) {
                     session([
                         'status' => $user->status,
@@ -53,7 +57,8 @@ class Login extends Controller
                 } elseif ($user->user_status == 3) {
                     return redirect()->route('dashboard-log')
                         ->with('message', 'Your account has been rejected. Contact admin.');
-                } else {
+                }
+                else {
                     return redirect()->route('dashboard-log')
                         ->with('message', 'Your account is inactive. Please contact admin.');
                 }

@@ -5,7 +5,7 @@
         <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:col-span-1">
             <div class="px-6 py-5">
                 <h3 class="text-base font-medium text-gray-800 dark:text-white/90 text-center">
-                    All About Blog
+                    All About Services
                 </h3>
             </div>
             {{-- FORM SUBMIT STATUS START --}}
@@ -72,7 +72,7 @@
                         <a href="{{ route('addservice') }}">
                             <button
                                 class="px-4 py-3 text-sm font-medium text-white inline-flex rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                                Add Blogs
+                                Add Services
                                 <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
