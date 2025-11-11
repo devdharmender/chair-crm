@@ -1,11 +1,11 @@
-<!-- resources/views/admin/mails/userStatus.blade.php -->
+<!-- resources/views/admin/mails/accountRejected.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Status Notification</title>
+    <title>Account Application Update</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -28,27 +28,40 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.08);
         }
         .email-header {
-            background-color: #2563eb;
-            color: #ffffff;
+            background-color: #FFB6C1; /* your given color */
+            color: #333;
             text-align: center;
-            padding: 20px;
+            padding: 25px 15px;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
         }
         .email-body {
             padding: 30px;
         }
         .email-body h2 {
-            color: #2563eb;
+            color: #333; /* neutral heading */
             margin-bottom: 10px;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            color: #ffffff;
-            border-radius: 6px;
-            font-weight: bold;
+        .email-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
-        .status-active { color: #16a34a; } /* green */
-        .status-inactive { color: #dc2626; } /* red */
+        .btn {
+            display: inline-block;
+            background-color: #FFB6C1; /* soft gray button */
+            color: #ffff !important;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+        .btn:hover {
+            background-color: #e5e7eb;
+        }
         .email-footer {
             text-align: center;
             color: #888;
@@ -56,14 +69,8 @@
             padding: 15px 20px;
             border-top: 1px solid #eee;
         }
-        .btn {
-            display: inline-block;
-            background-color: #2563eb;
-            color: #ffffff !important;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            margin-top: 20px;
+        .highlight {
+            color: #333;
             font-weight: bold;
         }
     </style>
@@ -73,26 +80,21 @@
         <div class="email-content">
             <!-- Header -->
             <div class="email-header">
-                <h1>Account Status Update</h1>
+                <h1>Account Application Update</h1>
             </div>
 
             <!-- Body -->
             <div class="email-body">
-                <h2>Hello, {{ $data->username ?? $data->username ?? 'User' }}</h2>
-                <p>We wanted to inform you that your account with <strong>Mixhub Services</strong> is now: 
-                    <span class="status-badge  {{ $data->status === 'active' ? 'status-active' : 'status-inactive' }}"> {{ ucfirst($data->status) }}</span>
-                </p>
+                <h2>Hello, {{ $data->username ?? 'User' }}!</h2>
 
-                <p>Additional information:</p>
-                <ul>
-                    <li>Email: {{ $data->email }}</li>
-                    <li>Role: {{ $data->role_id == 1 ? 'Super Admin' : ($data->role_id == 2 ? 'Admin' : 'User') }}</li>
-                    <li>Updated on: {{ now()->timezone('Asia/Kolkata')->format('F j, Y, g:i a') }}</li>
+                <p>Thank you for your interest in joining <strong>Mixhub Services</strong>.</p>
+                <p>After reviewing your application, we regret to inform you that your account has <b>not been approved</b> at this time.</p>
 
-                </ul>
+                <p>This may be due to incomplete details or verification requirements.  
+                You can reach out to our support team for clarification or reapply in the future.</p>
 
-                <p>If you did not expect this change, please contact our support team immediately.</p>
-
+                <p style="margin-top: 25px;">We appreciate your time and understanding.  
+                Thank you for considering Mixhub Services — we hope to connect again soon.</p>
             </div>
 
             <!-- Footer -->

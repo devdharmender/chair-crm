@@ -1,11 +1,11 @@
-<!-- resources/views/admin/mails/userStatus.blade.php -->
+<!-- resources/views/admin/mails/accountDeactivated.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Status Notification</title>
+    <title>Account Deactivation Notice</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -28,27 +28,40 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.08);
         }
         .email-header {
-            background-color: #2563eb;
-            color: #ffffff;
+            background-color: #FFB6C1;
+            color: #333;
             text-align: center;
-            padding: 20px;
+            padding: 25px 15px;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
         }
         .email-body {
             padding: 30px;
         }
         .email-body h2 {
-            color: #2563eb;
+            color: #333;
             margin-bottom: 10px;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            color: #ffffff;
-            border-radius: 6px;
-            font-weight: bold;
+        .email-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
-        .status-active { color: #16a34a; } /* green */
-        .status-inactive { color: #dc2626; } /* red */
+        .btn {
+            display: inline-block;
+            background-color: #FFB6C1;
+            color: #fff !important;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+        .btn:hover {
+            background-color: #e5e7eb;
+        }
         .email-footer {
             text-align: center;
             color: #888;
@@ -56,14 +69,8 @@
             padding: 15px 20px;
             border-top: 1px solid #eee;
         }
-        .btn {
-            display: inline-block;
-            background-color: #2563eb;
-            color: #ffffff !important;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            margin-top: 20px;
+        .highlight {
+            color: #333;
             font-weight: bold;
         }
     </style>
@@ -73,26 +80,21 @@
         <div class="email-content">
             <!-- Header -->
             <div class="email-header">
-                <h1>Account Status Update</h1>
+                <h1>Account Deactivation Notice</h1>
             </div>
 
             <!-- Body -->
             <div class="email-body">
-                <h2>Hello, {{ $data->username ?? $data->username ?? 'User' }}</h2>
-                <p>We wanted to inform you that your account with <strong>Mixhub Services</strong> is now: 
-                    <span class="status-badge  {{ $data->status === 'active' ? 'status-active' : 'status-inactive' }}"> {{ ucfirst($data->status) }}</span>
-                </p>
+                <h2>Hello, {{ $data->username ?? 'User' }}!</h2>
 
-                <p>Additional information:</p>
-                <ul>
-                    <li>Email: {{ $data->email }}</li>
-                    <li>Role: {{ $data->role_id == 1 ? 'Super Admin' : ($data->role_id == 2 ? 'Admin' : 'User') }}</li>
-                    <li>Updated on: {{ now()->timezone('Asia/Kolkata')->format('F j, Y, g:i a') }}</li>
+                <p>We would like to inform you that your <strong>Mixhub Services</strong> account has been <b>deactivated by an administrator</b>.</p>
 
-                </ul>
+                <p>This action was taken due to certain reasons or policy considerations related to your account activity.  
+                If you believe this was done in error, you may contact our support team for further assistance.</p>
 
-                <p>If you did not expect this change, please contact our support team immediately.</p>
+                <p style="margin-top: 25px;">Please contact the administrator for more information regarding your account status.</p>
 
+                <a href="{{ url('support') }}" class="btn">Contact Administrator</a>
             </div>
 
             <!-- Footer -->

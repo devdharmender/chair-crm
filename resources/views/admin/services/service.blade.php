@@ -65,7 +65,7 @@
                 {{-- Added flex container for alignment --}}
                 <div class="flex items-center justify-between">
                     <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
-                        Table text
+                        Services List
                     </h3>
 
                     <div>

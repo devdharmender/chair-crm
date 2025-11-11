@@ -106,13 +106,13 @@
                                         Inactive Users
                                     </a>
                                 </li>
-                                {{-- <li>
-                                    <a href="form-layout.html" class="menu-dropdown-item group"
+                                <li>
+                                    <a href="{{ route('rejected-users') }}" class="menu-dropdown-item group"
                                         :class="page === 'formLayout' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">
-                                        New Users
+                                        Rejected Users
                                     </a>
-                                </li> --}}
+                                </li>
                             </ul>
                         </div>
                         <!-- Dropdown Menu End -->

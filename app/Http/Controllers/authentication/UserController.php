@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\Users;
 use App\Mail\UserAccessUpdate;
+use App\Mail\AccountDeactivated;
+use App\Mail\Accoundapproved;
 use App\Mail\UserStatus;
+use App\Mail\AccountActivated;
+use App\Mail\UserRejected;
 
 class UserController extends Controller
 {
@@ -144,7 +148,63 @@ class UserController extends Controller
     // <<=========================== inactive user list ====================================>>
     public function inactiveusers(){
         $user = UserCheck::where('user_status','1')->where('status','inactive')->orderBy('id','desc')->paginate(10);
-
         return view('admin.users.inactiveusers',compact('user'));
     }
+    // <<=========================== inactive user list ====================================>>
+    public function rejectedusers(){
+        $user = UserCheck::where('user_status','3')->where('email_verification','verified')->orderBy('id','desc')->paginate(10);
+        return view('admin.users.rejectedusers',compact('user'));
+    }
+    // <<=========================== acept user Dashboard action ====================================>>
+    public function acceptuser($id){
+        $data = UserCheck::where('id', $id)->first();
+        $data->user_status = 1;
+        $data->status = 'active';
+        if($data->save()){
+            $subject = 'Your accound with mixhub services has been accepted.';
+            Mail::to($data->email)->send(new Accoundapproved($data, $subject));
+            return redirect()->route('system-dashboard')->with('message','User accepted successfully. and ristricted  to visit any page.');
+        }
+
+    }
+    // <<=========================== Reject user Dashboard action ====================================>>
+    public function rejectuser($id){
+        $data = UserCheck::where('id', $id)->first();
+        $data->user_status = 3;
+        if($data->save()){
+            $subject = 'Your accound with mixhub services has been rejected.';
+            Mail::to($data->email)->send(new UserRejected($data, $subject));
+            return redirect()->route('system-dashboard')->with('message','User rejected successfully. and move to active user list.');
+        }
+    }
+
+    // <<=========================== Deactivated user Dashboard action ====================================>>
+    public function deactivated($id){
+        $userdata = UserCheck::where('id',$id)->first();
+        $userdata->status = 'inactive';
+        $userdata->user_status = '3';
+        if($userdata->save()){
+            $subject = 'Account Deactivation Notice with MIXHUB-SERVICES';
+            Mail::to($userdata->email)->send(new AccountDeactivated($subject,$userdata));
+            return redirect()->route('active-users')->with('message','Account have been deavitated succussfully!');
+
+        }
+    }
+    public function activated($id){
+        $userdata = UserCheck::findOrFail($id);
+        $userdata->status = 'active';
+        $userdata->user_status = '1';
+
+            if ($userdata->save()) {
+                $subject = 'Account Activation Notice from MIXHUB-SERVICES';
+
+                try {
+                        Mail::to($userdata->email)->send(new AccountActivated($subject, $userdata));
+                    } catch (\Exception $e) {
+                        return redirect()->route('active-users')->with('error', 'Email could not be sent: ' . $e->getMessage());
+                    }
+
+                    return redirect()->route('active-users')->with('message', 'Account has been activated successfully!');
+            }
+        }
 }

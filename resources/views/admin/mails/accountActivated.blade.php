@@ -1,11 +1,11 @@
-<!-- resources/views/admin/mails/userStatus.blade.php -->
+<!-- resources/views/admin/mails/accountActivated.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Status Notification</title>
+    <title>Your Account Has Been Activated</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -28,10 +28,14 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.08);
         }
         .email-header {
-            background-color: #2563eb;
+            background-color: #2563eb; /* Blue from accountApprovedWelcome */
             color: #ffffff;
             text-align: center;
-            padding: 20px;
+            padding: 25px 15px;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
         }
         .email-body {
             padding: 30px;
@@ -40,21 +44,9 @@
             color: #2563eb;
             margin-bottom: 10px;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            color: #ffffff;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        .status-active { color: #16a34a; } /* green */
-        .status-inactive { color: #dc2626; } /* red */
-        .email-footer {
-            text-align: center;
-            color: #888;
-            font-size: 12px;
-            padding: 15px 20px;
-            border-top: 1px solid #eee;
+        .email-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
         .btn {
             display: inline-block;
@@ -66,6 +58,20 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+        .email-footer {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+        }
+        .highlight {
+            color: #16a34a;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -73,26 +79,23 @@
         <div class="email-content">
             <!-- Header -->
             <div class="email-header">
-                <h1>Account Status Update</h1>
+                <h1>Your Account Has Been Activated 🎉</h1>
             </div>
 
             <!-- Body -->
             <div class="email-body">
-                <h2>Hello, {{ $data->username ?? $data->username ?? 'User' }}</h2>
-                <p>We wanted to inform you that your account with <strong>Mixhub Services</strong> is now: 
-                    <span class="status-badge  {{ $data->status === 'active' ? 'status-active' : 'status-inactive' }}"> {{ ucfirst($data->status) }}</span>
-                </p>
+                <h2>Hello, {{ $data->username ?? 'User' }}!</h2>
 
-                <p>Additional information:</p>
-                <ul>
-                    <li>Email: {{ $data->email }}</li>
-                    <li>Role: {{ $data->role_id == 1 ? 'Super Admin' : ($data->role_id == 2 ? 'Admin' : 'User') }}</li>
-                    <li>Updated on: {{ now()->timezone('Asia/Kolkata')->format('F j, Y, g:i a') }}</li>
+                <p>We’re pleased to let you know that your <strong>Mixhub Services</strong> account has been 
+                    <span class="highlight">successfully activated</span> by the administrator.</p>
 
-                </ul>
+                <p>You can now log in and enjoy full access to our platform and its features.</p>
 
-                <p>If you did not expect this change, please contact our support team immediately.</p>
+                <a href="{{ url('/system-dashboard') }}" class="btn">Log In to Your Account</a>
 
+                <p>If you have any questions or need assistance, please contact the administrator or our support team.</p>
+
+                <p style="margin-top: 25px;">We’re glad to have you back — enjoy your experience with Mixhub Services!</p>
             </div>
 
             <!-- Footer -->

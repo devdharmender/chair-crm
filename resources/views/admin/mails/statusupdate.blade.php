@@ -80,7 +80,7 @@
             @endif
                 <p>If you were not expecting this change, please contact our support team immediately.</p>
 
-                <a href="{{ url('/') }}" class="btn">Go to Dashboard</a>
+                <a href="{{ url('/system-dashboard') }}" class="btn">Go to Dashboard</a>
             </div>
 
             <!-- Footer -->

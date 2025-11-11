@@ -1,11 +1,11 @@
-<!-- resources/views/admin/mails/userStatus.blade.php -->
+<!-- resources/views/admin/mails/accountApprovedWelcome.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Status Notification</title>
+    <title>Welcome! Your Account is Approved</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -31,7 +31,11 @@
             background-color: #2563eb;
             color: #ffffff;
             text-align: center;
-            padding: 20px;
+            padding: 25px 15px;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
         }
         .email-body {
             padding: 30px;
@@ -40,21 +44,9 @@
             color: #2563eb;
             margin-bottom: 10px;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            color: #ffffff;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        .status-active { color: #16a34a; } /* green */
-        .status-inactive { color: #dc2626; } /* red */
-        .email-footer {
-            text-align: center;
-            color: #888;
-            font-size: 12px;
-            padding: 15px 20px;
-            border-top: 1px solid #eee;
+        .email-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
         .btn {
             display: inline-block;
@@ -66,6 +58,17 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .email-footer {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+        }
+        .highlight {
+            color: #16a34a;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -73,26 +76,24 @@
         <div class="email-content">
             <!-- Header -->
             <div class="email-header">
-                <h1>Account Status Update</h1>
+                <h1>Welcome to Mixhub Services 🎉</h1>
             </div>
 
             <!-- Body -->
             <div class="email-body">
-                <h2>Hello, {{ $data->username ?? $data->username ?? 'User' }}</h2>
-                <p>We wanted to inform you that your account with <strong>Mixhub Services</strong> is now: 
-                    <span class="status-badge  {{ $data->status === 'active' ? 'status-active' : 'status-inactive' }}"> {{ ucfirst($data->status) }}</span>
-                </p>
+                <h2>Hello, {{ $data->username ?? 'User' }}!</h2>
 
-                <p>Additional information:</p>
-                <ul>
-                    <li>Email: {{ $data->email }}</li>
-                    <li>Role: {{ $data->role_id == 1 ? 'Super Admin' : ($data->role_id == 2 ? 'Admin' : 'User') }}</li>
-                    <li>Updated on: {{ now()->timezone('Asia/Kolkata')->format('F j, Y, g:i a') }}</li>
+                <p>We’re excited to inform you that your <strong>Mixhub Services</strong> account has been 
+                    <span class="highlight">approved</span> and is now active!</p>
 
-                </ul>
+                <p>Welcome aboard! You can now log in and start using available services & features designed to help you get the most out of our platform.</p>
 
-                <p>If you did not expect this change, please contact our support team immediately.</p>
+                <a href="{{ url('/system-dashboard') }}" class="btn">Log In to Your Account</a>
 
+                <p>Explore, connect, and take full advantage of everything Mixhub Services has to offer.  
+                If you have any questions, our support team is always here to help.</p>
+
+                <p style="margin-top: 25px;">Once again, welcome to the family — we’re glad to have you with us!</p>
             </div>
 
             <!-- Footer -->

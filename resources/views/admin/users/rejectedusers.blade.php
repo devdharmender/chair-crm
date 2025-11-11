@@ -142,13 +142,6 @@
                             <th class="px-6 py-3 whitespace-nowrap">
                                 <div class="flex items-center justify-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        User Type
-                                    </p>
-                                </div>
-                            </th>
-                            <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Status
                                     </p>
                                 </div>
@@ -169,7 +162,8 @@
                         @php
                             $sn = 1;
                         @endphp
-                        @foreach ($users as $user)
+                        @foreach ($user as $user)
+                        
                             <tr>
                                 <td class="px-6 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
@@ -191,7 +185,7 @@
                                             <div>
                                                 <span
                                                     class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-                                                    {{ $toggleId = 'U-' . $user->user_id }}
+                                                    {{ $toggleId = 'U-' . $user->id; }}
                                                 </span>
                                             </div>
                                         </div>
@@ -229,41 +223,12 @@
                                         </p>
                                     </div>
                                 </td>
-                                <td class="px-6 py-3 whitespace-nowrap">
-                                    <div>
-                                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent">
-                                            <select
-                                                class="changeusertype dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                                :class="isOptionSelected & amp; & amp;
-                                                'text-gray-800 dark:text-white/90'"
-                                                @change="isOptionSelected = true" id="{{ $user->user_id }}">
-                                                @foreach ($role as $data)
-                                                    <option value="{{ $data->id }}"
-                                                        class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-                                                        {!! $user->role_id === $data->id ? 'selected' : '' !!}>
-                                                        {{ $data->role_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <span
-                                                class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
-                                                <svg class="stroke-current" width="20" height="20"
-                                                    viewBox="0 0 20 20" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke=""
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
+                  
                                 <td class="px-5 py-3 whitespace-nowrap">
                                     <div x-data="{ switcherToggle: {{ $user->status === 'active' ? 'true' : 'false' }} }">
-                                        <label for="{{ $user->user_id }}-status" class="cursor-pointer">
-                                            <div class="relative"><input type="checkbox"
-                                                    id="{{ $user->user_id }}-status" class="sr-only changeStatus"
-                                                    @change="switcherToggle = !switcherToggle">
+                                        <label for="{{ $user->id }}-status" class="cursor-pointer">
+                                            <div class="relative"><input type="checkbox" id="{{ $user->id }}-status" 
+                                                class="sr-only changeStatus" @change="switcherToggle = !switcherToggle">
                                                 <div class="block h-6 w-11 rounded-full transition-colors duration-200"
                                                     :class="switcherToggle ? 'bg-success-500' : 'bg-red-500'"></div>
                                                 <div :class="switcherToggle ? 'translate-x-full' : 'translate-x-0'"
@@ -273,30 +238,13 @@
                                         </label>
                                     </div>
                                 </td>
-
+                                
                                 <td class="p-4 whitespace-nowrap">
-                                    <div x-data="dropdown()" class="relative flex justify-center">
-                                        <button @click="toggle" class="text-gray-500 dark:text-gray-400">
-                                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                                                    fill=""></path>
-                                            </svg>
-                                        </button>
-                                        <div x-show="open" @click.outside="open = false"
-                                            class="shadow-theme-lg dark:bg-gray-dark fixed w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800"
-                                            x-ref="dropdown" style="display: none;">
-                                            <button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                View More
-                                            </button>
-                                            <a href="{{ route('account-deactivate',$user->user_id)}}"><button
-                                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                Delete
-                                            </button></a>
-                                        </div>
-                                    </div>
+                                    <a href="{{ route('account-activate',$user->id) }}"><button class="flex h-10 w-full max-w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.72763 4.33443C7.92401 3.6437 9.30836 3.34945 10.6823 3.49385C12.0562 3.63826 13.3491 4.2139 14.3757 5.13828C15.0468 5.74252 15.5815 6.4755 15.9517 7.28815L13.6069 6.49282C13.2147 6.35977 12.7888 6.5699 12.6557 6.96216C12.5227 7.35443 12.7328 7.78028 13.1251 7.91333L16.8227 9.16752C16.8668 9.18743 16.9129 9.20314 16.9605 9.21426L17.0868 9.25712C17.2752 9.32101 17.4813 9.30746 17.6597 9.21943C17.838 9.1314 17.9741 8.97611 18.038 8.78772L19.3816 4.82561C19.5147 4.43334 19.3045 4.0075 18.9122 3.87447C18.52 3.74145 18.0941 3.95161 17.9611 4.34388L17.2335 6.48938C16.783 5.5609 16.1553 4.72223 15.3794 4.02356C14.1174 2.88722 12.528 2.17958 10.839 2.00207C9.15012 1.82455 7.44834 2.18628 5.97763 3.03539C4.50692 3.88451 3.34277 5.17743 2.65203 6.72884C1.9613 8.28025 1.77944 10.0105 2.13252 11.6716C2.4856 13.3328 3.3555 14.8395 4.61753 15.9758C5.87957 17.1121 7.46894 17.8198 9.15788 17.9973C10.8468 18.1748 12.5486 17.8131 14.0193 16.964C14.378 16.7569 14.5009 16.2982 14.2938 15.9395C14.0867 15.5807 13.628 15.4578 13.2693 15.6649C12.0729 16.3557 10.6886 16.6499 9.31467 16.5055C7.94077 16.3611 6.64786 15.7855 5.62123 14.8611C4.5946 13.9367 3.88697 12.711 3.59974 11.3598C3.31252 10.0085 3.46046 8.60098 4.02235 7.33894C4.58424 6.07691 5.53125 5.02516 6.72763 4.33443Z" fill="currentColor"></path>
+                                        </svg>
+                                    </button></a>
                                 </td>
                             </tr>
                             @php
@@ -307,109 +255,101 @@
                     <!-- table body end -->
                 </table>
             </div>
-            {{-- TABLE END HERE --}}
         </div>
     </div>
 @endsection
 @section('script')
-    <script>
-        $(document).ready(function() {
-            $(".changeusertype").on('change', function() {
-                var userId = $(this).attr('id');
-                var roleId = $(this).val();
-                $.ajax({
-                    url: "{{ route('changeuser') }}",
-                    type: "POST",
-                    data: {
-                        "_token": " {{ csrf_token() }}",
-                        userid: userId,
-                        roleid: roleId
-                    },
-                    success: function(data) {
-                        if (data.success === true) {
-                            Swal.fire({
-                                title: "Updated!",
-                                text: data.message,
-                                icon: "success"
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Error!",
-                                text: data.message,
-                                icon: "error"
-                            });
-                        }
-                    },
-                    error: function(xhr) {
-                        let message = "Something went wrong.";
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            message = xhr.responseJSON.message;
-                        } else if (xhr.responseText) {
-                            try {
-                                const json = JSON.parse(xhr.responseText);
-                                message = json.message || message;
-                            } catch {
-                                message = xhr.responseText;
-                            }
-                        }
+<script>
+    $(document).ready(function(){
+        // $(".changeusertype").on('change',function(){
+        //     var userId = $(this).attr('id');
+        //     var roleId = $(this).val();
+        //     $.ajax({
+        //         url : "{{ route('changeuser') }}",
+        //         type : "POST",
+        //         data : {"_token" : " {{ csrf_token() }}", userid : userId, roleid : roleId},
+        //         success : function(data){
+        //             if(data.success === true){
+        //                 Swal.fire({
+        //                     title: "Updated!",
+        //                     text: data.message,
+        //                     icon: "success"
+        //                 });
+        //             }else{
+        //                 Swal.fire({
+        //                     title: "Error!",
+        //                     text: data.message,
+        //                     icon: "error"
+        //                 });
+        //             }
+        //         },
+        //         error: function(xhr) {
+        //         let message = "Something went wrong.";
+        //         if (xhr.responseJSON && xhr.responseJSON.message) {
+        //             message = xhr.responseJSON.message;
+        //         } else if (xhr.responseText) {
+        //             try {
+        //                 const json = JSON.parse(xhr.responseText);
+        //                 message = json.message || message;
+        //             } catch {
+        //                 message = xhr.responseText;
+        //             }
+        //         }
+        //         Swal.fire({
+        //             title: "Error!",
+        //             text: message,
+        //             icon: "error",
+        //             confirmButtonColor: "#d33"
+        //         });
+        //     }
+        //     });
+        // });
+
+        $('.changeStatus').on('change',function(){
+            var userId = $(this).attr('id');
+            $.ajax({
+                url : "{{route('update-status')}}",
+                type: "post",
+                data : {"_token" : " {{ csrf_token() }}", userid : userId},
+                success : function(data){
+                    if(data.success === true){
+                        Swal.fire({
+                            title: "Updated!",
+                            text: data.message,
+                            icon: "success"
+                        });
+                    }else{
                         Swal.fire({
                             title: "Error!",
-                            text: message,
-                            icon: "error",
-                            confirmButtonColor: "#d33"
+                            text: data.message,
+                            icon: "error"
                         });
                     }
-                });
-            });
-
-            $('.changeStatus').on('change', function() {
-                var userId = $(this).attr('id');
-                $.ajax({
-                    url: "{{ route('update-status') }}",
-                    type: "post",
-                    data: {
-                        "_token": " {{ csrf_token() }}",
-                        userid: userId
-                    },
-                    success: function(data) {
-                        if (data.success === true) {
-                            Swal.fire({
-                                title: "Updated!",
-                                text: data.message,
-                                icon: "success"
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Error!",
-                                text: data.message,
-                                icon: "error"
-                            });
+                },
+                error: function(xhr) {
+                    let message = "Something went wrong.";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    } else if (xhr.responseText) {
+                        try {
+                            const json = JSON.parse(xhr.responseText);
+                            message = json.message || message;
+                        } catch {
+                            message = xhr.responseText;
                         }
-                    },
-                    error: function(xhr) {
-                        let message = "Something went wrong.";
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            message = xhr.responseJSON.message;
-                        } else if (xhr.responseText) {
-                            try {
-                                const json = JSON.parse(xhr.responseText);
-                                message = json.message || message;
-                            } catch {
-                                message = xhr.responseText;
-                            }
-                        }
-                        Swal.fire({
-                            title: "Error!",
-                            text: message,
-                            icon: "error",
-                            confirmButtonColor: "#d33"
-                        });
                     }
-
-                });
+                    Swal.fire({
+                        title: "Error!",
+                        text: message,
+                        icon: "error",
+                        confirmButtonColor: "#d33"
+                    });
+                }
+                
             });
-
-
         });
-    </script>
+
+
+    });
+</script>
 @endsection

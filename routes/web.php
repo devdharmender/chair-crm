@@ -53,10 +53,16 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::controller(UserController::class)->group(function(){
         Route::get('activeuser','activeusers')->name('active-users');
         Route::get('inactiveuser','inactiveusers')->name('in-active-users');
+        Route::get('rejectrd-user','rejectedusers')->name('rejected-users');
         Route::get('add-users','loadaddusers')->name('addusers');
         Route::post('add-users','addusers')->name('adduser');
         Route::post('changeusertype','updateusertype')->name('changeuser');
         Route::post('updatestatus','statusupdate')->name('update-status');
+        // accept and reject controller
+        Route::get('accept-users/{num}','acceptuser')->name('accept-user');
+        Route::get('reject-users/{num}','rejectuser')->name('reject-user');
+        Route::get('deactivate-account/{num}','deactivated')->name('account-deactivate');
+        Route::get('activate-account/{num}','activated')->name('account-activate');
     });
 
     Route::get('dummy',[BlogController::class,'dummy'])->name('dmg');
