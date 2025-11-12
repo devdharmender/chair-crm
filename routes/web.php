@@ -46,9 +46,12 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::post('blog_status-change',[BlogController::class,'status_chnage'])->name('statuschange');
 
     // SERVICES ROUTE
-    Route::get('service',[ServicesController::class, 'loadservices'])->name('loadservice');
-    Route::get('add-service',[ServicesController::class, 'loadaddservice'])->name('addservice');
-
+    Route::controller(ServicesController::class)->group(function(){
+        Route::get('service', 'loadservices')->name('loadservice');
+        Route::get('load-service','loadaddservice')->name('addservice');
+        Route::post('add-service','addservices')->name('add-services');
+    });
+    
     // USER ROUTE
     Route::controller(UserController::class)->group(function(){
         Route::get('activeuser','activeusers')->name('active-users');
