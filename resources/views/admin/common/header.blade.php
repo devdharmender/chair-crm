@@ -37,8 +37,8 @@
                             <!-- Hamburger Toggle BTN -->
 
                             <a href="{{route('system-dashboard')}}" class="xl:hidden">
-                                <img class="dark:hidden" src="{{ asset('assets/admin/image/myCRMlogo.png') }}" alt="Logo" />
-                                <img class="hidden dark:block" src="{{ asset('assets/admin/image/myCRMlogo.png') }}" alt="Logo" />
+                                <img class="dark:hidden" src="{{ asset('assets/admin/image/myCRMlogo.png') }}" width="150" height="120" alt="Logo" />
+                                <img class="hidden dark:block" src="{{ asset('assets/admin/image/myCRMlogo.png') }}" width="150" height="120" alt="Logo" />
                             </a>
 
                             <!-- Application nav menu button -->
