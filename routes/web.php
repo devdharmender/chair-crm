@@ -61,6 +61,7 @@ Route::middleware(['sessionProtection'])->group(function(){
         Route::post('add-users','addusers')->name('adduser');
         Route::post('changeusertype','updateusertype')->name('changeuser');
         Route::post('updatestatus','statusupdate')->name('update-status');
+        Route::get('userprofile','userProfile')->name('user-profile');
         // accept and reject controller
         Route::get('accept-users/{num}','acceptuser')->name('accept-user');
         Route::get('reject-users/{num}','rejectuser')->name('reject-user');

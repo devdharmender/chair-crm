@@ -207,4 +207,8 @@ class UserController extends Controller
                     return redirect()->route('active-users')->with('message', 'Account has been activated successfully!');
             }
         }
+
+    public function userProfile() {
+        return view('admin.users.userProfile');
+    }
 }

@@ -480,7 +480,7 @@
 
                     <!-- Menu Item Profile -->
                     <li>
-                        <a href="profile.html" @click="selected = (selected === 'Profile' ? '':'Profile')"
+                        <a href="{{route('user-profile')}}" @click="selected = (selected === 'Profile' ? '':'Profile')"
                             class="menu-item group"
                             :class="(selected === 'Profile') && (page === 'profile') ? 'menu-item-active' :
                             'menu-item-inactive'">
