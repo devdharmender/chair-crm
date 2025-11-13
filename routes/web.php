@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 //    return view('welcome');
 //});
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.auth.login');
 });
 Route::middleware(['sessionProtection'])->group(function(){
     // Dashboard route
@@ -85,3 +85,4 @@ Route::middleware(['sessionProtection'])->group(function(){
 // authentication route
 Route::get('dashboard-log',[Login::class, 'login'])->name('dashboard-log');
 Route::post('auth-check',[Login::class, 'authCheck'])->name('auth-check');
+Route::get('forget-password',[Login::class,'forgetpassword'])->name('forget-pass');

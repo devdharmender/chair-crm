@@ -7,22 +7,11 @@
                 {{-- Added flex container for alignment --}}
                 <div class="flex items-center justify-between">
                     <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
-                        Users List
+                        Rejected Users List
                     </h3>
 
                     <div>
-                        <a href="{{ route('addusers') }}">
-                            <button
-                                class="px-4 py-3 text-sm font-medium text-white inline-flex rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                                Add Services
-                                <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M9.2502 4.99951C9.2502 4.5853 9.58599 4.24951 10.0002 4.24951C10.4144 4.24951 10.7502 4.5853 10.7502 4.99951V9.24971H15.0006C15.4148 9.24971 15.7506 9.5855 15.7506 9.99971C15.7506 10.4139 15.4148 10.7497 15.0006 10.7497H10.7502V15.0001C10.7502 15.4143 10.4144 15.7501 10.0002 15.7501C9.58599 15.7501 9.2502 15.4143 9.2502 15.0001V10.7497H5C4.58579 10.7497 4.25 10.4139 4.25 9.99971C4.25 9.5855 4.58579 9.24971 5 9.24971H9.2502V4.99951Z"
-                                        fill=""></path>
-                                </svg>
-                            </button>
-                        </a>
+                        
                     </div>
                 </div>
             </div>
@@ -142,13 +131,6 @@
                             <th class="px-6 py-3 whitespace-nowrap">
                                 <div class="flex items-center justify-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        Status
-                                    </p>
-                                </div>
-                            </th>
-                            <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Action
                                     </p>
                                 </div>
@@ -222,23 +204,7 @@
                                             {{ $user->mobile_number }}
                                         </p>
                                     </div>
-                                </td>
-                  
-                                <td class="px-5 py-3 whitespace-nowrap">
-                                    <div x-data="{ switcherToggle: {{ $user->status === 'active' ? 'true' : 'false' }} }">
-                                        <label for="{{ $user->id }}-status" class="cursor-pointer">
-                                            <div class="relative"><input type="checkbox" id="{{ $user->id }}-status" 
-                                                class="sr-only changeStatus" @change="switcherToggle = !switcherToggle">
-                                                <div class="block h-6 w-11 rounded-full transition-colors duration-200"
-                                                    :class="switcherToggle ? 'bg-success-500' : 'bg-red-500'"></div>
-                                                <div :class="switcherToggle ? 'translate-x-full' : 'translate-x-0'"
-                                                    class="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-theme-sm transition-transform duration-200 ease-linear">
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </td>
-                                
+                                </td>                                
                                 <td class="p-4 whitespace-nowrap">
                                     <a href="{{ route('account-activate',$user->id) }}"><button class="flex h-10 w-full max-w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -259,7 +225,7 @@
     </div>
 @endsection
 @section('script')
-<script>
+{{-- <script>
     $(document).ready(function(){
         // $(".changeusertype").on('change',function(){
         //     var userId = $(this).attr('id');
@@ -351,5 +317,5 @@
 
 
     });
-</script>
+</script> --}}
 @endsection

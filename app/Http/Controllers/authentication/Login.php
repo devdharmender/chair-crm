@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\authentication\UserCheck;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 // use Illuminate\Support\Str;
 
 
@@ -74,7 +75,7 @@ class Login extends Controller
         }
 
     } catch (\Exception $e) {
-        \Log::error('Error during login: ' . $e->getMessage());
+        Log::error('Error during login: ' . $e->getMessage());
 
         return response()->json([
             'message' => 'An error occurred while processing your request.',
@@ -86,6 +87,11 @@ class Login extends Controller
     public function logout(){
         Session::flush();
         return redirect()->route('dashboard-log');
+    }
+
+    // forget password
+    public function forgetpassword(){
+        return view('admin.auth.forgetpass');
     }
     
 }
