@@ -840,6 +840,7 @@
         });
         // secound chart
         const stats = @json($stats);
+        const totalusers = @json($totalusers);
 
         // Prepare data for Highcharts
            const chartData = [
@@ -858,7 +859,7 @@
                 }
             },
             title: {
-                text: 'Users Status'
+                text: 'Users Status - Total: '+totalusers,
             },
             plotOptions: {
                 pie: {

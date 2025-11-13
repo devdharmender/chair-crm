@@ -7,16 +7,17 @@
             <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
                 <div class="px-5 py-4 sm:px-6 sm:py-5">
                     <h3 class="text-center font-medium text-gray-800 dark:text-white/90">
-                        Add Service
+                        Edit Service
                     </h3>
                 </div>
                 <div class="space-y-6 border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800">
-                    <form action="{{ route('add-services') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('update-service') }}" method="post" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="update_id" value="{{$data->id}}">
                         <div class="-mx-2.5 flex flex-wrap gap-y-5">
                             <div class="w-full px-2.5 my-5">
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Service Image
+                                    Service Image (<a href="{{asset('storage/'.$data->service_img)}}" target="_blank"> Current Image</a>)
                                 </label>
                                 <input type="file" name="image" id="Serviceimg"
                                     class="focus:border-ring-brand-300 shadow-theme-xs focus:file:ring-brand-300 h-11 w-full overflow-hidden rounded-lg border border-gray-300 bg-transparent text-sm text-gray-500 transition-colors file:mr-5 file:border-collapse file:cursor-pointer file:rounded-l-lg file:border-0 file:border-r file:border-solid file:border-gray-200 file:bg-gray-50 file:py-3 file:pr-3 file:pl-3.5 file:text-sm file:text-gray-700 placeholder:text-gray-400 hover:file:bg-gray-100 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:text-white/90 dark:file:border-gray-800 dark:file:bg-white/[0.03] dark:file:text-gray-400 dark:placeholder:text-gray-400">
@@ -31,7 +32,7 @@
                                     Title
                                 </label>
                                 <input type="text" placeholder="Enter title" name="title" id="titleInput"
-                                    value="{{ old('title') }}"
+                                    value="{{ old('title',$data->title ?? '') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('title')
@@ -45,7 +46,7 @@
                                     Meta Title
                                 </label>
                                 <input type="text" placeholder="Enter meta title"name="metatitle"
-                                    value="{{ old('metatitle') }}"
+                                    value="{{ old('metatitle',$data->metatitle ?? '') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('metatitle')
@@ -58,7 +59,7 @@
                                     Meta Keywords
                                 </label>
                                 <input type="text" placeholder="Enter keywords" name="metakeyword"
-                                    value="{{ old('metakeyword') }}"
+                                    value="{{ old('metakeyword', $data->metakeyword ?? '') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('metakeyword')
@@ -75,7 +76,7 @@
                                     <span
                                         class="flex items-center px-4 text-sm text-gray-500 dark:text-white/50 bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700 select-none">{{ url('/Service/') }}</span>
                                     <input type="text" name="canonicalurl" id="canonicalInput"
-                                        value="{{ old('canonicalurl') }}"
+                                        value="{{ old('canonicalurl',$data->canonical ?? '') }}"
                                         class="flex-1 dark:bg-dark-900 bg-transparent px-4 py-2.5 text-sm text-gray-800  placeholder:text-gray-400 focus:outline-none dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
                                         placeholder="your-page">
                                 </div>
@@ -92,7 +93,7 @@
                                     Meta Description
                                 </label>
                                 <input type="text" name="metadesc" placeholder="Enter meta description"
-                                    value="{{ old('metadesc') }}"
+                                    value="{{ old('metadesc', $data->metadesc) }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('metadesc')
@@ -114,11 +115,11 @@
                                         <option value="" class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
                                             Select subject
                                         </option>
-                                        @foreach ($catgdata as $data)
-                                            <option value="{{ $data->category_name }}"
-                                                {{ $data->category_name === old('subject') ? 'selected' : '' }}
+                                        @foreach ($catgdata as $category)
+                                            <option value="{{ $category->category_name }}"
+                                                {{ $category->topic === old('subject') ? 'selected' : '' }}
                                                 class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
-                                                {{ $data->category_name }}
+                                                {{ $category->category_name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -145,7 +146,7 @@
                                 </label>
                                 <textarea rows="6" name="description"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-                                    id="serviceeditor"> {{ old('description') }}</textarea>
+                                    id="serviceeditor"> {{ old('description', $data->description) }}</textarea>
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('description')
                                         {{ $message }}

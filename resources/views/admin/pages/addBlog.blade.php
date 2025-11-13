@@ -30,7 +30,8 @@
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                     Title
                                 </label>
-                                <input type="text" placeholder="Enter title" name="title" id="titleInput" value="{{old('title')}}"
+                                <input type="text" placeholder="Enter title" name="title" id="titleInput"
+                                    value="{{ old('title') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('title')
@@ -43,7 +44,8 @@
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                     Meta Title
                                 </label>
-                                <input type="text" placeholder="Enter meta title"name="metatitle" value="{{old('metatitle')}}"
+                                <input type="text" placeholder="Enter meta title"name="metatitle"
+                                    value="{{ old('metatitle') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('metatitle')
@@ -55,7 +57,8 @@
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                     Meta Keywords
                                 </label>
-                                <input type="text" placeholder="Enter keywords" name="metakeyword" value="{{old('metakeyword')}}"
+                                <input type="text" placeholder="Enter keywords" name="metakeyword"
+                                    value="{{ old('metakeyword') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('metakeyword')
@@ -71,7 +74,8 @@
                                     class="flex h-11 w-full rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden shadow-theme-xs focus-within:ring-3 focus-within:ring-brand-500/10">
                                     <span
                                         class="flex items-center px-4 text-sm text-gray-500 dark:text-white/50 bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700 select-none">{{ url('/blog/') }}</span>
-                                    <input type="text" name="canonicalurl" id="canonicalInput" value="{{old('canonicalurl')}}"
+                                    <input type="text" name="canonicalurl" id="canonicalInput"
+                                        value="{{ old('canonicalurl') }}"
                                         class="flex-1 dark:bg-dark-900 bg-transparent px-4 py-2.5 text-sm text-gray-800  placeholder:text-gray-400 focus:outline-none dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
                                         placeholder="your-page">
                                 </div>
@@ -87,7 +91,8 @@
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                     Meta Description
                                 </label>
-                                <input type="text" name="metadesc" placeholder="Enter meta description" value="{{old('metadesc')}}"
+                                <input type="text" name="metadesc" placeholder="Enter meta description"
+                                    value="{{ old('metadesc') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('metadesc')
@@ -110,13 +115,15 @@
                                             Select subject
                                         </option>
                                         @foreach ($catgdata as $data)
-                                            <option value="{{ $data->category_name }}" {{$data->category_name === old('subject') ? 'selected' : ''}}
+                                            <option value="{{ $data->category_name }}"
+                                                {{ $data->category_name === old('subject') ? 'selected' : '' }}
                                                 class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">
                                                 {{ $data->category_name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                                    <span
+                                        class="absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400">
                                         <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke=""
@@ -138,7 +145,7 @@
                                 </label>
                                 <textarea rows="6" name="description"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-                                    id="summernote"> {{old('description')}}</textarea>
+                                    id="summernote"> {{ old('description') }}</textarea>
                                 <span style="font-size: 1rem" class="text-theme-xs text-xl text-error-500 mt-1.5">
                                     @error('description')
                                         {{ $message }}
@@ -198,21 +205,23 @@
             }
         });
     </script> --}}
-<!-- Place the first <script> tag in your HTML's <head> -->
-<script src="https://cdn.tiny.cloud/1/2zo19kfcjwbktqla81x3l9yio4qa8j7oktcimlz3b5ckw9sc/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+    <!-- Place the first <script>
+        tag in your HTML 's <head> --> <
+            script src =
+            "https://cdn.tiny.cloud/1/2zo19kfcjwbktqla81x3l9yio4qa8j7oktcimlz3b5ckw9sc/tinymce/8/tinymce.min.js"
+        referrerpolicy = "origin"
+        crossorigin = "anonymous" >
+    </script>
 
-<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
-<script>
-  tinymce.init({
-    selector: 'textarea#summernote',
-    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-  });
-</script>
-
-
-
-
+    <!-- Place the following <script>
+        and < textarea > tags your HTML 's <body> --> <
+            script >
+            tinymce.init({
+                selector: 'textarea#summernote',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            });
+    </script>
     <script>
         function slugify(text) {
             return text.toString().toLowerCase().trim().replace(/[\s\W-]+/g, '-').replace(/^-+|-+$/g, '');

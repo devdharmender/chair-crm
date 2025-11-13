@@ -49,7 +49,9 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::controller(ServicesController::class)->group(function(){
         Route::get('service', 'loadservices')->name('loadservice');
         Route::get('load-service','loadaddservice')->name('addservice');
+        Route::get('editservice/{num}','serviceEdit')->name('edit-service');
         Route::post('add-service','addservices')->name('add-services');
+        Route::post('update-service', 'updateService')->name('update-service');
     });
     
     // USER ROUTE

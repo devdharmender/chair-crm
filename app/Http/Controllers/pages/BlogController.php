@@ -189,37 +189,6 @@ class BlogController extends Controller
         
     }
 
-    // for rksk  only 
-    public function dummy(){
-        return view('dummy');
-    }
-    public function dummypg(Request $request){
-        $user_id = session('id') ?? '';
-        $user_name = session('name') ?? '';
-        $ip = $_SERVER['REMOTE_ADDR'?? ''];
-        $search_string = $request->input('searchString') ?? '';
-        $download_type = $request->input('pathAfter') ?? '';
-        $start_time = $start_time ?? '';
-        $start_time = $start_time ?? '';
-
-	
-// user_id===
-// name====
-// search_string ====
-// user_ip====
-// download_type ====
-// start_time
-// end_time
-// diffrence_in_ms
-// pdf_url
-// excel_url
-// date
-
-
-    }
-    // end rksk here
-
-
     public function helper_data(){
         $title = "this data send by helper for testing";
         $blog_img = "this data send by helper for testing";
