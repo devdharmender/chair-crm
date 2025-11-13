@@ -7,21 +7,25 @@ use Illuminate\Http\Request;
 use App\Models\pages\Category;
 use App\Models\pages\BlogModel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use session;
 
 // require_once app_path('Helper/firseHelper.php');
 class BlogController extends Controller
 {
-    public function load_vlog(){
+    public function load_vlog()
+    {
         $catgdata = Category::orderBy('id', 'desc')->get();
         $blogdata = BlogModel::orderBy('id', 'desc')->paginate(10);
-        return view('admin.pages.blogs',compact('catgdata','blogdata'));
+        return view('admin.pages.blogs', compact('catgdata', 'blogdata'));
     }
-    public function addBlog(){
+    public function addBlog()
+    {
         $catgdata = Category::orderBy('id', 'desc')->get();
-        return view('admin.pages.addBlog',compact('catgdata'));
+        return view('admin.pages.addBlog', compact('catgdata'));
     }
-    public function add_blog(Request $request){
+    public function add_blog(Request $request)
+    {
         // return $request->input();
         // exit;
         $validation = $request->validate([
@@ -32,8 +36,8 @@ class BlogController extends Controller
             'metadesc' => 'required|string|max:160',
             'subject' => 'required|string|max:255',
             'description' => 'required|string',
-            'productimg'=>'required|mimes:jpg,jpeg,png,svg|max:300'
-        ],[
+            'productimg' => 'required|mimes:jpg,jpeg,png,svg|max:300'
+        ], [
             'required' => 'Please fill this feild.',
             'string' => 'Your input must be in string.',
             'max' => 'Maximum input is 255',
@@ -41,17 +45,17 @@ class BlogController extends Controller
             'productimg.max' => 'Image size must be under 300KB'
         ]);
 
-        try{
-            if($validation == true){
+        try {
+            if ($validation == true) {
                 $file = $request->file('productimg');
                 // $extension = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
                 $title = $request->input('title');
                 $datetime = date('d_m_Y_H_i_s');
-                $removeSpace = str_replace(' ','_',$title);
-                $finalname = $removeSpace.$datetime.'.'.$extension;
+                $removeSpace = str_replace(' ', '_', $title);
+                $finalname = $removeSpace . $datetime . '.' . $extension;
 
-                $path = $file->storeAs('blog',$finalname,'public');
+                $path = $file->storeAs('blog', $finalname, 'public');
 
                 $data = new BlogModel;
                 $data->title = $title;
@@ -64,31 +68,31 @@ class BlogController extends Controller
                 $data->topic = $request->input('subject');
                 $data->description = $request->input('description');
 
-                if($data->save()){
-                    return redirect()->route('blog')->with('message','Success!! Blog added successfully.');
-                }else{
-                    return redirect()->route('blog')->with('error','Error!, Something went wrong please wait for sometime.');
+                if ($data->save()) {
+                    return redirect()->route('blog')->with('message', 'Success!! Blog added successfully.');
+                } else {
+                    return redirect()->route('blog')->with('error', 'Error!, Something went wrong please wait for sometime.');
                 }
-                
-            }else{
+            } else {
                 return 'something went wrong please check the code';
             }
-        }
-        catch (\Exception $e) {
-                \Log::error('Error retrieving input: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Error retrieving input: ' . $e->getMessage());
 
-                return response()->json([
-                    'message' => 'An error occurred while processing the request.',
-                    'error' => $e->getMessage()
-                ], 500);
-            }
+            return response()->json([
+                'message' => 'An error occurred while processing the request.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-    public function edit_blog($id){
+    public function edit_blog($id)
+    {
         $catgdata = Category::orderBy('id', 'desc')->get();
         $BlogModel = BlogModel::find($id);
-        return view('admin.pages.editBlog',compact('catgdata','BlogModel'));
+        return view('admin.pages.editBlog', compact('catgdata', 'BlogModel'));
     }
-    public function update_blog(Request $request){
+    public function update_blog(Request $request)
+    {
         $title =  $request->input('title');
         $metatitle =  $request->input('metatitle');
         $metakeyword =  $request->input('metakeyword');
@@ -100,7 +104,7 @@ class BlogController extends Controller
         // get data by blog table
         $blogdata = BlogModel::find($id);
         $oldimage = $blogdata->blog_img;
-        if($blogdata){
+        if ($blogdata) {
             $validation = $request->validate([
                 'title' => 'required|string|max:255',
                 'metatitle' => 'required|string|max:255',
@@ -109,8 +113,8 @@ class BlogController extends Controller
                 'metadesc' => 'required|string|max:160',
                 'subject' => 'required|string|max:255',
                 'description' => 'required|string',
-                'productimg'=> 'nullable|mimes:jpg,jpeg,png,svg|max:300',
-            ],[
+                'productimg' => 'nullable|mimes:jpg,jpeg,png,svg|max:300',
+            ], [
                 'required' => 'Please fill this feild.',
                 'string' => 'Your input must be in string.',
                 'max' => 'Maximum input is 255',
@@ -118,15 +122,15 @@ class BlogController extends Controller
                 'productimg.max' => 'Image size must be under 300KB'
             ]);
 
-            if($validation){
-                if($request->hasFile('productimg')){
+            if ($validation) {
+                if ($request->hasFile('productimg')) {
                     $file = $request->file('productimg');
                     $date = date('d_m_y_H_i_s');
                     $extension = $file->getClientOriginalExtension();
-                    $removeSpace = str_replace(" ","_", $title);
-                    $customeName = $removeSpace.''.$date.'.'.$extension;
-                    $path = $file->storeAs('blog',$customeName,'public');
-                }else{
+                    $removeSpace = str_replace(" ", "_", $title);
+                    $customeName = $removeSpace . '' . $date . '.' . $extension;
+                    $path = $file->storeAs('blog', $customeName, 'public');
+                } else {
                     $path = $blogdata->blog_img;
                 }
 
@@ -139,46 +143,43 @@ class BlogController extends Controller
                 $blogdata->topic = $subject ?? $blogdata->topic;
                 $blogdata->description = $description ?? $blogdata->description;
 
-                if($blogdata->save()){
-                    if($request->hasFile('productimg')){
-                        if(Storage::disk('public')->exists($oldimage)){
+                if ($blogdata->save()) {
+                    if ($request->hasFile('productimg')) {
+                        if (Storage::disk('public')->exists($oldimage)) {
                             Storage::disk('public')->delete($oldimage);
                         }
                     }
-                    return redirect()->route('blog')->with('message','Success!! Blog Updated successfully.');
-                }else{
-                    return redirect()->route('blog')->with('error','Error!, Something went wrong please wait for sometime.');
-
+                    return redirect()->route('blog')->with('message', 'Success!! Blog Updated successfully.');
+                } else {
+                    return redirect()->route('blog')->with('error', 'Error!, Something went wrong please wait for sometime.');
                 }
-                
-            }else{
-                return redirect()->route('blog')->with('error','Error!, Something went wront with validation');
+            } else {
+                return redirect()->route('blog')->with('error', 'Error!, Something went wront with validation');
             }
-        }else{
-            return redirect()->route('blog')->with('error','Error!, No data Found');
-
+        } else {
+            return redirect()->route('blog')->with('error', 'Error!, No data Found');
         }
-        
-
     }
-    public function deleteBlog(Request $request){
+    public function deleteBlog(Request $request)
+    {
         $id = $request->input('id');
         $data = BlogModel::find($id);
         $image = $data->blog_img;
 
-        if($data->delete()){
-            if($image){
-                if(Storage::disk('public')->exists($image)){
+        if ($data->delete()) {
+            if ($image) {
+                if (Storage::disk('public')->exists($image)) {
                     Storage::disk('public')->delete($image);
                 }
             }
             return response()->json([
                 'success' => true,
-                'message' => 'Delete successfully! you deleted '.$data->title . '.',
+                'message' => 'Delete successfully! you deleted ' . $data->title . '.',
             ]);
         }
     }
-    public function status_chnage(Request $request){
+    public function status_chnage(Request $request)
+    {
         $sta = '';
         $id = $request->input('id');
         $data = BlogModel::find($id);
@@ -186,10 +187,10 @@ class BlogController extends Controller
         $sta = ($data->blogstatus === 0) ? 1 : 0;
         $data->blogstatus = $sta;
         $data->save();
-        
     }
 
-    public function helper_data(){
+    public function helper_data()
+    {
         $title = "this data send by helper for testing";
         $blog_img = "this data send by helper for testing";
         $metatitle = "this data send by helper for testing";
@@ -199,10 +200,10 @@ class BlogController extends Controller
         $topic = "this data send by helper for testing";
         $description = "this data send by helper for testing";
 
-        $insvar = inserBlogji($title,$blog_img,$metatitle,$metakeyword,$canonical,$metadesc,$topic,$description);
-        if($insvar){
+        $insvar = inserBlogji($title, $blog_img, $metatitle, $metakeyword, $canonical, $metadesc, $topic, $description);
+        if ($insvar) {
             return "added data";
-        }else{
+        } else {
             return "something went wrong";
         }
     }

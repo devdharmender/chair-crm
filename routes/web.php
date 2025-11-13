@@ -52,6 +52,8 @@ Route::middleware(['sessionProtection'])->group(function(){
         Route::get('editservice/{num}','serviceEdit')->name('edit-service');
         Route::post('add-service','addservices')->name('add-services');
         Route::post('update-service', 'updateService')->name('update-service');
+        Route::post('service-status-update','servicestatusupdate')->name('service-status-change');
+        Route::post('service-delete','serviceDelete')->name('service-delete');
     });
     
     // USER ROUTE

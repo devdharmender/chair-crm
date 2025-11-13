@@ -116,9 +116,10 @@ class ServicesController extends Controller
         if ($validation) {
             if ($file = $request->file('image')) {
                 $file = $request->file('image');
+                $maintitle = $request->input('title');
                 $date = date('_d_m_y_H_i_s');
                 $extension = $file->getClientOriginalExtension();
-                $removeSpace = str_replace(" ", "_", $title);
+                $removeSpace = str_replace(" ", "_", $maintitle);
                 $customeName = $removeSpace . '' . $date . '.' . $extension;
                 $path = $file->storeAs('services', $customeName, 'public');
             } else {
@@ -144,5 +145,33 @@ class ServicesController extends Controller
                 return redirect()->Route('loadservice')->with('error', 'Something Went Wrong.');
             }
         }
+    }
+    public function servicestatusupdate(Request $request){
+        $id = $request->input('id');
+        $stat = '';
+        $data = Service::find($id);
+        ($data->service_status === 1) ?  $stat = 0 : $stat = 1;
+        
+        $data->service_status = $stat;
+        
+        $data->save();
+
+    }
+    public function serviceDelete(Request $request){
+        $id = $request->input('id');
+        $data = Service::find($id);
+        $oldimg = $data->service_img;
+        if($data->delete()){
+            if($oldimg){
+                if(Storage::disk('public')->exists($oldimg)){
+                    Storage::disk('public')->delete($oldimg);
+                }
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Delete successfully! you deleted ' . $data->title . '.',
+            ]);
+        }
+
     }
 }

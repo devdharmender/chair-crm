@@ -5,6 +5,7 @@ namespace App\Http\Controllers\pages;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\pages\Category;
+use Illuminate\Support\Facades\Log;
 
 class AddCategory extends Controller
 {
@@ -38,7 +39,7 @@ class AddCategory extends Controller
             }
         }
         catch (\Exception $e) {
-                \Log::error('Error retrieving input: ' . $e->getMessage());
+                Log::error('Error retrieving input: ' . $e->getMessage());
 
                 return response()->json([
                     'message' => 'An error occurred while processing the request.',
