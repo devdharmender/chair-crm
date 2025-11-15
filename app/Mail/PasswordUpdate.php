@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserAccessUpdate extends Mailable
+class PasswordUpdate extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
@@ -17,10 +17,10 @@ class UserAccessUpdate extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($data, $subject)
+    public function __construct($data,$subject)
     {
-        $this->data = $data;
         $this->subject = $subject;
+        $this->data = $data;
     }
 
     /**
@@ -39,8 +39,7 @@ class UserAccessUpdate extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'admin.mails.statusupdate',
-            with: ['data' => $this->data]
+            view: 'admin.mails.setnewpass',
         );
     }
 

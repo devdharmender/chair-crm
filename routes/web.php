@@ -10,9 +10,9 @@ use App\Http\Controllers\pages\BlogController;
 use App\Http\Controllers\services\ServicesController;
 use Illuminate\Support\Facades\Mail;
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+// Route::get('/', function () {
+//    return view('catg-ref');
+// });
 Route::get('/', function () {
     return view('admin.auth.login');
 });
@@ -82,7 +82,13 @@ Route::middleware(['sessionProtection'])->group(function(){
     Route::get('logout',[Login::class, 'logout'])->name('logout');
 
 });
+// email varification
+Route::get('verify-email/{email}',[UserController::class, 'emailverify'])->name('verify-email');
+// email varification end
 // authentication route
 Route::get('dashboard-log',[Login::class, 'login'])->name('dashboard-log');
 Route::post('auth-check',[Login::class, 'authCheck'])->name('auth-check');
 Route::get('forget-password',[Login::class,'forgetpassword'])->name('forget-pass');
+Route::post('submit-email',[Login::class, 'submitEmail'])->name('emailsub');
+Route::get('update-password/{email}',[Login::class,'updatepassword'])->name('update-pass');
+Route::post('set-new-password',[UserController::class, 'setnewpassword'])->name('newPassword');

@@ -15,37 +15,39 @@ use App\Mail\Accoundapproved;
 use App\Mail\UserStatus;
 use App\Mail\AccountActivated;
 use App\Mail\UserRejected;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
     // <<===================== active user page =======================>>
     public function activeusers(){
-        // $users = UserCheck::where('user_status','1' && 'status','active')->orderBy('id','desc')->paginate(10);
-        $users = UserCheck::join('rolemaster','rolemaster.id', '=' , 'users.role_id')->where('users.user_status','1')->where('users.status','active')->select(
-        'users.id as user_id',
-        'users.username',
-        'users.email',
-        'users.mobile_number',
-        'users.profile_image',
-        'users.role_id',
-        'users.user_status',
-        'users.status',
-        'users.email_notifications',
-        'users.dashboard_alerts',
-        'rolemaster.role_name'
-        )->orderBy('users.id','desc')->paginate(10);
+        $users = UserCheck::join('rolemaster', 'rolemaster.id', '=', 'users.role_id')->where('users.user_status', '1')->where('users.status', 'active')->select(
+            'users.id as user_id',
+            'users.username',
+            'users.email',
+            'users.mobile_number',
+            'users.profile_image',
+            'users.role_id',
+            'users.user_status',
+            'users.status',
+            'users.email_notifications',
+            'users.dashboard_alerts',
+            'rolemaster.role_name'
+        )->orderBy('users.id', 'desc')->paginate(10);
         $role = Rolemastermodel::all();
-        return view('admin.users.activeusers',compact('users','role'));
+        return view('admin.users.activeusers', compact('users', 'role'));
     }
     // <<===================== add user page =======================>>
-    public function loadaddusers(){
+    public function loadaddusers()
+    {
         $role = Rolemastermodel::all();
-        return view('admin.users.addusers',compact('role'));
+        return view('admin.users.addusers', compact('role'));
     }
     // <<===================== new User add by admin =======================>>
 
-    public function addusers(Request $request){
-            
+    public function addusers(Request $request)
+    {
+
         $validatedData = $request->validate([
             'username' => 'required|string',
             'email' => 'required|email|unique:users,email',
@@ -65,15 +67,15 @@ class UserController extends Controller
             'usersprofile.max' => 'Maximum allowed file size is 1MB.',
         ]);
         // file store here =========================>
-            $file = $request->file('usersprofile');
-            $extension = $file->getClientOriginalExtension();
-            $name = $request->input('username');
-            $date = date('d_m_Y_H_i_s');
-            $removespace = str_replace(' ','_', $name);
-            $filename = $removespace . '-' . $date . '.' . $extension;
-            $path = $file->storeAs('userProfile',$filename,'public');
+        $file = $request->file('usersprofile');
+        $extension = $file->getClientOriginalExtension();
+        $name = $request->input('username');
+        $date = date('d_m_Y_H_i_s');
+        $removespace = str_replace(' ', '_', $name);
+        $filename = $removespace . '-' . $date . '.' . $extension;
+        $path = $file->storeAs('userProfile', $filename, 'public');
         // file store end here =========================>
-        if($validatedData){
+        if ($validatedData) {
             $data = new UserCheck();
             $data->username = $request->input('username');
             $data->email = $request->input('email');
@@ -82,62 +84,61 @@ class UserController extends Controller
             $data->profile_image = $path;
             $data->password = Hash::make($request->input('password'));
 
-            if($data->save()){
+            if ($data->save()) {
 
-                $subject = "Welcome to ".$name." MixHub Services!";
+                $subject = "Welcome to " . $name . " MixHub Services!";
                 Mail::to($data->email)->send(new Users($data, $subject));
-                return redirect()->route('active-users')->with('message','Success!! User added successfully.');
-            }else{
-                return redirect()->route('active-users')->with('error','Error!, Something went wrong please wait for sometime.');
+                return redirect()->route('active-users')->with('message', 'Success!! User added successfully.');
+            } else {
+                return redirect()->route('active-users')->with('error', 'Error!, Something went wrong please wait for sometime.');
             }
         }
-
     }
     // <<===================== access upadte =======================>>
-    public function updateusertype(Request $request){
+    public function updateusertype(Request $request)
+    {
         // return "this  is userupdate";
         $userid = $request->input('userid');
         $roleid = $request->input('roleid');
         $sessionid = session()->get('id');
         $admintype = UserCheck::where('id', $sessionid)->first();
-        if($admintype->role_id == 1){
+        if ($admintype->role_id == 1) {
             $data = UserCheck::where('id', $userid)->first();
             $data->role_id = $roleid;
-            if($data->save()){
-                $subject = "MixHub Access update ".$data->username;
+            if ($data->save()) {
+                $subject = "MixHub Access update " . $data->username;
                 Mail::to($data->email)->send(new UserAccessUpdate($data, $subject));
                 return response()->json([
                     'success' => true,
                     'message' => 'User role updated successfully.'
                 ]);
             }
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized: You do not have permission to change roles.'
             ], 403);
         }
-        
-        
     }
     // <<===================== activate and deactivate users =======================>>
-    public function statusupdate(Request $request){
+    public function statusupdate(Request $request)
+    {
         $uid = $request->input('userid');
-        $mainid = str_replace('-status','',$uid);
+        $mainid = str_replace('-status', '', $uid);
         $sessionid = session()->get('id');
         $udata = UserCheck::where('id', $sessionid)->first();
-        if($udata->role_id === 1){
-        $data = UserCheck::where('id', $mainid)->first();
+        if ($udata->role_id === 1) {
+            $data = UserCheck::where('id', $mainid)->first();
             ($data->status === 'active') ? $data->status = 'inactive' : $data->status = 'active';
-            if($data->save()){
-                $subject = 'Your accound with mixhub services has been '.$data->status;
+            if ($data->save()) {
+                $subject = 'Your accound with mixhub services has been ' . $data->status;
                 Mail::to($data->email)->send(new UserStatus($data, $subject));
                 return response()->json([
                     'success' => true,
-                    'message' => 'User '.$data->status.' successfully. '
+                    'message' => 'User ' . $data->status . ' successfully. '
                 ]);
             }
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized: You do not have permission to change roles.'
@@ -146,69 +147,99 @@ class UserController extends Controller
     }
 
     // <<=========================== inactive user list ====================================>>
-    public function inactiveusers(){
-        $user = UserCheck::where('user_status','1')->where('status','inactive')->orderBy('id','desc')->paginate(10);
-        return view('admin.users.inactiveusers',compact('user'));
+    public function inactiveusers()
+    {
+        $user = UserCheck::where('user_status', '1')->where('status', 'inactive')->orderBy('id', 'desc')->paginate(10);
+        return view('admin.users.inactiveusers', compact('user'));
     }
     // <<=========================== inactive user list ====================================>>
-    public function rejectedusers(){
-        $user = UserCheck::where('user_status','3')->where('email_verification','verified')->orderBy('id','desc')->paginate(10);
-        return view('admin.users.rejectedusers',compact('user'));
+    public function rejectedusers()
+    {
+        $user = UserCheck::where('user_status', '3')->where('email_verification', 'verified')->orderBy('id', 'desc')->paginate(10);
+        return view('admin.users.rejectedusers', compact('user'));
     }
     // <<=========================== acept user Dashboard action ====================================>>
-    public function acceptuser($id){
+    public function acceptuser($id)
+    {
         $data = UserCheck::where('id', $id)->first();
         $data->user_status = 1;
         $data->status = 'active';
-        if($data->save()){
+        if ($data->save()) {
             $subject = 'Your accound with mixhub services has been accepted.';
             Mail::to($data->email)->send(new Accoundapproved($data, $subject));
-            return redirect()->route('system-dashboard')->with('message','User accepted successfully. and ristricted  to visit any page.');
+            return redirect()->route('system-dashboard')->with('message', 'User accepted successfully. and ristricted  to visit any page.');
         }
-
     }
     // <<=========================== Reject user Dashboard action ====================================>>
-    public function rejectuser($id){
+    public function rejectuser($id)
+    {
         $data = UserCheck::where('id', $id)->first();
         $data->user_status = 3;
-        if($data->save()){
+        if ($data->save()) {
             $subject = 'Your accound with mixhub services has been rejected.';
             Mail::to($data->email)->send(new UserRejected($data, $subject));
-            return redirect()->route('system-dashboard')->with('message','User rejected successfully. and move to active user list.');
+            return redirect()->route('system-dashboard')->with('message', 'User rejected successfully. and move to active user list.');
         }
     }
 
     // <<=========================== Deactivated user Dashboard action ====================================>>
-    public function deactivated($id){
-        $userdata = UserCheck::where('id',$id)->first();
+    public function deactivated($id)
+    {
+        $userdata = UserCheck::where('id', $id)->first();
         $userdata->status = 'inactive';
         $userdata->user_status = '3';
-        if($userdata->save()){
+        if ($userdata->save()) {
             $subject = 'Account Deactivation Notice with MIXHUB-SERVICES';
-            Mail::to($userdata->email)->send(new AccountDeactivated($subject,$userdata));
-            return redirect()->route('active-users')->with('message','Account have been deavitated succussfully!');
-
+            Mail::to($userdata->email)->send(new AccountDeactivated($subject, $userdata));
+            return redirect()->route('active-users')->with('message', 'Account have been deavitated succussfully!');
         }
     }
-    public function activated($id){
+    public function activated($id)
+    {
         $userdata = UserCheck::findOrFail($id);
         $userdata->status = 'active';
         $userdata->user_status = '1';
 
-            if ($userdata->save()) {
-                $subject = 'Account Activation Notice from MIXHUB-SERVICES';
+        if ($userdata->save()) {
+            $subject = 'Account Activation Notice from MIXHUB-SERVICES';
 
-                try {
-                        Mail::to($userdata->email)->send(new AccountActivated($subject, $userdata));
-                    } catch (\Exception $e) {
-                        return redirect()->route('active-users')->with('error', 'Email could not be sent: ' . $e->getMessage());
-                    }
+            try {
+                Mail::to($userdata->email)->send(new AccountActivated($subject, $userdata));
+            } catch (\Exception $e) {
+                return redirect()->route('active-users')->with('error', 'Email could not be sent: ' . $e->getMessage());
+            }
 
-                    return redirect()->route('active-users')->with('message', 'Account has been activated successfully!');
+            return redirect()->route('active-users')->with('message', 'Account has been activated successfully!');
+        }
+    }
+    public function userProfile()
+    {
+        $id = session()->get('id');
+        $data = UserCheck::select('username','email','mobile_number','profile_image','role_id','user_status','status')->from('users')->where('id',$id)->first();
+        return view('admin.users.userProfile',compact('data'));
+    }
+    public function emailverify($email)
+    {
+
+        $data = UserCheck::where('email', $email)->first();
+        if ($data) {
+            $data->email_verification = 'verified';
+            if ($data->save()) {
+                return redirect()->route('dashboard-log')->with('error', 'Email verified successfully. please wait till admin approved your account.');
             }
         }
+    }
+    public function setnewpassword(Request $request) {
 
-    public function userProfile() {
-        return view('admin.users.userProfile');
+        $email = $request->input('email');
+        $mainemail = Crypt::decrypt($email);
+        $data = UserCheck::where('email', $mainemail)->first();
+        if ($data) {
+            $password = $request->input('password');
+            $data->password = Hash::make($password);
+            if ($data->save()) {
+                return redirect()->route('dashboard-log')->with('error', 'Password updated successfully. Please login.');
+            }
+        }
     }
 }

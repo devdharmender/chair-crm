@@ -12,7 +12,8 @@ use Illuminate\Queue\SerializesModels;
 class AccountDeactivated extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $data;
+    public $subject;
     /**
      * Create a new message instance.
      */

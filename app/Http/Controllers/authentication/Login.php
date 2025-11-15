@@ -8,14 +8,16 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\authentication\UserCheck;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordUpdate;
 // use Illuminate\Support\Str;
 
 
 class Login extends Controller
 {
     public function login(){
-        if(session()->has('token')){
-            return view('admin.dashboard');
+        if(session()->has('role_id')){
+            return redirect()->route('system-dashboard')->with('error','you are already logged-in');
         }else{
             return view('admin.auth.login');
         }
@@ -74,14 +76,14 @@ class Login extends Controller
                 ->with('message', 'Email not found.');
         }
 
-    } catch (\Exception $e) {
-        Log::error('Error during login: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Error during login: ' . $e->getMessage());
 
-        return response()->json([
-            'message' => 'An error occurred while processing your request.',
-            'error' => $e->getMessage()
-        ], 500);
-    }
+            return response()->json([
+                'message' => 'An error occurred while processing your request.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
 
     }
     public function logout(){
@@ -92,6 +94,22 @@ class Login extends Controller
     // forget password
     public function forgetpassword(){
         return view('admin.auth.forgetpass');
+    }
+    public function submitEmail(Request $request){
+        
+        $email = $request->input('email');
+        $data = UserCheck::where('email', $email)->first();
+        if($data){
+            $subject = "Reset Your Password";
+            if(Mail::to($data->email)->send(new PasswordUpdate($data,$subject))){
+                return redirect()->route('dashboard-log')->with('error','Password reset link has been sent to your email. please check and updated password.');
+            }
+        }else{
+            return "no record found";
+        }
+    }
+    public function updatepassword(Request $request){        
+        return view('admin.auth.setnewpassword');
     }
     
 }

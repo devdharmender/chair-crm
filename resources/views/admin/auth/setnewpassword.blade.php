@@ -65,34 +65,19 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                             <h1
                                 class="text-title-sm sm:text-title-md mb-2 font-semibold text-gray-800 dark:text-white/90">
-                                Forgot Your Password?
+                                Set new password.
                             </h1>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Enter the email address linked to your account, and we’ll send you a link to reset your
-                                password.
+                                Thankyou for choosing us please set you new password and try to login.
                             </p>
                         </div>
                         <div>
-                            <form action="{{route('emailsub')}}" method="POST">
+                            <form action="{{route('newPassword')}}" method="POST">
                                 @csrf
                                 <div class="space-y-5">
-                                    <!-- Email -->
-                                    <div>
-                                        <label for="email"
-                                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                            Email<span class="text-error-500">*</span>
-                                        </label>
-                                        <input type="email" id="email" name="email"
-                                            placeholder="email@gmail.com"
-                                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                                        <span class="text-theme-xs text-error-500 mt-1.5">
-                                            @error('email')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
                                     <!-- Password -->
-                                    {{-- <div>
+                                    <input type="hidden" name="email" value="{{request()->segment(2)}}">
+                                    <div>
                                         <label for="password"
                                             class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Password<span class="text-error-500">*</span>
@@ -124,7 +109,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                                 {{ $message }}
                                             @enderror
                                         </span>
-                                    </div> --}}
+                                    </div>
                                     <!-- Checkbox -->
                                     <div class="flex items-center justify-between">
                                         <div x-data="{ checkboxToggle: false }">

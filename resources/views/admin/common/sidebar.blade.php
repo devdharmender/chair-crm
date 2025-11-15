@@ -34,6 +34,7 @@
                 </h3>
 
                 <ul class="mb-6 flex flex-col gap-1">
+                    @if (session()->get('role_id') === 1)    
                     <!-- Menu Item Dashboard -->
                     <li>
                         <a href="{{route('system-dashboard')}}"
@@ -118,6 +119,8 @@
                         <!-- Dropdown Menu End -->
                     </li>
                     <!-- Menu Item Forms -->
+                    @endif
+
 
                     <!-- Menu Item Pages -->
                     <li>
