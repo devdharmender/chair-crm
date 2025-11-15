@@ -218,6 +218,7 @@ class UserController extends Controller
         $data = UserCheck::select('username','email','mobile_number','profile_image','role_id','user_status','status')->from('users')->where('id',$id)->first();
         return view('admin.users.userProfile',compact('data'));
     }
+    // email verify
     public function emailverify($email)
     {
 
@@ -229,6 +230,7 @@ class UserController extends Controller
             }
         }
     }
+    // set new password
     public function setnewpassword(Request $request) {
 
         $email = $request->input('email');
