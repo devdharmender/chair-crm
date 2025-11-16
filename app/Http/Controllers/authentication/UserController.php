@@ -15,6 +15,7 @@ use App\Mail\Accoundapproved;
 use App\Mail\UserStatus;
 use App\Mail\AccountActivated;
 use App\Mail\UserRejected;
+use App\Mail\Sendnotify;
 use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
@@ -241,6 +242,19 @@ class UserController extends Controller
             $data->password = Hash::make($password);
             if ($data->save()) {
                 return redirect()->route('dashboard-log')->with('error', 'Password updated successfully. Please login.');
+            }
+        }
+    }
+    public function sendnotification(Request $request){
+        $id = $request->input('btnid');
+        $udata = UserCheck::where('id',$id)->first();
+        if($udata){
+            $subject = "Finish Setting Up Your Account – Verify Your Email";
+            if(Mail::to($udata->email)->send(new Sendnotify($udata,$subject))){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Notify Success To: Mr. '. $udata->username
+                ]);
             }
         }
     }

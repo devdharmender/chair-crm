@@ -13,64 +13,79 @@
             font-size: inherit !important;
             /* Inherit Tailwind text size */
         }
+
+        /* CHANGED: Added full style for scrolling + hidden scrollbar */
+
+        .table-scroll {
+            max-height: 350px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .table-scroll::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .table-scroll {
+            scrollbar-width: none;
+        }
     </style>
-    
+
     <div class="col-span-12">
         {{-- FORM SUBMIT STATUS START --}}
-            @if (session('message'))
-                <div
-                    class="rounded-xl border border-success-500 bg-success-50 p-4 dark:border-success-500/30 dark:bg-success-500/15">
-                    <div class="flex items-start gap-3">
-                        <div class="-mt-0.5 text-success-500">
-                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M3.70186 12.0001C3.70186 7.41711 7.41711 3.70186 12.0001 3.70186C16.5831 3.70186 20.2984 7.41711 20.2984 12.0001C20.2984 16.5831 16.5831 20.2984 12.0001 20.2984C7.41711 20.2984 3.70186 16.5831 3.70186 12.0001ZM12.0001 1.90186C6.423 1.90186 1.90186 6.423 1.90186 12.0001C1.90186 17.5772 6.423 22.0984 12.0001 22.0984C17.5772 22.0984 22.0984 17.5772 22.0984 12.0001C22.0984 6.423 17.5772 1.90186 12.0001 1.90186ZM15.6197 10.7395C15.9712 10.388 15.9712 9.81819 15.6197 9.46672C15.2683 9.11525 14.6984 9.11525 14.347 9.46672L11.1894 12.6243L9.6533 11.0883C9.30183 10.7368 8.73198 10.7368 8.38051 11.0883C8.02904 11.4397 8.02904 12.0096 8.38051 12.3611L10.553 14.5335C10.7217 14.7023 10.9507 14.7971 11.1894 14.7971C11.428 14.7971 11.657 14.7023 11.8257 14.5335L15.6197 10.7395Z"
-                                    fill="" />
-                            </svg>
-                        </div>
+        @if (session('message'))
+            <div
+                class="rounded-xl border border-success-500 bg-success-50 p-4 dark:border-success-500/30 dark:bg-success-500/15">
+                <div class="flex items-start gap-3">
+                    <div class="-mt-0.5 text-success-500">
+                        <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M3.70186 12.0001C3.70186 7.41711 7.41711 3.70186 12.0001 3.70186C16.5831 3.70186 20.2984 7.41711 20.2984 12.0001C20.2984 16.5831 16.5831 20.2984 12.0001 20.2984C7.41711 20.2984 3.70186 16.5831 3.70186 12.0001ZM12.0001 1.90186C6.423 1.90186 1.90186 6.423 1.90186 12.0001C1.90186 17.5772 6.423 22.0984 12.0001 22.0984C17.5772 22.0984 22.0984 17.5772 22.0984 12.0001C22.0984 6.423 17.5772 1.90186 12.0001 1.90186ZM15.6197 10.7395C15.9712 10.388 15.9712 9.81819 15.6197 9.46672C15.2683 9.11525 14.6984 9.11525 14.347 9.46672L11.1894 12.6243L9.6533 11.0883C9.30183 10.7368 8.73198 10.7368 8.38051 11.0883C8.02904 11.4397 8.02904 12.0096 8.38051 12.3611L10.553 14.5335C10.7217 14.7023 10.9507 14.7971 11.1894 14.7971C11.428 14.7971 11.657 14.7023 11.8257 14.5335L15.6197 10.7395Z"
+                                fill="" />
+                        </svg>
+                    </div>
 
-                        <div>
-                            <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
-                                Success Message
-                            </h4>
+                    <div>
+                        <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+                            Success Message
+                        </h4>
 
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ session('message') }}
-                            </p>
-                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ session('message') }}
+                        </p>
                     </div>
                 </div>
-            @endif
-            @if (session('error'))
-                <div
-                    class="rounded-xl border border-error-500 bg-error-50 p-4 dark:border-error-500/30 dark:bg-error-500/15">
-                    <div class="flex items-start gap-3">
-                        <div class="-mt-0.5 text-error-500">
-                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M20.3499 12.0004C20.3499 16.612 16.6115 20.3504 11.9999 20.3504C7.38832 20.3504 3.6499 16.612 3.6499 12.0004C3.6499 7.38881 7.38833 3.65039 11.9999 3.65039C16.6115 3.65039 20.3499 7.38881 20.3499 12.0004ZM11.9999 22.1504C17.6056 22.1504 22.1499 17.6061 22.1499 12.0004C22.1499 6.3947 17.6056 1.85039 11.9999 1.85039C6.39421 1.85039 1.8499 6.3947 1.8499 12.0004C1.8499 17.6061 6.39421 22.1504 11.9999 22.1504ZM13.0008 16.4753C13.0008 15.923 12.5531 15.4753 12.0008 15.4753L11.9998 15.4753C11.4475 15.4753 10.9998 15.923 10.9998 16.4753C10.9998 17.0276 11.4475 17.4753 11.9998 17.4753L12.0008 17.4753C12.5531 17.4753 13.0008 17.0276 13.0008 16.4753ZM11.9998 6.62898C12.414 6.62898 12.7498 6.96476 12.7498 7.37898L12.7498 13.0555C12.7498 13.4697 12.414 13.8055 11.9998 13.8055C11.5856 13.8055 11.2498 13.4697 11.2498 13.0555L11.2498 7.37898C11.2498 6.96476 11.5856 6.62898 11.9998 6.62898Z"
-                                    fill="#F04438"></path>
-                            </svg>
-                        </div>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="rounded-xl border border-error-500 bg-error-50 p-4 dark:border-error-500/30 dark:bg-error-500/15">
+                <div class="flex items-start gap-3">
+                    <div class="-mt-0.5 text-error-500">
+                        <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M20.3499 12.0004C20.3499 16.612 16.6115 20.3504 11.9999 20.3504C7.38832 20.3504 3.6499 16.612 3.6499 12.0004C3.6499 7.38881 7.38833 3.65039 11.9999 3.65039C16.6115 3.65039 20.3499 7.38881 20.3499 12.0004ZM11.9999 22.1504C17.6056 22.1504 22.1499 17.6061 22.1499 12.0004C22.1499 6.3947 17.6056 1.85039 11.9999 1.85039C6.39421 1.85039 1.8499 6.3947 1.8499 12.0004C1.8499 17.6061 6.39421 22.1504 11.9999 22.1504ZM13.0008 16.4753C13.0008 15.923 12.5531 15.4753 12.0008 15.4753L11.9998 15.4753C11.4475 15.4753 10.9998 15.923 10.9998 16.4753C10.9998 17.0276 11.4475 17.4753 11.9998 17.4753L12.0008 17.4753C12.5531 17.4753 13.0008 17.0276 13.0008 16.4753ZM11.9998 6.62898C12.414 6.62898 12.7498 6.96476 12.7498 7.37898L12.7498 13.0555C12.7498 13.4697 12.414 13.8055 11.9998 13.8055C11.5856 13.8055 11.2498 13.4697 11.2498 13.0555L11.2498 7.37898C11.2498 6.96476 11.5856 6.62898 11.9998 6.62898Z"
+                                fill="#F04438"></path>
+                        </svg>
+                    </div>
 
-                        <div>
-                            <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
-                                Error Message
-                            </h4>
+                    <div>
+                        <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+                            Error Message
+                        </h4>
 
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ session('error') }}
-                            </p>
-                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ session('error') }}
+                        </p>
                     </div>
                 </div>
-            @endif
-            {{-- FORM SUBMIT STATUS END --}}
+            </div>
+        @endif
+        {{-- FORM SUBMIT STATUS END --}}
         <!-- Metric Group Two -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-4">
-            <!-- Metric Item Start -->
             <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
                 <p class="text-theme-sm text-gray-500 dark:text-gray-400">
                     Total Users
@@ -89,7 +104,7 @@
                         </span>
                         <span
                             class="flex items-center gap-1 rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500">
-                            {{date('d-M-Y')}}
+                            {{ date('d-M-Y') }}
                         </span>
                     </div>
                 </div>
@@ -209,315 +224,214 @@
                     <div id="fifthchart" class="text-theme-sm text-gray-500 dark:text-gray-400"></div>
                 </div>
             </div>
+            <!-- ====== Upcoming Schedule Start -->
+            <div class="col-span-12 xl:col-span-12">
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <!-- Card item -->
+                    <div
+                        class="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+                        <div class="flex items-start justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+                                New Users
+                            </h3>
 
-            <div class="col-span-12 xl:col-span-6">
-                <!-- ====== Upcoming Schedule Start -->
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] sm:p-6">
-                    <div class="mb-6 flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                            Upcoming Schedule
-                        </h3>
-
-                        <div x-data="{ openDropDown: false }" class="relative">
-                            <button @click="openDropDown = !openDropDown"
-                                :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                                    'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
-                                class="text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                                <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-                                        fill=""></path>
-                                </svg>
-                            </button>
-                            <div x-show="openDropDown" @click.outside="openDropDown = false"
-                                class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
-                                style="display: none;">
-                                <button
-                                    class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                    View More
+                            <div x-data="{ openDropDown: false }" class="relative">
+                                <button @click="openDropDown = !openDropDown"
+                                    :class="openDropDown ? 'text-gray-700 dark:text-white' :
+                                        'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
+                                    class="text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+                                            fill=""></path>
+                                    </svg>
                                 </button>
-                                <button
-                                    class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="custom-scrollbar max-w-full overflow-x-auto">
-                        <div class="min-w-[500px]">
-                            <div class="flex flex-col gap-2">
-                                <div x-data="{ checked: false }" @click="checked = !checked"
-                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
-                                    <div class="flex items-start gap-3">
-                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
-                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
-                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
-                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
-                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                                class="hidden">
-                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
-                                                    stroke-width="1.94437" stroke-linecap="round" stroke-linejoin="round">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-                                                Wed, 11 jan
-                                            </span>
-                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                                09:20 AM
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                            Business Analytics Press
-                                        </span>
-                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
-                                            Exploring the Future of Data-Driven +6 more
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div x-data="{ checked: false }" @click="checked = !checked"
-                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
-                                    <div class="flex items-start gap-3">
-                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
-                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
-                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
-                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
-                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                                class="hidden">
-                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
-                                                    stroke-width="1.94437" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-                                                Fri, 15 feb
-                                            </span>
-                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                                10:35 AM
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span
-                                            class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                            Business Sprint
-                                        </span>
-                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
-                                            Techniques from Business Sprint +2 more
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div x-data="{ checked: false }" @click="checked = !checked"
-                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
-                                    <div class="flex items-start gap-3">
-                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
-                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
-                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
-                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
-                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                                class="hidden">
-                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
-                                                    stroke-width="1.94437" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-                                                Thu, 18 mar
-                                            </span>
-                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                                1:15 AM
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span
-                                            class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                            Customer Review Meeting
-                                        </span>
-                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
-                                            Insights from the Customer Review Meeting +8 more
-                                        </span>
-                                    </div>
-                                </div>
-                                <div x-data="{ checked: false }" @click="checked = !checked"
-                                    class="flex cursor-pointer items-center gap-9 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-white/[0.03]">
-                                    <div class="flex items-start gap-3">
-                                        <div class="flex h-5 w-5 items-center justify-center rounded-md border-[1.25px] bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700"
-                                            :class="checked ? 'border-brand-500 dark:border-brand-500 bg-brand-500' :
-                                                'bg-white dark:bg-white/0 border-gray-300 dark:border-gray-700'">
-                                            <svg :class="checked ? 'block' : 'hidden'" width="14" height="14"
-                                                viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                                class="hidden">
-                                                <path d="M11.6668 3.5L5.25016 9.91667L2.3335 7" stroke="white"
-                                                    stroke-width="1.94437" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-                                                Thu, 18 mar
-                                            </span>
-                                            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                                1:15 AM
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span
-                                            class="mb-1 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
-                                            Customer Review Meeting
-                                        </span>
-                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
-                                            Insights from the Customer Review Meeting +8 more
-                                        </span>
-                                    </div>
+                                <div x-show="openDropDown" @click.outside="openDropDown = false"
+                                    class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+                                    style="display: none;">
+                                    <button
+                                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                        View More
+                                    </button>
+                                    <button
+                                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="max-w-full table-scroll">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-gray-100 border-y dark:border-gray-800">
+                                        <th class="py-3 font-normal text-left">
+                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                                User Name
+                                            </p>
+                                        </th>
+                                        <th class="py-3 font-normal text-left">
+                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                                User Email
+                                            </p>
+                                        </th>
+                                        <th class="py-3 font-normal text-left">
+                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">Notify</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                                    @foreach ($newusers as $pendinguser)
+                                        <tr>
+                                            <td class="py-3" colspan="1">
+                                                <div class="flex items-center gap-[18px]">
+                                                    <div class="w-10 h-10 overflow-hidden rounded-full">
+                                                        <img src="{{ asset('storage/' . $pendinguser->profile_image) }}"
+                                                            alt="user"
+                                                            class="object-cover object-center w-full h-full">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-gray-700 text-theme-sm dark:text-gray-400">
+                                                            {{ $pendinguser->username }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3">
+                                                <div class="flex items-center w-full gap-5">
+                                                    <div class="truncate">
+                                                        <p
+                                                            class="text-theme-sm mb-0.5 truncate font-medium text-gray-700 dark:text-gray-400">
+                                                            {{ $pendinguser->email }}
+                                                        </p>
+                                                        <span class="text-gray-500 text-theme-xs dark:text-gray-400">
+                                                            {{ \Carbon\Carbon::parse($pendinguser->created_at)->diffForHumans() }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3">
+                                                {{-- <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 inline-block rounded-full px-2 py-0.5 font-medium">
+                                                Send Notification
+                                            </p> --}}
+
+
+                                                <button class="sendnotification shadow-theme-xs inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200" id="{{$pendinguser->id}}">
+                                                    <svg class="fill-current" width="20" height="20"
+                                                        viewBox="0 0 20 20" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M10.75 2.29248C10.75 1.87827 10.4143 1.54248 10 1.54248C9.58583 1.54248 9.25004 1.87827 9.25004 2.29248V2.83613C6.08266 3.20733 3.62504 5.9004 3.62504 9.16748V14.4591H3.33337C2.91916 14.4591 2.58337 14.7949 2.58337 15.2091C2.58337 15.6234 2.91916 15.9591 3.33337 15.9591H4.37504H15.625H16.6667C17.0809 15.9591 17.4167 15.6234 17.4167 15.2091C17.4167 14.7949 17.0809 14.4591 16.6667 14.4591H16.375V9.16748C16.375 5.9004 13.9174 3.20733 10.75 2.83613V2.29248ZM14.875 14.4591V9.16748C14.875 6.47509 12.6924 4.29248 10 4.29248C7.30765 4.29248 5.12504 6.47509 5.12504 9.16748V14.4591H14.875ZM8.00004 17.7085C8.00004 18.1228 8.33583 18.4585 8.75004 18.4585H11.25C11.6643 18.4585 12 18.1228 12 17.7085C12 17.2943 11.6643 16.9585 11.25 16.9585H8.75004C8.33583 16.9585 8.00004 17.2943 8.00004 17.7085Z"
+                                                            fill=""></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <!-- ====== Upcoming Schedule End -->
-            </div>
-            <div
-                class="col-span-12 xl:col-span-6 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-                <div class="mb-6 flex justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                            Activities
-                        </h3>
-                    </div>
-                    <div x-data="{ openDropDown: false }" class="relative h-fit">
-                        <button @click="openDropDown = !openDropDown"
-                            :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                                'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
-                            class="text-gray-400 hover:text-gray-700 dark:hover:text-white">
-                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+
+                    <!-- Card item -->
+                    <div
+                        class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+                        <div class="flex items-start justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+                                Top Users
+                            </h3>
+
+                            <div x-data="{ openDropDown: false }" class="relative">
+                                <button @click="openDropDown = !openDropDown"
+                                    :class="openDropDown ? 'text-gray-700 dark:text-white' :
+                                        'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
+                                    class="text-gray-400 hover:text-gray-700 dark:hover:text-white">
+                                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+                                            fill=""></path>
+                                    </svg>
+                                </button>
+                                <div x-show="openDropDown" @click.outside="openDropDown = false"
+                                    class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+                                    style="display: none;">
+                                    <button
+                                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                        View More
+                                    </button>
+                                    <button
+                                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="my-6">
+                            <div
+                                class="flex items-center justify-between border-b border-gray-100 pb-4 dark:border-gray-800">
+                                <span class="text-theme-xs text-gray-400"> Source </span>
+                                <span class="text-right text-theme-xs text-gray-400"> Pageview </span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-b border-gray-100 py-3 dark:border-gray-800">
+                                <span class="text-theme-sm text-gray-500 dark:text-gray-400">
+                                    tailadmin.com
+                                </span>
+                                <span class="text-right text-theme-sm text-gray-500 dark:text-gray-400">
+                                    4.7K
+                                </span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-b border-gray-100 py-3 dark:border-gray-800">
+                                <span class="text-theme-sm text-gray-500 dark:text-gray-400">
+                                    preview.tailadmin.com
+                                </span>
+                                <span class="text-right text-theme-sm text-gray-500 dark:text-gray-400">
+                                    3.4K
+                                </span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-b border-gray-100 py-3 dark:border-gray-800">
+                                <span class="text-theme-sm text-gray-500 dark:text-gray-400">
+                                    docs.tailadmin.com
+                                </span>
+                                <span class="text-right text-theme-sm text-gray-500 dark:text-gray-400">
+                                    2.9K
+                                </span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-b border-gray-100 py-3 dark:border-gray-800">
+                                <span class="text-theme-sm text-gray-500 dark:text-gray-400">
+                                    tailadmin.com/componetns
+                                </span>
+                                <span class="text-right text-theme-sm text-gray-500 dark:text-gray-400">
+                                    1.5K
+                                </span>
+                            </div>
+                        </div>
+
+                        <a href="#"
+                            class="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white p-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
+                            Channels Report
+                            <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+                                    d="M17.4175 9.9986C17.4178 10.1909 17.3446 10.3832 17.198 10.53L12.2013 15.5301C11.9085 15.8231 11.4337 15.8233 11.1407 15.5305C10.8477 15.2377 10.8475 14.7629 11.1403 14.4699L14.8604 10.7472L3.33301 10.7472C2.91879 10.7472 2.58301 10.4114 2.58301 9.99715C2.58301 9.58294 2.91879 9.24715 3.33301 9.24715L14.8549 9.24715L11.1403 5.53016C10.8475 5.23717 10.8477 4.7623 11.1407 4.4695C11.4336 4.1767 11.9085 4.17685 12.2013 4.46984L17.1588 9.43049C17.3173 9.568 17.4175 9.77087 17.4175 9.99715C17.4175 9.99763 17.4175 9.99812 17.4175 9.9986Z"
                                     fill=""></path>
                             </svg>
-                        </button>
-                        <div x-show="openDropDown" @click.outside="openDropDown = false"
-                            class="shadow-theme-lg dark:bg-gray-dark absolute top-full right-0 z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800"
-                            style="display: none;">
-                            <button
-                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                View More
-                            </button>
-                            <button
-                                class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <!-- Timeline line -->
-                    <div class="absolute top-6 bottom-10 left-5 w-px bg-gray-200 dark:bg-gray-800"></div>
-
-                    <!-- Francisco Grbbs -->
-                    <div class="relative mb-6 flex">
-                        <div class="z-10 flex-shrink-0">
-                            <img src="src/images/user/user-01.jpg" alt="Francisco Grbbs"
-                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
-                        </div>
-                        <div class="ml-4">
-                            <div class="mb-1 flex items-center gap-1">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M9 5.0625H14.0625L12.5827 8.35084C12.4506 8.64443 12.4506 8.98057 12.5827 9.27416L14.0625 12.5625H10.125C9.50368 12.5625 9 12.0588 9 11.4375V10.875M3.9375 10.875H9M3.9375 3.375H7.875C8.49632 3.375 9 3.87868 9 4.5V10.875M3.9375 15.9375V2.0625"
-                                        stroke="#12B76A" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round"></path>
-                                </svg>
-                                <p class="text-theme-xs text-success-500 font-medium">New invoice</p>
-                            </div>
-                            <div class="flex items-baseline">
-                                <h3 class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
-                                    Francisco Grbbs
-                                </h3>
-                                <span class="text-theme-sm ml-2 font-normal text-gray-500 dark:text-gray-400">created
-                                    invoice</span>
-                            </div>
-                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
-                                PQ-4491C
-                            </p>
-                            <p class="text-theme-xs mt-1 text-gray-400">Just Now</p>
-                        </div>
-                    </div>
-
-                    <!-- Courtney Henry -->
-                    <div class="relative mb-6 flex">
-                        <div class="z-10 flex-shrink-0">
-                            <img src="src/images/user/user-03.jpg" alt="Courtney Henry"
-                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
-                        </div>
-                        <div class="ml-4">
-                            <div class="flex items-baseline">
-                                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">
-                                    Courtney Henry
-                                </h3>
-                                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">created invoice</span>
-                            </div>
-                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
-                                HK-234G
-                            </p>
-                            <p class="text-theme-xs mt-1 text-gray-400">15 minutes ago</p>
-                        </div>
-                    </div>
-
-                    <!-- Bessie Cooper -->
-                    <div class="relative mb-6 flex">
-                        <div class="z-10 flex-shrink-0">
-                            <img src="src/images/user/user-04.jpg" alt="Bessie Cooper"
-                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
-                        </div>
-                        <div class="ml-4">
-                            <div class="flex items-baseline">
-                                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">
-                                    Bessie Cooper
-                                </h3>
-                                <span class="text-theme-sm ml-2 text-gray-500 dark:text-gray-400">created invoice</span>
-                            </div>
-                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
-                                LH-2891C
-                            </p>
-                            <p class="text-theme-xs mt-1 text-gray-400">5 months ago</p>
-                        </div>
-                    </div>
-
-                    <!-- Theresa Web -->
-                    <div class="relative flex">
-                        <div class="z-10 flex-shrink-0">
-                            <img src="src/images/user/user-05.jpg" alt="Theresa Web"
-                                class="size-10 rounded-full object-cover ring-4 ring-white dark:ring-gray-800">
-                        </div>
-                        <div class="ml-4">
-                            <div class="flex items-baseline">
-                                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">
-                                    Theresa Web
-                                </h3>
-                                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">created invoice</span>
-                            </div>
-                            <p class="text-theme-sm font-normal text-gray-500 dark:text-gray-400">
-                                CK-125NH
-                            </p>
-                            <p class="text-theme-xs mt-1 text-gray-400">2 weeks ago</p>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
+            <!-- ====== Upcoming Schedule End -->
 
             <div class="col-span-12">
                 <!-- Table Four -->
@@ -765,14 +679,14 @@
                                                 <div x-show="open" @click.outside="open = false"
                                                     class="shadow-theme-lg dark:bg-gray-dark fixed w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800"
                                                     x-ref="dropdown" style="display: none;">
-                                                    <a href="{{ route('accept-user',$user->id) }}"><button
-                                                        class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                        Accept
-                                                    </button></a>
-                                                    <a href="{{ route('reject-user',$user->id)}}"><button
-                                                        class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                                        Reject
-                                                    </button></a>
+                                                    <a href="{{ route('accept-user', $user->id) }}"><button
+                                                            class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                                            Accept
+                                                        </button></a>
+                                                    <a href="{{ route('reject-user', $user->id) }}"><button
+                                                            class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                                            Reject
+                                                        </button></a>
                                                 </div>
                                             </div>
                                         </td>
@@ -794,6 +708,7 @@
 @section('script')
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Highcharts.chart('firstchart', {
             chart: {
@@ -843,12 +758,27 @@
         const totalusers = @json($totalusers);
 
         // Prepare data for Highcharts
-           const chartData = [
-        { name: 'Email Pending', y: stats.email_pending, color: getComputedStyle(document.documentElement).getPropertyValue('--color-orange-400') },
-        { name: 'Active', y: stats.active, color: getComputedStyle(document.documentElement).getPropertyValue('--color-green-500') },
-        { name: 'Inactive', y: stats.inactive, color: getComputedStyle(document.documentElement).getPropertyValue('--color-gray-500') },
-        { name: 'Rejected', y: stats.rejected, color: getComputedStyle(document.documentElement).getPropertyValue('--color-red-500') },
-    ];
+        const chartData = [{
+                name: 'Email Pending',
+                y: stats.email_pending,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--color-orange-400')
+            },
+            {
+                name: 'Active',
+                y: stats.active,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--color-green-500')
+            },
+            {
+                name: 'Inactive',
+                y: stats.inactive,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--color-gray-500')
+            },
+            {
+                name: 'Rejected',
+                y: stats.rejected,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--color-red-500')
+            },
+        ];
         Highcharts.chart('secoundchart', {
             chart: {
                 type: 'pie',
@@ -859,7 +789,7 @@
                 }
             },
             title: {
-                text: 'Users Status - Total: '+totalusers,
+                text: 'Users Status - Total: ' + totalusers,
             },
             plotOptions: {
                 pie: {
@@ -1035,5 +965,39 @@
                 enabled: false
             }
         });
+    </script>
+    <script>
+        $(document).ready(function (){
+            $('.sendnotification').on('click',function(){
+                Swal.fire({
+                    title: "Please wait",
+                    text: "Sending mail to user",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                let btnid = $(this).attr('id');
+                $.ajax({
+                    url : "{{route('email-notify')}}",
+                    method : 'POST',
+                    dataType: 'json',
+                    data : {btnid : btnid, "_token": "{{ csrf_token() }}"},
+                    success : function(data){
+                        if(data.success === true){
+                            Swal.fire({
+                                title: "Mail Send!",
+                                text: data.message,
+                                icon: "success"
+                            });
+                        }
+                    },
+                    error : function(err){
+                        console.log(err); 
+                    }
+                })
+            });
+        })
     </script>
 @endsection

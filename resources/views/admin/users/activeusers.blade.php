@@ -126,35 +126,35 @@
                                 </div>
                             </th>
                             <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
+                                <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Email
                                     </p>
                                 </div>
                             </th>
                             <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
+                                <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Phone
                                     </p>
                                 </div>
                             </th>
                             <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
+                                <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         User Type
                                     </p>
                                 </div>
                             </th>
                             <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
+                                <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Status
                                     </p>
                                 </div>
                             </th>
                             <th class="px-6 py-3 whitespace-nowrap">
-                                <div class="flex items-center justify-center">
+                                <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Action
                                     </p>

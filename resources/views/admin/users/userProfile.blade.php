@@ -8,7 +8,7 @@
             <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between mb-4">
                 <div class="flex w-full flex-col items-center gap-6 xl:flex-row">
                     <div class="h-20 w-20 overflow-hidden rounded-full border border-gray-200 dark:border-gray-800">
-                        <img src="{{ asset($data->profile_image ? 'storage/'.$data->profile_image : 'assets/admin/image/profile.png') }}" alt="user">
+                        <img src="{{ asset($data->profile_image ? 'storage/'.$data->profile_image : 'assets/admin/image/profile.png') }}" alt="user" class="object-cover object-center w-full h-full">
                     </div>
                     <div class="order-3 xl:order-2">
                         <h4 class="mb-2 text-center text-lg font-semibold text-gray-800 xl:text-left dark:text-white/90">
