@@ -50,6 +50,8 @@ class Login extends Controller
                         'id' => $user->id,
                         'role_id' => $user->role_id,
                         'username' => $user->username,
+                        'email' => $user->email,
+                        'profile' => $user->profile_image,
                     ]);
 
                     return redirect()->route('system-dashboard');

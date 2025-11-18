@@ -10,9 +10,9 @@ use App\Http\Controllers\pages\BlogController;
 use App\Http\Controllers\services\ServicesController;
 use Illuminate\Support\Facades\Mail;
 
-// Route::get('/', function () {
-//    return view('catg-ref');
-// });
+Route::get('engneer', function () {
+   return view('admin.engneer.engineerTask');
+})->name('engneer');
 Route::get('/', function () {
     return view('admin.auth.login');
 });
@@ -76,13 +76,13 @@ Route::middleware(['sessionProtection'])->group(function(){
 
     Route::get('dummy',[BlogController::class,'dummy'])->name('dmg');
     Route::post('dummypage',[BlogController::class,'dummypg'])->name('dmpg');
-    // helper testing ==========
-    Route::get('helper_data',[BlogController::class,'helper_data'])->name('helper_data');
-
-    // LOGOUT ROUTE ========
+    
+    
+    // LOGOUT ROUTE ========>>
     Route::get('logout',[Login::class, 'logout'])->name('logout');
 
 });
+
 // email varification
 Route::get('verify-email/{email}',[UserController::class, 'emailverify'])->name('verify-email');
 // email varification end

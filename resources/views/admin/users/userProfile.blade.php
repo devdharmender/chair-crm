@@ -19,15 +19,16 @@
                                 {{ $data->role_id == 1 ? 'Super Admin' : ($data->role_id == 2 ? 'Admin' : 'User') }}
                             </p>
                             <div class="hidden h-3.5 w-px bg-gray-300 xl:block dark:bg-gray-700"></div>
+                            
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Arizona, United States.
+                                {!! session()->get('status') === 'active' ? '<span class="bg-success-500/10 text-success-500 p-1 px-3 rounded">Active</span>' : '<span class="bg-red-50 text-error-500 p-1 px-3 rounded">Inactive</span>' !!}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex gap-10">
+            <div class="block sm:flex gap-10">
                 <div class="">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         Phone
@@ -44,8 +45,6 @@
                           {{$data->email}}
                     </p>
                 </div>
-                
-            
             </div>
         </div>
 
@@ -96,7 +95,6 @@
                 </div>
             </article>
         </div>
-
     </div>
 
     <div class="mt-5 rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
@@ -131,12 +129,11 @@
                 <div id="details" class="tab-content hidden text-gray-700">This is the Details panel. Add more detailed content here.</div>
                 <div id="comments" class="tab-content hidden text-gray-700">This is the Comments panel. Add comments or a form here.</div>
             </div>
-
         </div>
     </div>
-
 </div>
-
+@endsection
+@section('script')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.tab-link');
@@ -167,6 +164,4 @@
         });
     });
 </script>
-@endsection
-@section('script')
 @endsection

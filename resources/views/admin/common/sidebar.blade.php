@@ -283,7 +283,7 @@
                             </svg>
 
                             <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''">
-                                Services
+                                Engneer
                             </span>
 
                             {{-- <span :class="sidebarToggle ? 'xl:hidden' : ''"
@@ -312,10 +312,10 @@
                             <ul :class="sidebarToggle ? 'xl:hidden' : 'flex'"
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
-                                    <a href="" class="menu-dropdown-item group"
+                                    <a href="{{route('engneer')}}" class="menu-dropdown-item group"
                                         :class="page === 'textGenerator' ? 'menu-dropdown-item-active' :
                                             'menu-dropdown-item-inactive'">
-                                        Services
+                                        Engneer Task
                                     </a>
                                 </li>
                                 <li>

@@ -422,8 +422,7 @@
                                     <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
                                         <img src="{{asset('assets/admin/image/profile.png')}}" alt="User" />
                                     </span>
-
-                                    <span class="text-theme-sm mr-1 block font-medium"> Dharmender </span>
+                                    <span class="text-theme-sm mr-1 block font-medium"> {{session()->get('username')}} </span>
 
                                     <svg :class="dropdownOpen && 'rotate-180'"
                                         class="stroke-gray-500 dark:stroke-gray-400" width="18" height="20"
@@ -439,11 +438,11 @@
                                     <div>
                                         <span
                                             class="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-                                            Dharmender Kumar
+                                            {{session()->get('username')}}
                                         </span>
                                         <span class="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
                                             <a href="" class="__cf_email__"
-                                                data-cfemail="c7b5a6a9a3a8aab2b4a2b587b7aeaaada8e9a4a8aa">dharmender.kumar89839@gmail.com</a>
+                                                data-cfemail="c7b5a6a9a3a8aab2b4a2b587b7aeaaada8e9a4a8aa">{{session()->get('email')}}</a>
                                         </span>
                                     </div>
 
