@@ -250,14 +250,14 @@
                                 <div x-show="openDropDown" @click.outside="openDropDown = false"
                                     class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
                                     style="display: none;">
-                                    <button
+                                    <button id="notifypendingverify"
                                         class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                        View More
+                                        Notify to all
                                     </button>
-                                    <button
+                                    {{-- <button
                                         class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
                                         Delete
-                                    </button>
+                                    </button> --}}
                                 </div>
                             </div>
                         </div>
@@ -317,7 +317,9 @@
                                             </p> --}}
 
 
-                                                <button class="sendnotification shadow-theme-xs inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200" id="{{$pendinguser->id}}">
+                                                <button
+                                                    class="sendnotification shadow-theme-xs inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+                                                    id="{{ $pendinguser->id }}">
                                                     <svg class="fill-current" width="20" height="20"
                                                         viewBox="0 0 20 20" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -967,8 +969,8 @@
         });
     </script>
     <script>
-        $(document).ready(function (){
-            $('.sendnotification').on('click',function(){
+        $(document).ready(function() {
+            $('.sendnotification').on('click', function() {
                 Swal.fire({
                     title: "Please wait",
                     text: "Sending mail to user",
@@ -980,12 +982,15 @@
 
                 let btnid = $(this).attr('id');
                 $.ajax({
-                    url : "{{route('email-notify')}}",
-                    method : 'POST',
+                    url: "{{ route('email-notify') }}",
+                    method: 'POST',
                     dataType: 'json',
-                    data : {btnid : btnid, "_token": "{{ csrf_token() }}"},
-                    success : function(data){
-                        if(data.success === true){
+                    data: {
+                        btnid: btnid,
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(data) {
+                        if (data.success === true) {
                             Swal.fire({
                                 title: "Mail Send!",
                                 text: data.message,
@@ -993,11 +998,43 @@
                             });
                         }
                     },
-                    error : function(err){
-                        console.log(err); 
+                    error: function(err) {
+                        console.log(err);
                     }
                 })
             });
+
+            // notify all using queue jobs
+            $("#notifypendingverify").on('click', function() {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url : "{{route('notify-email-all')}}",
+                            type : "post",
+                            data : {
+                                _token : "{{ csrf_token() }}",
+                            },
+                            dataType:"json",
+                            success:function(data){
+                                
+                            }
+                        });
+                        // Swal.fire({
+                        //     title: "Deleted!",
+                        //     text: "Your file has been deleted.",
+                        //     icon: "success"
+                        // });
+                    }
+                });
+            })
         })
     </script>
 @endsection

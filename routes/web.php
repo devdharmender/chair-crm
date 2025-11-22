@@ -72,6 +72,7 @@ Route::middleware(['sessionProtection'])->group(function(){
         Route::get('deactivate-account/{num}','deactivated')->name('account-deactivate');
         Route::get('activate-account/{num}','activated')->name('account-activate');
         Route::post('email-notification','sendnotification')->name('email-notify');
+        Route::post('notify-all','notifyemailvarification')->name('notify-email-all');
     });
 
     Route::get('dummy',[BlogController::class,'dummy'])->name('dmg');

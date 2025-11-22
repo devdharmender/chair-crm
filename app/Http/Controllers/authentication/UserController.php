@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\authentication;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\Emailverify\AllemailPendingVerification;
 use Illuminate\Http\Request;
 use App\Models\authentication\Rolemastermodel;
 use App\Models\authentication\UserCheck;
@@ -257,5 +258,14 @@ class UserController extends Controller
                 ]);
             }
         }
+    }
+    public function notifyemailvarification(Request $request){
+        $newusers = UserCheck::where('email_verification','pending')->orderBy('created_at','asc')->get();
+        if($newusers){
+            foreach($newusers as $user){
+                AllemailPendingVerification::dispatch($user->email,$user);
+            }
+        }
+
     }
 }
