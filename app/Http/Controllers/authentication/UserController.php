@@ -53,7 +53,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'phonenumber' => 'required|numeric|unique:users,mobile_number',
             'password' => 'required|min:8|max:25',
-            'usersprofile' => 'required|file|mimes:jpg,jpeg,png,gif|max:1024',
+            'usersprofile' => 'required|file|mimes:jpg,jpeg,png,gif|max:5024',
             'role' => 'required',
         ], [
             'required' => 'This field is required.',
